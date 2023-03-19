@@ -1,2 +1,2 @@
 # witsOverflow
-Software Design project 2023
+Software Design Project 2023
