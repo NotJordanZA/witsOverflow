@@ -1,5 +1,9 @@
 # Commands
 
+## Install React
+`cd "[directory where you want your react project folder]"`  
+`npx create-react-app [app_folder_name]` (Use dashes and underscores, but not spaces)
+
 ## Start Up Server
 `cd "[directory with react installed, where "src" is located]"`  
 `npm start`
