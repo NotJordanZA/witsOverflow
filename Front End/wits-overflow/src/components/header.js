@@ -1,3 +1,4 @@
+//header class thats persistent accross all pages
 import styled from "styled-components";
 import logo from '../logo.png';
 import bell from '../bell2.png';
@@ -7,12 +8,14 @@ import { useContext } from "react";
 import UserContext from "../context/userContext";
 import UserData from "../context/userData";
 
+//container for header elements
 const StyledHeader = styled.header`
   display:grid;
   grid-template-columns: 30px 200px 1fr 50px 50px 150px;
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
   `;
 
+//link styling for the icon
 const LogoLink = styled.a`
   color:#000000
   text-decoration: none;
@@ -33,6 +36,7 @@ const LogoLink = styled.a`
   }
   `;
 
+  //link stylying for the title text
   const LogoLinkTitle = styled.a`
   text-decoration: none;
   display: inline-block;
@@ -49,6 +53,7 @@ const LogoLink = styled.a`
   }
   `;
 
+  //styling for the search bar
   const SearchInput = styled.input`
   display: inline-block;
   box-sizing: border-box;
@@ -60,16 +65,19 @@ const LogoLink = styled.a`
   margin-top: 17px;
   `;
 
+  //styling for the bell link
   const BellLink = styled.a`
   display: inline-block;
   padding: 22px 15px;
   `;
 
+  //styling for the profile photo link
   const ProfileLinkAvi = styled.a`
   display: inline-block;
   padding: 17px 0px;
   `;
 
+  //styling for the username link
   const ProfileLinkName = styled.a`
   text-decoration: none;
   display: inline-block;
@@ -78,10 +86,11 @@ const LogoLink = styled.a`
   color:#000000;
   `;
 
+//function handling the entire heading area and changing the header based on whether the user is logged
 function Header(){
   const {user} = useContext(UserContext);
-  const { pathname } = useLocation();
-  if (pathname === "/" || pathname === "/Register"){
+  const { pathname } = useLocation();//finds the current path
+  if (pathname === "/" || pathname === "/Register"){//checks if on the login or registration page
     return(
         <StyledHeader>
           <LogoLink href="/questionsPage" className="logo">

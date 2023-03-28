@@ -1,4 +1,6 @@
+//login page
 import { useState, useRef, useEffect, useContext } from "react";
+import { useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
@@ -53,13 +55,20 @@ const LoginPage = () => {
     const [pass, setPass] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
+    //writes submitted email and password to console, redirects to questions page on successful login
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(email, pass);
+        //add comparison between submitted email and password and stored password
+        if(true){
+            navigate("/questionsPage");
+        }
         setEmail('');
         setPass('');
     }
 
+    //for setting error message
     useEffect(() => {
         setErrMsg('');
     }, [email, pass])
@@ -91,13 +100,11 @@ const LoginPage = () => {
                         />
                     <StyledButton type = 'submit'>login</StyledButton>
                 </StyledForm>
-                
-                <p>     Don't have an account?<br/>
-                        <span className="line">
-                            {/*put router link here */}
-                            <StyledLink href="/registrationPage"><b>Sign Up</b></StyledLink>
-                        </span>
-                    </p>
+                <p>Don't have an account?<br/>
+                    <span className="line">
+                        <StyledLink href="/registrationPage"><b>Sign Up</b></StyledLink>
+                    </span>
+                </p>
             </Container>
         );
 }

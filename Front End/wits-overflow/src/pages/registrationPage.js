@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -100,6 +101,7 @@ const Register = () => {
         setErrMsg('');
     }, [user, pwd, matchPwd])
 
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         // In case user enables the submit button via JS hack:
@@ -110,6 +112,7 @@ const Register = () => {
             return;
         } // End of precaution.
         console.log(user, pwd);
+        navigate("/questionsPage");
         setSuccess(true);
     }
     

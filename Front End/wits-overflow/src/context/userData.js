@@ -1,3 +1,5 @@
+//class for storing the data for the user, data should be fetched from database
+//other classes access the user data from here
 export const UserData = [
     {
         name: "Jordan Bareiss",

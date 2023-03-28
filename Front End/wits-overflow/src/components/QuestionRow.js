@@ -1,4 +1,5 @@
 // QuestionRow.js
+//element of the question page
 import styled from "styled-components";
 
 

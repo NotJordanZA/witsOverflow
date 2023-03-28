@@ -1,3 +1,4 @@
+//profile page
 import styled from "styled-components";
 import Avatar from "../avatar.svg"
 import {useNavigate} from "react-router-dom";
@@ -63,6 +64,7 @@ const ChangePassButton = styled.button`
 `;
 
 function Profile(){
+    //used for allowing a button to change the path
     let navigate = useNavigate();
     const routeChange = () => {
         let path= '/changePassword';

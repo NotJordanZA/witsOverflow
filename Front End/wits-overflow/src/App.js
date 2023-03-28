@@ -28,6 +28,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
+//used for the sidebar, not yet implemented
 const AppLayout = () => (
   <>
     <Navbar />
@@ -35,39 +36,41 @@ const AppLayout = () => (
   </>
 );
 
+//leftover router element from sidebar, still needs to be implemented
 const router = createBrowserRouter([
-  
-    // element: <AppLayout />,
-    // children: [
-      
-    // ]
-    {
-      path: "/",
-      element: <LoginPage/>,
-    },
-    {
-      path: "/questionsPage",
-      element: <QuestionsPage/>,
-    },
-    {
-      path: "/usersPage",
-      element: <Users/>,
-    },
-    {
-      path: "/rewardsPage",
-      element: <Rewards/>,
-    },
-    {
-      path: "/profilePage",
-      element: <Profile/>,
-    },
-    {
-      path: "/Register",
-      element: <Register/>,
-    },
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <LoginPage/>,
+      },
+      {
+        path: "/questionsPage",
+        element: <QuestionsPage/>,
+      },
+      {
+        path: "/usersPage",
+        element: <Users/>,
+      },
+      {
+        path: "/rewardsPage",
+        element: <Rewards/>,
+      },
+      {
+        path: "/profilePage",
+        element: <Profile/>,
+      },
+      {
+        path: "/Register",
+        element: <Register/>,
+      },
+    ]
+  }
 ])
 
 function App() {
+  //for getting user state
   const [user, setUser] = useState('');
   return (
     <div>
@@ -88,8 +91,6 @@ function App() {
             </Routes>
           </UserContext.Provider>
         </Router>
-        {/* <Header />
-        <RouterProvider router = {router} /> */}
     </div>
   );
 }
