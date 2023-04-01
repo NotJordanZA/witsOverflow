@@ -1,9 +1,19 @@
 //AskPage.js
 
-export default function AskPage () {
+export default function AskPage() {
 
     return (
-        <div>Ask Page</div>
+         <div >
+        < div >
+        <h1> side thing </h1>
+         </div>
+         <div >
+        <h1> middle thing </h1> 
+        
+        </div>
+        
+        </div>
+
     );
 
 }

@@ -1,11 +1,12 @@
 //login page
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
+import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import AuthContext from "../context/AuthProvider";
-
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
 const Container = styled.div`
     padding: 200px 0;
     display: flex;
@@ -21,7 +22,7 @@ const StyledInput = styled.input`
     border: 0;
     width: 250px;
     box-sizing: border-box;
-    padding 15px 0 15px 10px;
+    padding: 15px 0 15px 10px;
     margin-bottom: 20px;
 `;
 
@@ -59,9 +60,13 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
+       // if(email.includes('.wits'))
         console.log(email, pass);
-        //add comparison between submitted email and password and stored password
-        if(true){
+        await signInWithEmailAndPassword(getAuth(),email,pass);
+        //add comparison between submitted email and password and stored password;
+
+        if(getAuth().currentUser!=null){
+
             navigate("/questionsPage");
         }
         setEmail('');
@@ -73,40 +78,38 @@ const LoginPage = () => {
         setErrMsg('');
     }, [email, pass])
 
-        return(
-            <Container>
-                <p ref={errRef} style={errMsg ? {} : {display: "none"}} aria-live="assertive">{errMsg}</p>
-                <img style = {{ width : 90, height: 90 }}src = {logo} alt = "logo" />
-                <StyledHeader>Login</StyledHeader>
-                <StyledForm onSubmit={handleSubmit}>
-                    <StyledInput 
-                        value = { email } 
-                        placeholder="email" 
-                        type='email'
-                        id="email"
-                        ref={emailRef}
-                        autoComplete="off"
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        textAlign = 'center'
-                        />
-                    <StyledInput 
-                        value = { pass } 
-                        placeholder="password" 
-                        type='password'
-                        id="pass"
-                        onChange={(e) => setPass(e.target.value)}
-                        required
-                        />
-                    <StyledButton type = 'submit'>login</StyledButton>
-                </StyledForm>
-                <p>Don't have an account?<br/>
-                    <span className="line">
-                        <StyledLink href="/registrationPage"><b>Sign Up</b></StyledLink>
-                    </span>
-                </p>
-            </Container>
-        );
+        return<Container>
+            <p ref={errRef} style={errMsg ? {} : {display: "none"}} aria-live="assertive">{errMsg}</p>
+            <img style = {{ width : 90, height: 90 }}src = {logo} alt = "logo" />
+            <StyledHeader>Login</StyledHeader>
+            <StyledForm onSubmit={handleSubmit}>
+                <StyledInput
+                    value = { email }
+                    placeholder="email"
+                    type='email'
+                    id="email"
+                    ref={emailRef}
+                    autoComplete="off"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    textAlign = 'center'
+                    />
+                <StyledInput
+                    value = { pass }
+                    placeholder="password"
+                    type='password'
+                    id="pass"
+                    onChange={(e) => setPass(e.target.value)}
+                    required
+                    />
+                <StyledButton type = 'submit'>login</StyledButton>
+            </StyledForm>
+            <p>Don't have an account?<br/>
+                <span className="line">
+                    <StyledLink href="/registrationPage"><b>Sign Up</b></StyledLink>
+                </span>
+            </p>
+        </Container>;
 }
 
 export default LoginPage;

@@ -5,7 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
-
+import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
 //const USER_REGEX = /^[a-zA-Z0-9_.+-]{1,64}+@(students\.)?wits\.ac\.za$/; //Not functional yet.
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+$/; //Temporary. Works with any email.
@@ -27,7 +27,7 @@ const StyledInput = styled.input`
     border: 0;
     width: 250px;
     box-sizing: border-box;
-    padding 15px 0 15px 10px;
+    padding: 15px 0 15px 10px;
     margin-bottom: 20px;
 `;
 const StyledHeader = styled.h1`
@@ -107,11 +107,13 @@ const Register = () => {
         // In case user enables the submit button via JS hack:
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
+
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry");
             return;
         } // End of precaution.
         console.log(user, pwd);
+        await createUserWithEmailAndPassword(getAuth(),user,pwd);
         navigate("/questionsPage");
         setSuccess(true);
     }
@@ -207,7 +209,7 @@ const Register = () => {
                     Must match the first password input.
                 </p>
 
-            <StyledButton disabled={!validName || !validPwd || !validMatch ? true : false}>
+            <StyledButton disabled={!validName || !validPwd || !validMatch || getAuth().currentUser==null? true : false}>
                 Sign Up
             </StyledButton>
 
