@@ -90,7 +90,7 @@ const LogoLink = styled.a`
 function Header(){
   const {user} = useContext(UserContext);
   const { pathname } = useLocation();//finds the current path
-  if (pathname === "/" || pathname === "/Register"){//checks if on the login or registration page
+  if (pathname === "/" || pathname === "/registrationPage"){//checks if on the login or registration page
     return(
         <StyledHeader>
           <LogoLink href="/questionsPage" className="logo">
