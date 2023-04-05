@@ -17,12 +17,12 @@ import AskPage from "./pages/askPage";
 import UserContext from "./context/userContext";
 import ChangePassword from "./pages/changePasswordPage";
 import "./App.css";
-import {firebaseConfig} from "./firebase-congfi/firebase";
+import {firebaseConfig} from "./firebase-config/firebase";
 import {initializeApp} from "firebase/app";
 import {getAnalytics} from "firebase/analytics";
+import { app } from "./firebase-config/firebase";
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 

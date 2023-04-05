@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "../avatar.svg"
 import {useNavigate} from "react-router-dom";
 import UserData from "../context/userData";
+import { getAuth, signOut } from "firebase/auth";
 
 const Container = styled.div`
     padding: 50px 0;
@@ -54,7 +55,7 @@ const PassRow = styled.div`
     left:0;
 `;
 
-const ChangePassButton = styled.button`
+const StyledButton = styled.button`
     display: inline-block;
     border: 0px;
     border-radius: 10px;
@@ -66,8 +67,18 @@ const ChangePassButton = styled.button`
 function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
-    const routeChange = () => {
+    const routeChangePass = () => {
         let path= '/changePassword';
+        navigate(path);
+    }
+    const routeChangeLogOut = () => {
+        let path= '/';
+        const auth = getAuth();
+        signOut(auth).then(() => {
+        // Sign-out successful.
+        }).catch((error) => {
+        // An error happened.
+        });
         navigate(path);
     }
     return(
@@ -80,12 +91,14 @@ function Profile(){
                         <Pronouns>{item.pronouns}</Pronouns>
                         <Qualifications>{item.qualifications}</Qualifications>
                         <Bio>{item.bio}</Bio>
+                        <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
                     </Container>
                 )
             })}
+            
             <PassRow>
                     <h1> </h1>
-                    <ChangePassButton onClick={routeChange}>Change&nbsp;Password</ChangePassButton>
+                    <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>
             </PassRow>
         </main>
     )

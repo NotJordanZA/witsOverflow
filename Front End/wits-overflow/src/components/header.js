@@ -8,6 +8,7 @@ import { useContext } from "react";
 import UserContext from "../context/userContext";
 import UserData from "../context/userData";
 
+
 //container for header elements
 const StyledHeader = styled.header`
   display:grid;
@@ -93,10 +94,10 @@ function Header(){
   if (pathname === "/" || pathname === "/registrationPage"){//checks if on the login or registration page
     return(
         <StyledHeader>
-          <LogoLink href="/questionsPage" className="logo">
+          <LogoLink href="" className="logo">
               <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
           </LogoLink>
-          <LogoLinkTitle href="/questionsPage" className="title">
+          <LogoLinkTitle href="" className="title">
               <span><b>wits overflow</b></span>
           </LogoLinkTitle>
       </StyledHeader>
@@ -119,13 +120,14 @@ function Header(){
       <ProfileLinkAvi href="/profilePage" className="profile">
         <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
       </ProfileLinkAvi>
-      {UserData.map((item) => {
+      {/* {UserData.map((item) => {
         return(
           <ProfileLinkName href="/profilePage" className="profile">
             {item.name}
           </ProfileLinkName> 
         )
-      })}
+      })} */}
+      <ProfileLinkName href="/profilePage" className="profile">Profile Page</ProfileLinkName>
   </StyledHeader>
 );
 }

@@ -5,6 +5,8 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
+import { getAuth, updatePassword } from "firebase/auth";
+import { firebaseConfig } from "../firebase-config/firebase";
 
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -83,6 +85,8 @@ const ChangePassword = () => {
     }, [oldPwd, pwd, matchPwd])
 
     // Goes below the final useEffect().
+    const auth = getAuth();
+    const user = auth.currentUser;
     // Handles the submitting of the form.
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -92,9 +96,17 @@ const ChangePassword = () => {
             setErrMsg("Invalid Entry");
             return;
         } // End of precaution.
-        console.log(pwd);
+        updatePassword(user, pwd).then(() => {
+            // Update successful.
+          }).catch((error) => {
+            // An error ocurred
+            // ...
+          });
         setSuccess(true);
     }
+
+    
+    
 
     return (
 
@@ -106,7 +118,7 @@ const ChangePassword = () => {
             
             <StyledForm onSubmit={handleSubmit}>
                 <label htmlFor="old_pwd">
-                    Old Password: 
+                    Current Password: 
                     <span style={validOldPwd ? {} : {display: "none"}}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
@@ -163,7 +175,7 @@ const ChangePassword = () => {
                     <span style={validMatch && matchPwd ? {} : {display: "none"}}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
-                    <span className={validPwd || !matchPwd ? {} : {display: "none"}}>
+                    <span style={!validPwd || !matchPwd ? {} : {display: "none"}}>
                         <FontAwesomeIcon icon={faTimes} />
                     </span>
                 </label>
