@@ -14,7 +14,8 @@ import Profile from "./pages/profilePage";
 import Navbar from "./components/navbar";
 import Register from "./pages/registrationPage";
 import AskPage from "./pages/askPage";
-import UserContext from "./context/userContext";
+import SingleQuestionPage from "./pages/singleQuestionPage";
+import {UserContext} from "./context/userContext";
 import ChangePassword from "./pages/changePasswordPage";
 import "./App.css";
 import {firebaseConfig} from "./firebase-config/firebase";
@@ -96,6 +97,7 @@ function App() {
               <Route path= "/registrationPage" element= {<Register/>} />
               <Route path= "/askPage" element= {<AskPage/>} />
               <Route path= "/changePassword" element= {<ChangePassword/>} />
+              <Route path = "/question" element= {<SingleQuestionPage/>} />
             </Routes>
           </UserContext.Provider>
         </Router>

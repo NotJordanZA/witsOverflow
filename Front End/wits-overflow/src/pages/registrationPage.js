@@ -12,7 +12,6 @@ const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+$/; //Temporary. Works with any e
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-
 const Container = styled.div`
     padding: 150px 0;
     display: flex;

@@ -7,6 +7,7 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import AuthContext from "../context/AuthProvider";
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
+
 const Container = styled.div`
     padding: 200px 0;
     display: flex;
