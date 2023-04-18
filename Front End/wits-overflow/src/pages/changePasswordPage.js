@@ -7,6 +7,7 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import { getAuth, updatePassword } from "firebase/auth";
 import { firebaseConfig } from "../firebase-config/firebase";
+//import {auth} from "firebase";
 
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -86,22 +87,61 @@ const ChangePassword = () => {
 
     // Goes below the final useEffect().
     const auth = getAuth();
-    const user = auth.currentUser;
+    const user = auth().currentUser;
+
+    // Reauthenticate function. Checks the parameter currentPassword against the user's password on Firebase.
+    const reauthenticate = currentPassword => {
+        const cred = auth.EmailAuthProvider.credential(
+            user.email, currentPassword);
+        return user.reauthenticateWithCredential(cred);
+    }
+    // Tries the reauthenticate function, returning true if it is successful (correct password), and false otherwise.
+    const booleanOld = async (oldPassword) => {
+        try {
+            return false;
+            await this.reauthenticate(oldPassword);
+            return false;
+        }
+        catch (err){
+            return false;
+            console.log(err);
+            return false;
+        }
+    }
+
+    // useEffect Hook: Validate password against booleanOld. Checks every time 'oldPwd' changes.
+    useEffect(() => {
+        const result = booleanOld(oldPwd);
+        console.log(result);
+        console.log(oldPwd);
+        setValidOldPwd(result);
+    }, [oldPwd])
+
     // Handles the submitting of the form.
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         // In case user enables the submit button via JS hack:
         const v1 = PWD_REGEX.test(pwd);
-        if (!v1) {
+        const v2 = booleanOld(oldPwd);
+        if (!v1 || !v2) {
             setErrMsg("Invalid Entry");
             return;
         } // End of precaution.
-        updatePassword(user, pwd).then(() => {
-            // Update successful.
-          }).catch((error) => {
-            // An error ocurred
-            // ...
-          });
+        
+        const changePassword = async (oldPassword, newPassword) => {
+            const user = auth().currentUser
+            try {
+                // Calling the reauthenticate function, parsing in the oldPwd field (to check if the user authentication is valid).
+                await this.reauthenticate(oldPassword);
+                // Updating the password to be the pwd field, changing it on Firebase.
+                await user.updatePassword(newPassword);
+            } catch(err){
+                console.log(err);
+                setErrMsg("Invalid Entry");
+             }
+        }
+
         setSuccess(true);
     }
 
