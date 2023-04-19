@@ -103,7 +103,7 @@ const LoginPage = () => {
                     onChange={(e) => setPass(e.target.value)}
                     required
                     />
-                <StyledButton type = 'submit'>login</StyledButton>
+                <StyledButton type = 'submit'>Login</StyledButton>
             </StyledForm>
             <p>Don't have an account?<br/>
                 <span className="line">
