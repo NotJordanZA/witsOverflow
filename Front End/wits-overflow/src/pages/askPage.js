@@ -4,9 +4,8 @@ import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 
 const Container = styled.div`
-    padding: 30px 0;
+    padding: 25px 150px;
     display: flex;
-    align-items: center;
     justify-content: center;
     flex-direction: column;
 `;
@@ -16,7 +15,7 @@ const QuestionTitleInput = styled.input`
     background: #e4e4e4;
     border-radius: 10px;
     border: 0;
-    width: 70%;
+    width: 100%;
     box-sizing: border-box;
     padding: 15px 0 15px 10px;
     margin-bottom: 20px;
@@ -27,45 +26,44 @@ const QuestionBodyTextArea = styled.textarea`
     background: #e4e4e4;
     border-radius: 10px;
     border: 0;
-    width: 70%;
+    width: 100%;
     box-sizing: border-box;
     padding: 15px 0 15px 10px;
     margin-bottom: 20px;
     min-height: 200px;
-    min-width: 70%;
+    min-width: 100%;
 `;
 
 const StyledHeader = styled.h1`
     font-size: 1.5rem;
     color: #000;
     font-weight:bold;
-    padding: 10px 0;
 `;
 
 const HeaderRow = styled.div`
     display: grid;
-    grid-template-columns: 15% 1fr;
-    padding: 10px;
+    padding : 10px 0 5px 0;
 `;
 
 const StyledLabel = styled.label`
     font-size: 1.1rem;
-    marginLeft: "auto";
+    padding : 10px 0 5px 0;
 `;
 
 const StyledButton = styled.button`
-    display: flex !important; 
-    justify-content: left !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 0px solid #fff;
     border-radius: 10px;
     background: #475be8;
     padding: 15px 45px;
     color: white;
+    width: 10%;
 `;
 
 const StyledForm = styled.form`
     display: flex;
-    align-items: center;
     justify-content: center;
     flex-direction: column;
     width:100%;
@@ -86,13 +84,12 @@ export default function AskPage() {
 
     return (
         <main>
+            <Container>
             <HeaderRow>
-                <StyledHeader></StyledHeader>
                 <StyledHeader>
                     Ask Question
                 </StyledHeader>
             </HeaderRow>
-            <Container>
                 <StyledForm onSubmit={handleSubmit}>
                     <StyledLabel>Title</StyledLabel>
                     <QuestionTitleInput
