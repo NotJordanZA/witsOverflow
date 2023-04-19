@@ -5,7 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
-import { getAuth, updatePassword } from "firebase/auth";
+import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential} from "firebase/auth";
 import { firebaseConfig } from "../firebase-config/firebase";
 //import {auth} from "firebase";
 
@@ -87,31 +87,34 @@ const ChangePassword = () => {
 
     // Goes below the final useEffect().
     const auth = getAuth();
-    const user = auth().currentUser;
+    const user = auth.currentUser;
 
     // Reauthenticate function. Checks the parameter currentPassword against the user's password on Firebase.
     const reauthenticate = currentPassword => {
-        const cred = auth.EmailAuthProvider.credential(
+        const cred = EmailAuthProvider.credential(
             user.email, currentPassword);
-        return user.reauthenticateWithCredential(cred);
+            console.log(user.email);
+        return reauthenticateWithCredential(user, cred);
     }
     // Tries the reauthenticate function, returning true if it is successful (correct password), and false otherwise.
     const booleanOld = async (oldPassword) => {
         try {
-            return false;
-            await this.reauthenticate(oldPassword);
-            return false;
+            //return false;
+            // ERROR IS HERE. "THIS" IS UNDEFINED. NEED TO CHANGE REAUTHENTICATE FUNCTION.
+            await reauthenticate(oldPassword);
+            return true;
         }
         catch (err){
-            return false;
+            //return false;
             console.log(err);
             return false;
         }
+        //return false;
     }
 
     // useEffect Hook: Validate password against booleanOld. Checks every time 'oldPwd' changes.
     useEffect(() => {
-        const result = booleanOld(oldPwd);
+        let result = booleanOld(oldPwd);
         console.log(result);
         console.log(oldPwd);
         setValidOldPwd(result);
@@ -133,7 +136,8 @@ const ChangePassword = () => {
             const user = auth().currentUser
             try {
                 // Calling the reauthenticate function, parsing in the oldPwd field (to check if the user authentication is valid).
-                await this.reauthenticate(oldPassword);
+                // ERROR IS HERE. "THIS" IS UNDEFINED. NEED TO CHANGE REAUTHENTICATE FUNCTION.
+                await reauthenticate(oldPassword); 
                 // Updating the password to be the pwd field, changing it on Firebase.
                 await user.updatePassword(newPassword);
             } catch(err){
