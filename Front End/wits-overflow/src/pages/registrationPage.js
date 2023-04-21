@@ -389,9 +389,6 @@ const Register = () => {
                 </span>
             </p>
         </Container>
-        // Ruben, you need to fix the hiding of the icons and info text.
-        // I don't know how you will do this, but use your future knowledge.
-        // Try get better at googling or sumn idk.
     )
 }
 
