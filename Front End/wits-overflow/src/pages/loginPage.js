@@ -7,6 +7,7 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import AuthContext from "../context/AuthProvider";
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
+
 const Container = styled.div`
     padding: 200px 0;
     display: flex;
@@ -102,7 +103,7 @@ const LoginPage = () => {
                     onChange={(e) => setPass(e.target.value)}
                     required
                     />
-                <StyledButton type = 'submit'>login</StyledButton>
+                <StyledButton type = 'submit'>Login</StyledButton>
             </StyledForm>
             <p>Don't have an account?<br/>
                 <span className="line">
