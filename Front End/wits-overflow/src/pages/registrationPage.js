@@ -12,11 +12,11 @@ const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails al
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 // Check that the text is one or more Regex words.
-const TEXT_REGEX = /^(\w+)$/;
+const TEXT_REGEX = /^\w+([ -]+\w+)*$/;
 // Check that the pronouns are in 'word/word' format.
 const PRONOUNS_REGEX = /^(\w+)\/(\w+)$/;
 // Check that the bio contains words, numbers and only the special characters ',', '.' and '-' and that it is between 1 and 64 characters.
-const BIO_REGEX = /^[a-zA-Z0-9,.-]{1,280}$/;
+const BIO_REGEX = /^[a-zA-Z0-9,.-\s!]{1,280}$/;
 
 const Container = styled.div`
     padding: 150px 0;
@@ -161,10 +161,10 @@ const Register = () => {
         // In case user enables the submit button via JS hack:
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
-        const v3 = TEXT_REGEX(fullName);
-        const v4 = PRONOUNS_REGEX(pronouns);
-        const v5 = TEXT_REGEX(qualifications);
-        const v6 = BIO_REGEX(bio);
+        const v3 = TEXT_REGEX.test(fullName);
+        const v4 = PRONOUNS_REGEX.test(pronouns);
+        const v5 = TEXT_REGEX.test(qualifications);
+        const v6 = BIO_REGEX.test(bio);
 
         if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6) {
             setErrMsg("Invalid Entry");
@@ -315,7 +315,7 @@ const Register = () => {
                     <FontAwesomeIcon icon={faInfoCircle} />
                     Please enter your bio. <br />
                     Must be 1-280 characters. <br />
-                    Special characters allowed: .,-
+                    Special characters allowed: .,-!
                 </p>
 
                 <label htmlFor="password">
