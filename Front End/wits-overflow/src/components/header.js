@@ -5,7 +5,7 @@ import bell from '../bell2.png';
 import avatar from '../avatar.svg';
 import {useLocation} from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../context/userContext";
+import {UserContext} from "../context/userContext";
 import UserData from "../context/userData";
 
 
@@ -89,7 +89,7 @@ const LogoLink = styled.a`
 
 //function handling the entire heading area and changing the header based on whether the user is logged
 function Header(){
-  const {user} = useContext(UserContext);
+  const currentUser = useContext(UserContext);
   const { pathname } = useLocation();//finds the current path
   if (pathname === "/" || pathname === "/registrationPage"){//checks if on the login or registration page
     return(

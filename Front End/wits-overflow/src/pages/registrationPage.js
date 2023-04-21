@@ -11,6 +11,7 @@ import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails allowed.
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
 // Check that the text is one or more Regex words.
 const TEXT_REGEX = /^(\w+)$/;
 // Check that the pronouns are in 'word/word' format.
