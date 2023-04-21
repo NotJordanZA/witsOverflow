@@ -20,7 +20,7 @@ const PRONOUNS_REGEX = /^(\w+)\/(\w+)$/;
 const BIO_REGEX = /^[a-zA-Z0-9,.-]{1,280}$/;
 
 const Container = styled.div`
-    padding: 150px 0;
+    padding: 15px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,10 +162,10 @@ const Register = () => {
         // In case user enables the submit button via JS hack:
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
-        const v3 = TEXT_REGEX(fullName);
-        const v4 = PRONOUNS_REGEX(pronouns);
-        const v5 = TEXT_REGEX(qualifications);
-        const v6 = BIO_REGEX(bio);
+        const v3 = TEXT_REGEX.test(fullName);
+        const v4 = PRONOUNS_REGEX.test(pronouns);
+        const v5 = TEXT_REGEX.test(qualifications);
+        const v6 = BIO_REGEX.test(bio);
 
         if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6) {
             setErrMsg("Invalid Entry");
