@@ -7,6 +7,8 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential} from "firebase/auth";
 import { firebaseConfig } from "../firebase-config/firebase";
+import { useNavigate} from "react-router-dom";
+import ReactDOM from 'react-dom';
 //import {auth} from "firebase";
 
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
@@ -96,12 +98,16 @@ const ChangePassword = () => {
             console.log(user.email);
         return reauthenticateWithCredential(user, cred);
     }
+    // HERE RUBEN!!!! HERE!!!!!!!!!
+    // SCRAP THE LITTLE TICK AND CROSS ON CHARACTER UPDATE. CHECK ONLY LATER. BY THE TIME YOU FINISH TYPING, YOU'VE GOT 8 INVALID AUTH-
+    // -ATTEMPTS. SO VALIDATION ISN'T POSSIBLE.
     // Tries the reauthenticate function, returning true if it is successful (correct password), and false otherwise.
     const booleanOld = async (oldPassword) => {
         try {
             //return false;
             // ERROR IS HERE. "THIS" IS UNDEFINED. NEED TO CHANGE REAUTHENTICATE FUNCTION.
             await reauthenticate(oldPassword);
+            console.log('boolOld: True');
             return true;
         }
         catch (err){
@@ -114,12 +120,15 @@ const ChangePassword = () => {
 
     // useEffect Hook: Validate password against booleanOld. Checks every time 'oldPwd' changes.
     useEffect(() => {
-        let result = booleanOld(oldPwd);
+        //let result = booleanOld(oldPwd);
+        //console.log(result);
+        const result = PWD_REGEX.test(oldPwd);
         console.log(result);
         console.log(oldPwd);
         setValidOldPwd(result);
     }, [oldPwd])
 
+    const navigate = useNavigate();
     // Handles the submitting of the form.
     const handleSubmit = async (e) => {
 
@@ -140,12 +149,13 @@ const ChangePassword = () => {
                 await reauthenticate(oldPassword); 
                 // Updating the password to be the pwd field, changing it on Firebase.
                 await user.updatePassword(newPassword);
+                console.log('Sucess')
+                navigate("/profilePage");
             } catch(err){
                 console.log(err);
                 setErrMsg("Invalid Entry");
              }
         }
-
         setSuccess(true);
     }
 
