@@ -8,9 +8,16 @@ import logo from '../logo.png';
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
 //const USER_REGEX = /^[a-zA-Z0-9_.+-]{1,64}+@(students\.)?wits\.ac\.za$/; //Not functional yet.
-const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+$/; //Temporary. Works with any email.
+const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails allowed.
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+// Check that the text is one or more Regex words.
+const TEXT_REGEX = /^(\w+)$/;
+// Check that the pronouns are in 'word/word' format.
+const PRONOUNS_REGEX = /^(\w+)\/(\w+)$/;
+// Check that the bio contains words, numbers and only the special characters ',', '.' and '-' and that it is between 1 and 64 characters.
+const BIO_REGEX = /^[a-zA-Z0-9,.-]{1,280}$/;
 
 const Container = styled.div`
     padding: 150px 0;
@@ -68,6 +75,22 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
+    const [fullName,setFullName] = useState('');
+    const [validFullName, setValidFullName] = useState(false);
+    const [fullNameFocus, setFullNameFocus] = useState(false);
+
+    const [pronouns,setPronouns] = useState('');
+    const [validPronouns, setValidPronouns] = useState(false);
+    const [pronounsFocus, setPronounsFocus] = useState(false);
+
+    const [qualifications,setQualifications] = useState('');
+    const [validQualifications, setValidQualifications] = useState(false);
+    const [qualificationFocus, setQualificationFocus] = useState(false);
+
+    const [bio,setBio] = useState('');
+    const [validBio, setValidBio] = useState(false);
+    const [bioFocus, setBioFocus] = useState(false);
+
     const [errMsg,setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
@@ -95,10 +118,43 @@ const Register = () => {
         setValidMatch(match);
     }, [pwd, matchPwd])
 
-    // Clear error message every time user, pwd or matchPwd is changed (to account for the user fixing the error).
+    // useEffect Hook: Validate full name via TEXT_REGEX. Checks every time 'fullName' changes.
+    useEffect(() => {
+        const result =TEXT_REGEX.test(fullName);
+        console.log(result);
+        console.log(fullName);
+        setValidFullName(result);
+    }, [fullName])
+
+    // useEffect Hook: Validate pronouns via PRONOUNS_REGEX. Checks every time 'pronouns' changes.
+    useEffect(() => {
+        const result = PRONOUNS_REGEX.test(pronouns);
+        console.log(result);
+        console.log(pronouns);
+        setValidPronouns(result);
+    }, [pronouns])
+
+    // useEffect Hook: Validate qualifications via TEXT_REGEX. Checks every time 'qualifications' changes.
+    useEffect(() => {
+        const result =TEXT_REGEX.test(qualifications);
+        console.log(result);
+        console.log(qualifications);
+        setValidQualifications(result);
+    }, [qualifications])
+
+    // useEffect Hook: Validate bio via BIO_REGEX. Checks every time 'bio' changes.
+    useEffect(() => {
+        const result =BIO_REGEX.test(bio);
+        console.log(result);
+        console.log(bio);
+        setValidBio(result);
+    }, [bio])
+
+    // Clear error message every time user, pwd, matchPwd, fullName, pronouns, qualifications or bio is changed (to account for-
+    // the user fixing the error).
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchPwd])
+    }, [user, pwd, matchPwd, fullName, pronouns, qualifications, bio])
 
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
@@ -106,12 +162,16 @@ const Register = () => {
         // In case user enables the submit button via JS hack:
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
+        const v3 = TEXT_REGEX(fullName);
+        const v4 = PRONOUNS_REGEX(pronouns);
+        const v5 = TEXT_REGEX(qualifications);
+        const v6 = BIO_REGEX(bio);
 
-        if (!v1 || !v2) {
+        if (!v1 || !v2 || !v3 || !v4 || !v5 || !v6) {
             setErrMsg("Invalid Entry");
             return;
         } // End of precaution.
-        console.log(user, pwd);
+        console.log(user, pwd, fullName, pronouns, qualifications);
         await createUserWithEmailAndPassword(getAuth(),user,pwd);
         navigate("/questionsPage");
         setSuccess(true);
@@ -149,6 +209,114 @@ const Register = () => {
                     Only wits emails allowed. <br />
                     Must begin with a letter or number. <br />
                     Letter, numbers, special characters and dots allowed.
+                </p>
+
+                <label htmlFor="fullname">
+                    Full Name: 
+                    <span style={validFullName ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </span>
+                    <span style={!validFullName || !fullName ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </span>
+                </label>
+                <StyledInput 
+                    type="text"
+                    id="fullname"
+                    //ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    aria-invalid={validFullName ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setFullNameFocus(true)}
+                    onBlur={() => setFullNameFocus(false)}
+                />
+                <p id="uidnote" style={fullNameFocus && fullName && !validFullName ? {} : {display: "none"}}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Please enter your full name. <br />
+                </p>
+
+                <label htmlFor="pronouns">
+                    Pronouns: 
+                    <span style={validPronouns ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </span>
+                    <span style={!validPronouns || !pronouns ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </span>
+                </label>
+                <StyledInput 
+                    placeholder="EG: They/Them"
+                    type="text"
+                    id="pronouns"
+                    //ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setPronouns(e.target.value)}
+                    required
+                    aria-invalid={validPronouns ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setPronounsFocus(true)}
+                    onBlur={() => setPronounsFocus(false)}
+                />
+                <p id="uidnote" style={pronounsFocus && pronouns && !validPronouns ? {} : {display: "none"}}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Please enter your pronouns. <br />
+                    Use the format of they/them.
+                </p>
+
+                <label htmlFor="qualifications">
+                    Qualifications: 
+                    <span style={validQualifications ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </span>
+                    <span style={!validQualifications || !qualifications ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </span>
+                </label>
+                <StyledInput 
+                    type="text"
+                    id="qualifications"
+                    //ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setQualifications(e.target.value)}
+                    required
+                    aria-invalid={validQualifications ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setQualificationFocus(true)}
+                    onBlur={() => setQualificationFocus(false)}
+                />
+                <p id="uidnote" style={qualificationFocus && qualifications && !validQualifications ? {} : {display: "none"}}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Please enter your most recent qualifications. <br />
+                </p>
+
+                <label htmlFor="bio">
+                    Bio: 
+                    <span style={validBio ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faCheck} />
+                    </span>
+                    <span style={!validBio || !bio ? {} : {display: "none"}}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </span>
+                </label>
+                <StyledInput 
+                    type="text"
+                    id="bio"
+                    //ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setBio(e.target.value)}
+                    required
+                    aria-invalid={validBio ? "false" : "true"}
+                    aria-describedby="uidnote"
+                    onFocus={() => setBioFocus(true)}
+                    onBlur={() => setBioFocus(false)}
+                />
+                <p id="uidnote" style={bioFocus && bio && !validBio ? {} : {display: "none"}}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Please enter your bio. <br />
+                    Must be 1-280 characters. <br />
+                    Special characters allowed: .,-
                 </p>
 
                 <label htmlFor="password">
@@ -208,7 +376,7 @@ const Register = () => {
                     Must match the first password input.
                 </p>
 
-            <StyledButton disabled={!validName || !validPwd || !validMatch || getAuth().currentUser==null? true : false}>
+            <StyledButton disabled={!validName || !validPwd || !validMatch || !validFullName || !validPronouns || !validQualifications || !validBio || getAuth().currentUser==null? true : false}>
                 Sign Up
             </StyledButton>
 
