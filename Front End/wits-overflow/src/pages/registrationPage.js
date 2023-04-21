@@ -8,7 +8,7 @@ import logo from '../logo.png';
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
 //const USER_REGEX = /^[a-zA-Z0-9_.+-]{1,64}+@(students\.)?wits\.ac\.za$/; //Not functional yet.
-const USER_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]+wits\.ac\.za$/; //Temporary. Works with any email.
+const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails allowed.
 // Check for 1 lowercase, 1 uppercase, 1 number and 1 special character; Must be between 8 and 24 characters.
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 // Check that the text is one or more Regex words.
