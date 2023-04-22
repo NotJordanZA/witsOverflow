@@ -1,18 +1,8 @@
-class Question {
-    // questionID = -1;
-    // questionTitle = "";
-    // questionText = "";
-    // votes = 0;
-    // answerCount = 0;
-    // viewCount = 0;
-    // timeAsked = "";
-    // firstName = "";
-    // tags = [];
-    // comments = [];
-    // answers = [];
+export class Question {
     //creating this constructor for testing purposes
     constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags)
     {
+        //console.log("Creating object...");
         this.questionID = questionID;
         this.questionTitle = questionTitle;
         this.questionText = questionText;
@@ -22,58 +12,17 @@ class Question {
         this.timeAsked = timeAsked;
         this.firstName = firstName;
         this.tags = tags;
-        //this.comments = [];
-        //this.answers = [];
+        this.comments = [];
+        this.answers = [];
     }
 
-    get questionID()
-    {
-        return this.questionID;
-    }
-    get questionText()
-    {
-        return this.questionText;
-    }
-    get votes()
-    {
-        return this.votes;
-    }
-    get answerCount()
-    {
-        return this.answerCount;
-    }
-    get viewCount()
-    {
-        return this.viewCount;
-    }
-    get timeAsked()
-    {
-        return this.timeAsked;   
-    }
-    get userFirstName()
-    {
-        return this.userFirstName;
-    }
-    get tags()
-    {
-        return this.tags;
-    }
-    get answers()
-    {
-        return this.answers;
-    }
-    get comments()
-    {
-        return this.comments;
-    }
 
     addComment(comment)
     {
-        this.comments[this.comments.length] = comment;
+        this.comments.push(comment);
     }
-
     addAnswer(answer)
     {
-        this.answers[this.answers.length] = answer;
+        this.answers.push(answer);
     }
 }

@@ -6,8 +6,7 @@ import QuestionRow from '../components/QuestionRow';
 // import QuestionRow4 from '../components/QuestionRow4';
 // import QuestionRow5 from '../components/QuestionRow5';
 import StyledButton from '../components/styledButton';
-import Question from '../components/Question';
-// import Question from '../components/Question';
+import {Question} from '../components/Question';
 import {Link, useNavigate} from "react-router-dom";
 
 const StyledHeader = styled.h1`
@@ -38,6 +37,9 @@ let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m
 function QuestionsPage(){
     let navigate = useNavigate();
 
+    const question1 = new Question(questionIDs[0], questionTitles[0], questionTexts[0], voteCounts[0], answerCounts[0], viewCounts[0], timesAsked[0], firstNames[0], postTags[0]);
+    //console.log(question1.questionID);\
+
     const questionComponents = [];
     for (let i = 0; i < questionIDs.length; i++)
     {
@@ -54,6 +56,13 @@ function QuestionsPage(){
                 tags = {postTags[i]}
             />
         );
+        const question = new Question(questionIDs[i], questionTitles[i], questionTexts[i], voteCounts[i], answerCounts[i], viewCounts[i], timesAsked[i], firstNames[i], postTags[i]);
+        console.log(question);
+        // questionComponents.push(
+        //     <QuestionRow
+        //         {...question}
+        //     />
+        // );
     }
 
     //in future, we use firebase to populate each of these arrays
@@ -69,39 +78,6 @@ function QuestionsPage(){
                 <StyledButton onClick={routeChangeToAskQuestion}> Ask&nbsp;Question </StyledButton>
             </HeaderRow>
             {questionComponents}
-            {/* <QuestionRow 
-                questionID = {questionIDs[0]}
-                questionTitle = {questionTitles[0]}
-                questionText = {questionTexts[0]}
-                votes = {voteCounts[0]} 
-                answerCount = {answerCounts[0]}
-                viewCount = {viewCounts[0]}
-                timeAsked = {timesAsked[0]}
-                firstName = {firstNames[0]}
-                tags = {postTags[0]}
-            />
-            <QuestionRow
-                questionID = {questionIDs[1]}
-                questionTitle = {questionTitles[1]}
-                questionText = {questionTexts[1]}
-                votes = {voteCounts[1]} 
-                answerCount = {answerCounts[1]}
-                viewCount = {viewCounts[1]}
-                timeAsked = {timesAsked[1]}
-                firstName = {firstNames[1]}
-                tags = {postTags[1]}
-            />
-            <QuestionRow
-                questionID = {questionIDs[2]}
-                questionTitle = {questionTitles[2]}
-                questionText = {questionTexts[2]}
-                votes = {voteCounts[2]} 
-                answerCount = {answerCounts[2]}
-                viewCount = {viewCounts[2]}
-                timeAsked = {timesAsked[2]}
-                firstName = {firstNames[2]}
-                tags = {postTags[2]}
-            /> */}
         </main>
     );
 }
