@@ -25,29 +25,40 @@ const HeaderRow = styled.div`
 
 
 //dummy data to use to populate questions page. Stored as an array to ensure conciseness
-let questionIDs = [0, 1, 2];
-let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent"];
-let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3"];
-let voteCounts = [0, 1, 0];
-let answerCounts = [0, 1, 0];
-let viewCounts = [4, 5, 2];
-let timesAsked = ["3 min ago", "1 hr ago", "17 min ago"];
-let firstNames = ["Jordan", "Ndivhuwo", "Troy"];
-let postTags = [["a", "b", "c", "d"], ["python", "vector", "pytorch", "similarity"], ["python", "vector", "spring", "spring-cloud"]];
-
+let questionIDs = [0, 1, 2, 3];
+let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent", "How to solve a homogeneuos linear differential equation"];
+let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3", "Howdy partner 4"];
+let voteCounts = [0, 1, 0, 7];
+let answerCounts = [0, 1, 0, 3];
+let viewCounts = [4, 5, 2, 27];
+let timesAsked = ["3 min ago", "1 hr ago", "17 min ago", "1 day ago"];
+let firstNames = ["Jordan", "Ndivhuwo", "Troy", "Ruben"];
+let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m", "n", "o", "p", "q"]];
 
 function QuestionsPage(){
     let navigate = useNavigate();
 
+    const questionComponents = [];
+    for (let i = 0; i < questionIDs.length; i++)
+    {
+        questionComponents.push(
+            <QuestionRow 
+                questionID = {questionIDs[i]}
+                questionTitle = {questionTitles[i]}
+                questionText = {questionTexts[i]}
+                votes = {voteCounts[i]} 
+                answerCount = {answerCounts[i]}
+                viewCount = {viewCounts[i]}
+                timeAsked = {timesAsked[i]}
+                firstName = {firstNames[i]}
+                tags = {postTags[i]}
+            />
+        );
+    }
+
     //in future, we use firebase to populate each of these arrays
     const routeChangeToAskQuestion = () => {
         let path= '/askPage';
-        navigate(path);
-    }
-
-    const routeChangeToSingleQuestion = () => {
-        let path = '/question';
-        console.log("Clicked on question");
         navigate(path);
     }
 
@@ -57,7 +68,8 @@ function QuestionsPage(){
                 <StyledHeader> Top Questions </StyledHeader>
                 <StyledButton onClick={routeChangeToAskQuestion}> Ask&nbsp;Question </StyledButton>
             </HeaderRow>
-            <QuestionRow 
+            {questionComponents}
+            {/* <QuestionRow 
                 questionID = {questionIDs[0]}
                 questionTitle = {questionTitles[0]}
                 questionText = {questionTexts[0]}
@@ -89,7 +101,7 @@ function QuestionsPage(){
                 timeAsked = {timesAsked[2]}
                 firstName = {firstNames[2]}
                 tags = {postTags[2]}
-            />
+            /> */}
         </main>
     );
 }

@@ -1,7 +1,8 @@
 // QuestionRow.js
 //element of the question page
 import styled from "styled-components";
-import Question from '../components/Question';
+//import Question from '../components/Question';
+import {Link, useNavigate} from "react-router-dom";
 
 
 const QuestionStat = styled.div`
@@ -66,12 +67,14 @@ const UserLink = styled.a`
 `;
 
 //{questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}
-function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}){
-    console.log("Hello :)");
-    console.log(questionTitle);
-    //let questionID1 = questionID;
+//function QuestionRow({Question : question}){  
+function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}){  
+    //data passed from props
+    let navigate = useNavigate();
+    
+    let questionID1 = questionID;
     let questionTitle1 = questionTitle;
-    //let questionText1 = questionText;
+    let questionText1 = questionText;
     let votes1 = votes;
     let answerCount1 = answerCount;
     let viewCount1 = viewCount;
@@ -79,20 +82,33 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let firstName1 = firstName;
     let tags1 = tags;
 
+    
+    console.log("Question " + questionID1 + " Number of tags: " + tags1.length);
+    const tagComponents = [];
+    for (let i = 0; i < tags1.length; i++)
+    {
+        tagComponents.push(
+            <Tag>{tags1[i]}</Tag>
+        )
+    }
+
+    const routeChangeToSingleQuestion = () => {
+        let path = '/question';
+        console.log("Clicked on question");
+        navigate(path);
+    }
+
     return (
         <StyledQuestionRow>
             <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
             <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
             <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
             <QuestionTitleArea>
-                <QuestionLink> {questionTitle1} </QuestionLink>
+                <QuestionLink onClick = {routeChangeToSingleQuestion}> {questionTitle1} </QuestionLink>
                 <WhoAndWhen>
                     Asked {timeAsked1} by <UserLink> {firstName1} </UserLink>
                 </WhoAndWhen>
-                <Tag> {tags1[0]} </Tag>
-                <Tag> {tags1[1]} </Tag>
-                <Tag> {tags1[2]} </Tag>
-                <Tag> {tags1[3]} </Tag>
+                {tagComponents}
             </QuestionTitleArea>
         </StyledQuestionRow>
         
