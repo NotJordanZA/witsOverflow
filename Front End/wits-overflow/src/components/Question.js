@@ -1,4 +1,15 @@
 class Question {
+    // questionID = -1;
+    // questionTitle = "";
+    // questionText = "";
+    // votes = 0;
+    // answerCount = 0;
+    // viewCount = 0;
+    // timeAsked = "";
+    // firstName = "";
+    // tags = [];
+    // comments = [];
+    // answers = [];
     //creating this constructor for testing purposes
     constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags)
     {
@@ -11,8 +22,8 @@ class Question {
         this.timeAsked = timeAsked;
         this.firstName = firstName;
         this.tags = tags;
-        this.comments = [];
-        this.answers = [];
+        //this.comments = [];
+        //this.answers = [];
     }
 
     get questionID()
