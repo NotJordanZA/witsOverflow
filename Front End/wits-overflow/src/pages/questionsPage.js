@@ -1,10 +1,10 @@
 // QuestionsPage.js
 import styled from 'styled-components'
 import QuestionRow from '../components/QuestionRow';
-import QuestionRow2 from '../components/QuestionRow2';
-import QuestionRow3 from '../components/QuestionRow3';
-import QuestionRow4 from '../components/QuestionRow4';
-import QuestionRow5 from '../components/QuestionRow5';
+// import QuestionRow2 from '../components/QuestionRow2';
+// import QuestionRow3 from '../components/QuestionRow3';
+// import QuestionRow4 from '../components/QuestionRow4';
+// import QuestionRow5 from '../components/QuestionRow5';
 import StyledButton from '../components/styledButton';
 import Question from '../components/Question';
 // import Question from '../components/Question';
@@ -23,82 +23,72 @@ const HeaderRow = styled.div`
     padding: 10px 20px;
 `;
 
+
+//dummy data to use to populate questions page. Stored as an array to ensure conciseness
+let questionIDs = [0, 1, 2];
+let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent"];
+let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3"];
+let voteCounts = [0, 1, 0];
+let answerCounts = [0, 1, 0];
+let viewCounts = [4, 5, 2];
+let timesAsked = ["3 min ago", "1 hr ago", "17 min ago"];
+let firstNames = ["Jordan", "Ndivhuwo", "Troy"];
+let postTags = [["a", "b", "c", "d"], ["python", "vector", "pytorch", "similarity"], ["python", "vector", "spring", "spring-cloud"]];
+
+
 function QuestionsPage(){
     let navigate = useNavigate();
-    
-    let questionID1 = 0;
-    let questionTitle1 = "Conditional joining of dataframes";
-    let questionText1 = "Howdy partner :)";
-    let votes1 = 0;
-    let answerCount1 = 0;
-    let viewCount1 = 4;
-    let timeAsked1 = "3 min ago";
-    let firstName1 = "Jordan";
-    let tags1 = ["a", "b", "c", "d"];
 
-    let questionID2 = 1;
-    let questionTitle2 = "How to find similarity between two vectors?";
-    let questionText2 = "Howdy partner :)";
-    let votes2 = 1;
-    let answerCount2 = 0;
-    let viewCount2 = 5;
-    let timeAsked2 = "5 min ago";
-    let firstName2 = "Ndivhuwo";
-    let tags2 = ["python", "vector", "pytorch", "similarity"];
-
-    let questionID3 = 2;
-    let questionTitle3 = "Spring stub returns incorrect response on GET endp with different number of parameters sent";
-    let questionText3 = "Howdy partner :)";
-    let votes3 = 0;
-    let answerCount3 = 1;
-    let viewCount3 = 0;
-    let timeAsked3 = "17 min ago";
-    let firstName3 = "Troy";
-    let tags3 = ["python", "vector", "spring", "spring-cloud"];
-
-
-    const routeChange = () => {
+    //in future, we use firebase to populate each of these arrays
+    const routeChangeToAskQuestion = () => {
         let path= '/askPage';
         navigate(path);
     }
+
+    const routeChangeToSingleQuestion = () => {
+        let path = '/question';
+        console.log("Clicked on question");
+        navigate(path);
+    }
+
     return (
         <main>
             <HeaderRow>
                 <StyledHeader> Top Questions </StyledHeader>
-                <StyledButton onClick={routeChange}> Ask&nbsp;Question </StyledButton>
+                <StyledButton onClick={routeChangeToAskQuestion}> Ask&nbsp;Question </StyledButton>
             </HeaderRow>
-            <QuestionRow
-                questionID = {questionID1}
-                questionTitle = {questionTitle1}
-                questionText = {questionText1}
-                votes = {votes1} 
-                answerCount = {answerCount1}
-                viewCount = {viewCount1}
-                timeAsked = {timeAsked1}
-                firstName = {firstName1}
-                tags = {tags1}
+            <QuestionRow 
+                questionID = {questionIDs[0]}
+                questionTitle = {questionTitles[0]}
+                questionText = {questionTexts[0]}
+                votes = {voteCounts[0]} 
+                answerCount = {answerCounts[0]}
+                viewCount = {viewCounts[0]}
+                timeAsked = {timesAsked[0]}
+                firstName = {firstNames[0]}
+                tags = {postTags[0]}
             />
             <QuestionRow
-                questionID = {questionID2}
-                questionTitle = {questionTitle2}
-                questionText = {questionText2}
-                votes = {votes2} 
-                answerCount = {answerCount2}
-                viewCount = {viewCount2}
-                timeAsked = {timeAsked2}
-                firstName = {firstName2}
-                tags = {tags2}
+                questionID = {questionIDs[1]}
+                questionTitle = {questionTitles[1]}
+                questionText = {questionTexts[1]}
+                votes = {voteCounts[1]} 
+                answerCount = {answerCounts[1]}
+                viewCount = {viewCounts[1]}
+                timeAsked = {timesAsked[1]}
+                firstName = {firstNames[1]}
+                tags = {postTags[1]}
             />
             <QuestionRow
-                questionID = {questionID3}
-                questionTitle = {questionTitle3}
-                questionText = {questionText3}
-                votes = {votes3} 
-                answerCount = {answerCount3}
-                viewCount = {viewCount3}
-                timeAsked = {timeAsked3}
-                firstName = {firstName3}
-                tags = {tags3}
+                questionID = {questionIDs[2]}
+                questionTitle = {questionTitles[2]}
+                questionText = {questionTexts[2]}
+                votes = {voteCounts[2]} 
+                answerCount = {answerCounts[2]}
+                viewCount = {viewCounts[2]}
+                timeAsked = {timesAsked[2]}
+                firstName = {firstNames[2]}
+                tags = {postTags[2]}
             />
         </main>
     );
