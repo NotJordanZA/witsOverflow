@@ -1,10 +1,6 @@
 // QuestionsPage.js
 import styled from 'styled-components'
 import QuestionRow from '../components/QuestionRow';
-// import QuestionRow2 from '../components/QuestionRow2';
-// import QuestionRow3 from '../components/QuestionRow3';
-// import QuestionRow4 from '../components/QuestionRow4';
-// import QuestionRow5 from '../components/QuestionRow5';
 import StyledButton from '../components/styledButton';
 import {Question} from '../components/Question';
 import {Link, useNavigate} from "react-router-dom";
@@ -22,7 +18,6 @@ const HeaderRow = styled.div`
     padding: 10px 20px;
 `;
 
-
 //dummy data to use to populate questions page. Stored as an array to ensure conciseness
 let questionIDs = [0, 1, 2, 3];
 let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent", "How to solve a homogeneuos linear differential equation"];
@@ -36,9 +31,6 @@ let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m
 
 function QuestionsPage(){
     let navigate = useNavigate();
-
-    const question1 = new Question(questionIDs[0], questionTitles[0], questionTexts[0], voteCounts[0], answerCounts[0], viewCounts[0], timesAsked[0], firstNames[0], postTags[0]);
-    //console.log(question1.questionID);\
 
     const questionComponents = [];
     for (let i = 0; i < questionIDs.length; i++)
