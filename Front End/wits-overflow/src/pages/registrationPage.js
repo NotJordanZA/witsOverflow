@@ -13,11 +13,11 @@ const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails al
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 // Check that the text is one or more Regex words.
-const TEXT_REGEX = /^(\w+)$/;
+const TEXT_REGEX = /^\w+([ -]+\w+)*$/;
 // Check that the pronouns are in 'word/word' format.
 const PRONOUNS_REGEX = /^(\w+)\/(\w+)$/;
 // Check that the bio contains words, numbers and only the special characters ',', '.' and '-' and that it is between 1 and 64 characters.
-const BIO_REGEX = /^[a-zA-Z0-9,.-]{1,280}$/;
+const BIO_REGEX = /^[a-zA-Z0-9,.-\s!]{1,280}$/;
 
 const Container = styled.div`
     padding: 15px 0;
@@ -316,7 +316,7 @@ const Register = () => {
                     <FontAwesomeIcon icon={faInfoCircle} />
                     Please enter your bio. <br />
                     Must be 1-280 characters. <br />
-                    Special characters allowed: .,-
+                    Special characters allowed: .,-!
                 </p>
 
                 <label htmlFor="password">
@@ -390,9 +390,7 @@ const Register = () => {
                 </span>
             </p>
         </Container>
-        // Ruben, you need to fix the hiding of the icons and info text.
-        // I don't know how you will do this, but use your future knowledge.
-        // Try get better at googling or sumn idk.
+        // This comment is so that I can try push again...
     )
 }
 
