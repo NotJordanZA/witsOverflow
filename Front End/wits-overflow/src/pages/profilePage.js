@@ -83,7 +83,7 @@ function Profile(){
     }
     return(
         <main>
-            {UserData.map((item) => {
+            {/* {UserData.map((item) => {
                 return(
                     <Container>
                         <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
@@ -94,8 +94,15 @@ function Profile(){
                         <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
                     </Container>
                 )
-            })}
-            
+            })} */}
+            <Container>
+            <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
+            <Name>{UserData.Name}</Name>
+            <Pronouns>{UserData.Pronouns}</Pronouns>
+            <Qualifications>{UserData.Qualifications}</Qualifications>
+            <Bio>{UserData.Bio}</Bio>
+            <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
+            </Container>
             <PassRow>
                     <h1> </h1>
                     <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>

@@ -7,6 +7,8 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import AuthContext from "../context/AuthProvider";
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
+import { UserData } from "../context/userData";
+import { getDoc } from "firebase/firestore";
 
 const Container = styled.div`
     padding: 200px 0;
@@ -57,6 +59,20 @@ const LoginPage = () => {
     const [pass, setPass] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
+    //for fetching all user info
+    const [userInfoList, setUserInfoList] = useState([]);
+    const getUserInfoList = async () => {
+        try {
+            const data = await getDoc(email);
+            const filteredData = data.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setUserInfoList(filteredData);
+        } catch (error) {
+            console.error(error)
+        }
+    };            
+
     //writes submitted email and password to console, redirects to questions page on successful login
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
@@ -67,7 +83,15 @@ const LoginPage = () => {
         //add comparison between submitted email and password and stored password;
 
         if(getAuth().currentUser!=null){
-
+            getUserInfoList();
+            //passes user info to userData class
+            {<UserData 
+                userEmail = {email}
+                name = {userInfoList.name}
+                pronouns = {userInfoList.pronouns}
+                qualifications = {userInfoList.qualifications}
+                bio = {userInfoList.bio}/>}
+            
             navigate("/questionsPage");
         }
         setEmail('');

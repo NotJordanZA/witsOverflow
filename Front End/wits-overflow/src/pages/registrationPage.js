@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
+import {collection, doc, setDoc } from "firebase/firestore";
+import { db } from '../firebase-config/firebase';
+import UserData from "../context/userData";
+
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
 //const USER_REGEX = /^[a-zA-Z0-9_.+-]{1,64}+@(students\.)?wits\.ac\.za$/; //Not functional yet.
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails allowed.
@@ -13,11 +17,11 @@ const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails al
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 // Check that the text is one or more Regex words.
-const TEXT_REGEX = /^(\w+)$/;
+const TEXT_REGEX = /^\w+([ -]+\w+)*$/;
 // Check that the pronouns are in 'word/word' format.
 const PRONOUNS_REGEX = /^(\w+)\/(\w+)$/;
 // Check that the bio contains words, numbers and only the special characters ',', '.' and '-' and that it is between 1 and 64 characters.
-const BIO_REGEX = /^[a-zA-Z0-9,.-]{1,280}$/;
+const BIO_REGEX = /^[a-zA-Z0-9,.-\s!]{1,280}$/;
 
 const Container = styled.div`
     padding: 15px 0;
@@ -156,6 +160,8 @@ const Register = () => {
         setErrMsg('');
     }, [user, pwd, matchPwd, fullName, pronouns, qualifications, bio])
 
+    const userCollectionRef = collection(db, "users")
+
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -173,6 +179,24 @@ const Register = () => {
         } // End of precaution.
         console.log(user, pwd, fullName, pronouns, qualifications);
         await createUserWithEmailAndPassword(getAuth(),user,pwd);
+
+        const userDocRef = doc(db, "users", user);
+        const data = {
+            email: user,
+            name: fullName,
+            pronouns: pronouns,
+            qualifications: qualifications,
+            bio: bio
+        };
+
+        await setDoc(userDocRef, data);
+
+        {<UserData 
+            userEmail = {user}
+            name = {fullName}
+            pronouns = {pronouns}
+            qualifications = {qualifications}
+            bio = {bio}/>}
         navigate("/questionsPage");
         setSuccess(true);
     }
