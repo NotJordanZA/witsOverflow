@@ -340,7 +340,7 @@ const Register = () => {
                     <FontAwesomeIcon icon={faInfoCircle} />
                     Please enter your bio. <br />
                     Must be 1-280 characters. <br />
-                    Special characters allowed: .,-
+                    Special characters allowed: .,-!
                 </p>
 
                 <label htmlFor="password">
@@ -414,9 +414,7 @@ const Register = () => {
                 </span>
             </p>
         </Container>
-        // Ruben, you need to fix the hiding of the icons and info text.
-        // I don't know how you will do this, but use your future knowledge.
-        // Try get better at googling or sumn idk.
+        // This comment is so that I can try push again...
     )
 }
 
