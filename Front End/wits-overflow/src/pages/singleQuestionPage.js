@@ -86,9 +86,6 @@ export default function SingleQuestionPage() {
         }
     }
 
-    //console.log(allAnswerComments[0]);
-    //console.log(allAnswerComments[0].getCommentID());
-
     const answerIDs = [1, 2, 3];
     const userEmails = ["troy@wits.ac.za", "jordan@wits.ac.za", "dumisani@wits.ac.za"];
     const firstNames = ["Troy", "Jordan", "Dumisani"];
@@ -116,7 +113,6 @@ export default function SingleQuestionPage() {
         const answer = new Answer(answerID, userEmail, firstName, answerText, votes, comments);
         allAnswers.push(answer);
     }
-    //console.log(allAnswers[0]);
 
     //create components
     const answerAreaComponents = [];
@@ -144,16 +140,7 @@ export default function SingleQuestionPage() {
         console.log(answer);
     }
 
-    //dummy question data
-    // let questionID1 = question.getQuestionID();
-    // let questionTitle1 = question.getQuestionTitle();
-    // let questionText1 = question.getQuestionText();
-    // let votes1 = question.getVotes();
-    // let answerCount1 = question.getAnswerCount();
-    // let viewCount1 = question.getViewCount();
-    // let timeAsked1 = question.getTimeAsked();
-    // let firstName1 = question.getFirstName();
-    // let tags = question.getTags();
+    //question data passed from questionsPage
     let questionID1 = question.questionID;
     let questionTitle1 = question.questionTitle;
     let questionText1 = question.questionText;
@@ -163,15 +150,6 @@ export default function SingleQuestionPage() {
     let timeAsked1 = question.timeAsked;
     let firstName1 = question.firstName;
     let tags = question.tags;
-    // let questionID1 = question.getQuestionID();
-    // let questionTitle1 = "Solve for x : 2x - 3 = x";
-    // let questionText1 = "Do as the title suggests. I'm really struggling with this one.";
-    // let votes1 = 4;
-    // let answerCount1 = allAnswers.length;
-    // let viewCount1 = 5;
-    // let timeAsked1 = "1 hr ago";
-    // let firstName1 = "Troy";
-    // let tags1 = ["a", "b"];
 
     return(
         <main>
