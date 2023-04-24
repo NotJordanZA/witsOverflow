@@ -1,8 +1,7 @@
-// QuestionRow.js
-//element of the question page
 import styled from "styled-components";
-import {Question} from './Question';
+import {Question} from '../components/Question';
 import {Link, useNavigate} from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
 
 
 const QuestionStat = styled.div`
@@ -66,24 +65,10 @@ const UserLink = styled.a`
     color: #475be8;
 `;
 
-//{questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}
+
 //function QuestionRow({Question : question}){  
 function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}){  
-    //data passed from props
     let navigate = useNavigate();
-    //console.log("Creating question row"); 
-
-    // let questionID1 = question.questionID;
-    // let questionTitle1 = question.questionTitle;
-    // let questionText1 = question.questionText;
-    // let votes1 = question.votes;
-    // let answerCount1 = question.answerCount;
-    // let viewCount1 = question.viewCount;
-    // let timeAsked1 = question.timeAsked;
-    // let firstName1 = question.firstName;
-    // let tags1 = question.tags;
-    // let comments1 = question.comments;
-    // let answers1 = question.answers;
 
     let questionID1 = questionID;
     let questionTitle1 = questionTitle;
@@ -94,8 +79,10 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let timeAsked1 = timeAsked;
     let firstName1 = firstName;
     let tags1 = tags;
+
+    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1);
     
-    //console.log("Question " + questionID1 + " Number of tags: " + tags1.length);
+    //add variable number of tags
     const tagComponents = [];
     for (let i = 0; i < tags1.length; i++)
     {
@@ -103,11 +90,14 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             <Tag>{tags1[i]}</Tag>
         );
     }
-
-    const routeChangeToSingleQuestion = () => {
+    
+    //takes user to the singleQuestion page of the question this questionRow is displaying
+    function routeChangeToSingleQuestion(question) {
         let path = '/question';
-        console.log("Clicked on question");
-        navigate(path);
+        console.log("Clicked question");
+        console.log(question);
+        navigate(path, {state : question});
+
     }
 
     return (
@@ -116,7 +106,9 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
             <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
             <QuestionTitleArea>
-                <QuestionLink onClick = {routeChangeToSingleQuestion}> {questionTitle1} </QuestionLink>
+
+                <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
+
                 <WhoAndWhen>
                     Asked {timeAsked1} by <UserLink> {firstName1} </UserLink>
                 </WhoAndWhen>

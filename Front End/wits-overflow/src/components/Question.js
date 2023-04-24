@@ -16,6 +16,53 @@ export class Question {
         this.answers = [];
     }
 
+    //java-style getters
+    getQuestionID()
+    {
+        return this._questionID;
+    }
+    getQuestionTitle()
+    {
+        return this._questionTitle;
+    }
+    getQuestionText()
+    {
+        return this._questionText;
+    }
+    getVotes()
+    {
+        return this._votes;
+    }
+    getAnswerCount()
+    {
+        return this._answerCount;
+    }
+    getViewCount()
+    {
+        return this._viewCount;
+    }
+    getTimeAsked()
+    {
+        return this._timeAsked;
+    }
+    getFirstName()
+    {
+        return this._firstName;
+    }
+    getTags()
+    {
+        return this._tags;
+    }
+    getComments()
+    {
+        return this._comments;
+    }
+    getAnswers()
+    {
+        return this._answers;
+    }
+
+    //OTHERS  
 
     addComment(comment)
     {
@@ -25,4 +72,5 @@ export class Question {
     {
         this.answers.push(answer);
     }
+
 }

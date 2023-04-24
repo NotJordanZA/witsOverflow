@@ -23,6 +23,7 @@ const HeaderRow = styled.div`
 `;
 
 //dummy data to use to populate questions page. Stored as an array to ensure conciseness
+
 // let questionIDs = [0, 1, 2, 3];
 // let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent", "How to solve a homogeneuos linear differential equation"];
 // let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3", "Howdy partner 4"];
@@ -74,7 +75,6 @@ function QuestionsPage(){
             />
         )
     ))}
-
 
     //in future, we use firebase to populate each of these arrays
     
