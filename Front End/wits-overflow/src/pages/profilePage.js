@@ -94,10 +94,9 @@ function Profile(){
     const getUserInfoList = async () => {
         try {
             const data = await getDoc(userDocRef);
-            const filteredData = data.docs.map((doc) => ({
-                ...doc.data(),
-            }));
+            const filteredData = data.data();
             setUserInfoList(filteredData);
+            console.log(userInfoList);
         } catch (error) {
             console.error(error)
         }
@@ -130,11 +129,11 @@ function Profile(){
             })} */}
             <Container>
             <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-            <Name>{UserData.name}</Name>
-            {console.log(email,UserData.name)}
-            <Pronouns>{UserData.Pronouns}</Pronouns>
-            <Qualifications>{UserData.Qualifications}</Qualifications>
-            <Bio>{UserData.Bio}</Bio>
+            <Name>{userInfoList.name}</Name>
+            {/*console.log(email,userInfoList.name)*/}
+            <Pronouns>{userInfoList.pronouns}</Pronouns>
+            <Qualifications>{userInfoList.qualifications}</Qualifications>
+            <Bio>{userInfoList.bio}</Bio>
             <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
             </Container>
             <PassRow>
