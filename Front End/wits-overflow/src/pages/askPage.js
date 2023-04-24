@@ -2,6 +2,9 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
+import {collection, addDoc } from "firebase/firestore";
+import { db } from '../firebase-config/firebase';
+
 
 const Container = styled.div`
     padding: 25px 150px;
@@ -71,6 +74,8 @@ const StyledForm = styled.form`
 
 export default function AskPage() {
 
+    const questionCollectionRef = collection(db, "questions")
+    
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -78,6 +83,14 @@ export default function AskPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        await addDoc(questionCollectionRef, {
+            title: title,
+            questionBody: body,
+            votes: 0,
+            answerCount: 0,
+            views: 0,
+            name: "name",
+        })
         console.log(title, body);
         navigate("/question");
     }

@@ -7,6 +7,8 @@ import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import AuthContext from "../context/AuthProvider";
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
+import { UserData } from "../context/userData";
+import { getDoc } from "firebase/firestore";
 
 const Container = styled.div`
     padding: 200px 0;
@@ -55,7 +57,7 @@ const LoginPage = () => {
     
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState('');           
 
     //writes submitted email and password to console, redirects to questions page on successful login
     const navigate = useNavigate();
@@ -67,7 +69,7 @@ const LoginPage = () => {
         //add comparison between submitted email and password and stored password;
 
         if(getAuth().currentUser!=null){
-
+            
             navigate("/questionsPage");
         }
         setEmail('');

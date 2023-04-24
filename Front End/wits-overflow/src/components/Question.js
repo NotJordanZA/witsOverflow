@@ -63,6 +63,7 @@ export class Question {
     }
 
     //OTHERS  
+
     addComment(comment)
     {
         this.comments.push(comment);
@@ -71,4 +72,5 @@ export class Question {
     {
         this.answers.push(answer);
     }
+
 }

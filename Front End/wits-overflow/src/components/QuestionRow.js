@@ -65,6 +65,7 @@ const UserLink = styled.a`
     color: #475be8;
 `;
 
+
 //function QuestionRow({Question : question}){  
 function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}){  
     let navigate = useNavigate();
@@ -89,13 +90,14 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             <Tag>{tags1[i]}</Tag>
         );
     }
-
+    
     //takes user to the singleQuestion page of the question this questionRow is displaying
     function routeChangeToSingleQuestion(question) {
         let path = '/question';
         console.log("Clicked question");
         console.log(question);
         navigate(path, {state : question});
+
     }
 
     return (
@@ -104,7 +106,9 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
             <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
             <QuestionTitleArea>
+
                 <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
+
                 <WhoAndWhen>
                     Asked {timeAsked1} by <UserLink> {firstName1} </UserLink>
                 </WhoAndWhen>

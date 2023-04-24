@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
+import {collection, doc, setDoc } from "firebase/firestore";
+import { db } from '../firebase-config/firebase';
+import UserData from "../context/userData";
+
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
 //const USER_REGEX = /^[a-zA-Z0-9_.+-]{1,64}+@(students\.)?wits\.ac\.za$/; //Not functional yet.
 const USER_REGEX = /^[\w-\.]+@([\w-]+\.)?(wits\.ac\.za)$/; //Only Wits emails allowed.
@@ -156,6 +160,8 @@ const Register = () => {
         setErrMsg('');
     }, [user, pwd, matchPwd, fullName, pronouns, qualifications, bio])
 
+    const userCollectionRef = collection(db, "users")
+
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -173,6 +179,18 @@ const Register = () => {
         } // End of precaution.
         console.log(user, pwd, fullName, pronouns, qualifications);
         await createUserWithEmailAndPassword(getAuth(),user,pwd);
+
+        const userDocRef = doc(db, "users", user);
+        const data = {
+            email: user,
+            name: fullName,
+            pronouns: pronouns,
+            qualifications: qualifications,
+            bio: bio
+        };
+
+        await setDoc(userDocRef, data);
+
         navigate("/questionsPage");
         setSuccess(true);
     }
