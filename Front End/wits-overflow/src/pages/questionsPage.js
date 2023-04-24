@@ -32,6 +32,7 @@ let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m
 function QuestionsPage(){
     let navigate = useNavigate();
 
+    //possibly change question row to take a Question object instead of all of the seperate fields
     const questionComponents = [];
     for (let i = 0; i < questionIDs.length; i++)
     {
@@ -50,14 +51,10 @@ function QuestionsPage(){
         );
         const question = new Question(questionIDs[i], questionTitles[i], questionTexts[i], voteCounts[i], answerCounts[i], viewCounts[i], timesAsked[i], firstNames[i], postTags[i]);
         console.log(question);
-        // questionComponents.push(
-        //     <QuestionRow
-        //         {...question}
-        //     />
-        // );
     }
 
     //in future, we use firebase to populate each of these arrays
+    
     const routeChangeToAskQuestion = () => {
         let path= '/askPage';
         navigate(path);

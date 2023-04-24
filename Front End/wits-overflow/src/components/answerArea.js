@@ -38,7 +38,8 @@ const BodyText = styled.textarea`
 `;
 
 function AnswerArea({answerText, votes, comments1}) {
-    console.log(answerText);
+    //console.log(answerText);
+    //returns a formatted answer to a question
     return (
         <div>
             <AnswerAreaComponent>

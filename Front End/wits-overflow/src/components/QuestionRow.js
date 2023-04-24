@@ -81,6 +81,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
 
     const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1);
     
+    //add variable number of tags
     const tagComponents = [];
     for (let i = 0; i < tags1.length; i++)
     {
@@ -89,6 +90,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
         );
     }
 
+    //takes user to the singleQuestion page of the question this questionRow is displaying
     function routeChangeToSingleQuestion(question) {
         let path = '/question';
         console.log("Clicked question");

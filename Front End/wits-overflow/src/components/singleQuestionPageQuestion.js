@@ -68,8 +68,7 @@ const VoteNumber = styled.p`
 `;
 
 function SingleQuestionPageQuestion({questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments}) {
-
-
+    //just a container that contains all of the question data displayed on the single question page
     return (
         <div>
             <TitleArea>

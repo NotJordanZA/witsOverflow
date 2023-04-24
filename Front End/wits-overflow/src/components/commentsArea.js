@@ -39,7 +39,7 @@ function CommentsArea({comments}) {
         }
     }
 
-    //create variable number of comment components
+    //create variable number of comment components using the inputted String[] array of comment texts
     const commentsComponents = [];
     for (let i = 0; i < comments.length; i++)
     {
@@ -48,6 +48,7 @@ function CommentsArea({comments}) {
         );
     }
 
+    //displays all Comment components
     return (
         <CommentsAreaContainer>
             <StyledForm onSubmit={handleCommentSubmit}>

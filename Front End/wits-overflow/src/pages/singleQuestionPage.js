@@ -48,10 +48,8 @@ const UserAnswerTextArea = styled.textarea`
 export default function SingleQuestionPage() {
     const [answer, setAnswer] = useState('');
 
+    //receive data from previous page. Stores as a generic object, not as a Question object. Needs to be accessed using <Question>.<property>
     const location = useLocation();
-    //console.log(location.state);
-
-    //const question1 = question;
     const question = location.state;
     console.log(question);
 
@@ -61,6 +59,7 @@ export default function SingleQuestionPage() {
     const allAnswers = [];
     const commentsForQuestion = [];
 
+    //dummy comments data
     const commentIDs = [0, 1, 2, 3, 4];
     const commentAnswerIDs = [0, 0, 1, 3, 3];
     const commentTexts = ["Good question!", "Interesting question!", "WRONG!!!", "Wow what a great answer!", "Correct."];
@@ -75,7 +74,7 @@ export default function SingleQuestionPage() {
         let isDeleted = deletionTracker[i];
         let userEmail = commentUserEmails[i];
         const comment = new CommentText(commentID, commentAnswerID, commentText, isDeleted, userEmail);
-        if (comment.answerID !== 0)
+        if (comment.answerID !== 0) //if the comment is for an answer
         {
             allAnswerComments.push(comment);
         }
@@ -86,6 +85,7 @@ export default function SingleQuestionPage() {
         }
     }
 
+    //dummy answer data
     const answerIDs = [1, 2, 3];
     const userEmails = ["troy@wits.ac.za", "jordan@wits.ac.za", "dumisani@wits.ac.za"];
     const firstNames = ["Troy", "Jordan", "Dumisani"];
