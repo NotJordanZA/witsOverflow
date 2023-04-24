@@ -91,7 +91,7 @@ const LoginPage = () => {
                 pronouns = {userInfoList.pronouns}
                 qualifications = {userInfoList.qualifications}
                 bio = {userInfoList.bio}/>}
-            
+            console.log(userInfoList.name)
             navigate("/questionsPage");
         }
         setEmail('');

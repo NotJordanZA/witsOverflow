@@ -2,8 +2,11 @@
 import styled from "styled-components";
 import Avatar from "../avatar.svg"
 import {useNavigate} from "react-router-dom";
-import UserData from "../context/userData";
+//import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
+import React, { useState } from "react";
+import { getDoc , doc} from "firebase/firestore";
+import { db } from '../firebase-config/firebase';
 
 const Container = styled.div`
     padding: 50px 0;
@@ -81,6 +84,35 @@ function Profile(){
         });
         navigate(path);
     }
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const email = user.email;
+    console.log(email);
+    const userDocRef = doc(db, "users", email);
+    // For fetching all user info
+    const [userInfoList, setUserInfoList] = useState([]);
+    const getUserInfoList = async () => {
+        try {
+            const data = await getDoc(userDocRef);
+            const filteredData = data.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setUserInfoList(filteredData);
+        } catch (error) {
+            console.error(error)
+        }
+    };
+
+    getUserInfoList();
+    const UserData = [
+    {
+        email: email,
+        name: userInfoList.name,
+        bio: userInfoList.bio,
+        pronouns: userInfoList.pronouns,
+        qualifications: userInfoList.qualifications,
+    }
+    ];
     return(
         <main>
             {/* {UserData.map((item) => {
@@ -88,6 +120,7 @@ function Profile(){
                     <Container>
                         <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
                         <Name>{item.name}</Name>
+                        {console.log(item.name)}
                         <Pronouns>{item.pronouns}</Pronouns>
                         <Qualifications>{item.qualifications}</Qualifications>
                         <Bio>{item.bio}</Bio>
@@ -97,7 +130,8 @@ function Profile(){
             })} */}
             <Container>
             <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-            <Name>{UserData.Name}</Name>
+            <Name>{UserData.name}</Name>
+            {console.log(email,UserData.name)}
             <Pronouns>{UserData.Pronouns}</Pronouns>
             <Qualifications>{UserData.Qualifications}</Qualifications>
             <Bio>{UserData.Bio}</Bio>

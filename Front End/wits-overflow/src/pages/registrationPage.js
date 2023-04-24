@@ -400,7 +400,7 @@ const Register = () => {
                     Must match the first password input.
                 </p>
 
-            <StyledButton disabled={!validName || !validPwd || !validMatch || !validFullName || !validPronouns || !validQualifications || !validBio || getAuth().currentUser==null? true : false}>
+            <StyledButton disabled={!validName || !validPwd || !validMatch || !validFullName || !validPronouns || !validQualifications || !validBio || getAuth().currentUser==null? true : false} type = 'submit'>
                 Sign Up
             </StyledButton>
 
