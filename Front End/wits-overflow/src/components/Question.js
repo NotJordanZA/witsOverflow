@@ -16,7 +16,7 @@ export class Question {
         this.answers = [];
     }
 
-    //GETTERS
+    //java-style getters
     getQuestionID()
     {
         return this._questionID;

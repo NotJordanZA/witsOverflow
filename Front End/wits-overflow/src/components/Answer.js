@@ -10,6 +10,7 @@ export class Answer {
     }
 
     
+    //java-style getters because javascript style is a pain to work with
     getAnswerID()
     {
         return this.commentID;
@@ -39,58 +40,6 @@ export class Answer {
         return this.comments[index];
     }
 
-
-    // //GETTERS
-    // get answerID()
-    // {
-    //     return this._answerID;
-    // }
-    // get userEmail()
-    // {
-    //     return this._userEmail;
-    // }
-    // get firstName()
-    // {
-    //     return this._firstName;
-    // }
-    // get answerText()
-    // {
-    //     return this._answerText;
-    // }
-    // get votes()
-    // {
-    //     return this._votes;
-    // }
-    // get comments()
-    // {
-    //     return this._comments();
-    // }
-
-    // //SETTERS
-    // set answerID(answerID)
-    // {
-    //     this._answerID = answerID;
-    // }
-    // set userEmail(userEmail)
-    // {
-    //     this._userEmail = userEmail;
-    // }
-    // set firstName(firstName)
-    // {
-    //     this._firstName = firstName;
-    // }
-    // set answerText(answerText)
-    // {
-    //     this._answerText = answerText;
-    // }
-    // set votes(votes)
-    // {
-    //     this._votes = votes;
-    // }
-    // set comments(comments)
-    // {
-    //     this._comments = comments;
-    // }
 
     //OTHERS
     addComment(comment)
