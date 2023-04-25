@@ -92,7 +92,7 @@ export default function AskPage() {
             name: "name",
         })
         console.log(title, body);
-        navigate("/question");
+        navigate("/questionsPage");
     }
 
     return (
