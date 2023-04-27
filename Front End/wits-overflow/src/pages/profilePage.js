@@ -85,6 +85,7 @@ function Profile(){
         navigate(path);
     }
     const auth = getAuth();
+    console.log(auth);
     const user = auth.currentUser;
     const email = user.email;
     console.log(email);
