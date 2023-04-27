@@ -5,8 +5,9 @@ import {Answer} from '../components/Answer';
 import {Comment as CommentText} from '../components/Comment';
 import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
-import { getDoc , doc} from "firebase/firestore";
+import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
+import { getDocs, collection, addDoc } from 'firebase/firestore';
 
 
 const Title = styled.header`
@@ -55,6 +56,16 @@ export default function SingleQuestionPage() {
     const question = location.state;
     console.log(question);
 
+    let questionID1 = question.questionID;
+    let questionTitle1 = question.questionTitle;
+    let questionText1 = question.questionText;
+    let votes1 = question.votes;
+    let answerCount1 = question.answerCount;
+    let viewCount1 = question.viewCount;
+    let timeAsked1 = question.timeAsked;
+    let firstName1 = question.firstName;
+    let tags = question.tags;
+
     //containers to temporarily hold the data
     const allAnswerComments = [];
     const allQuestionComments = [];
@@ -67,6 +78,30 @@ export default function SingleQuestionPage() {
     const commentTexts = ["Good question!", "Interesting question!", "WRONG!!!", "Wow what a great answer!", "Correct."];
     const deletionTracker = [false, false, false, false, false];
     const commentUserEmails = ["ndivhuwo@wits.ac.za", "jordan@wits.ac.za", "ruben@wits.ac.za", "dumisani@wits.ac.za", "troy@wits.ac.za"];
+
+    const [questionCommentList, setQuestionCommentList] = useState([]);
+    const questionCommentCollectionRef = collection(db, "questions" , questionID1, "Comments")
+
+    useEffect(() => {
+        const getQuestionCommentList = async () => {
+            try {
+                const data = await getDocs(questionCommentCollectionRef);
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setQuestionCommentList(filteredData);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+        getQuestionCommentList();
+    }, []);
+
+    {questionCommentList.map((qComment) => (
+        commentsForQuestion.push(qComment.comment)
+    ))}
+
     //create comments using hardcoded data
     for (let i = 0; i < commentIDs.length; i++)
     {
@@ -83,9 +118,42 @@ export default function SingleQuestionPage() {
         else
         {
             allQuestionComments.push(comment);
-            commentsForQuestion.push(commentText);
+            //commentsForQuestion.push(commentText);
         }
     }
+
+
+    const [answerList, setAnswerList] = useState([]);
+    const answerCollectionRef = collection(db, "questions" , questionID1, "Answers")
+    const answerAreaComponents = [];
+
+    useEffect(() => {
+        const getAnswerList = async () => {
+            try {
+                const data = await getDocs(answerCollectionRef);
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setAnswerList(filteredData);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+        getAnswerList();
+    }, []);
+
+    {answerList.map((dbAnswer) => (
+        
+        answerAreaComponents.push(
+            <AnswerArea
+                questionID = {questionID1}
+                answerID={dbAnswer.id}
+                answerText = {dbAnswer.answer}
+                votes = {dbAnswer.votes}
+            />
+        )
+    ))}
 
     //dummy answer data
     const answerIDs = [1, 2, 3];
@@ -117,44 +185,40 @@ export default function SingleQuestionPage() {
     }
 
     //create components
-    const answerAreaComponents = [];
-    for (let i = 0; i < allAnswers.length; i++)
-    {
-        let answerText1 = allAnswers[i].getAnswerText();
-        let votes1 = allAnswers[i].getVotes();
-        const commentTexts = [];
-        for (let j = 0; j < allAnswers[i].getComments().length; j++)
-        {
-            let commentText = allAnswers[i].getComment(j).getCommentText();
-            commentTexts.push(commentText);
-        }
-        answerAreaComponents.push(
-            <AnswerArea
-                answerText = {answerText1}
-                votes = {votes1}
-                comments1 = {commentTexts}
-            />
-        );
-    }
+    //const answerAreaComponents = [];
+    // for (let i = 0; i < allAnswers.length; i++)
+    // {
+    //     let answerText1 = allAnswers[i].getAnswerText();
+    //     let votes1 = allAnswers[i].getVotes();
+    //     const commentTexts = [];
+    //     for (let j = 0; j < allAnswers[i].getComments().length; j++)
+    //     {
+    //         let commentText = allAnswers[i].getComment(j).getCommentText();
+    //         commentTexts.push(commentText);
+    //     }
+    //     answerAreaComponents.push(
+    //         <AnswerArea
+    //             answerText = {answerText1}
+    //             votes = {votes1}
+    //             comments1 = {commentTexts}
+    //         />
+    //     );
+    // }
 
     const handleAnswerSubmit = async (e) => {
         e.preventDefault();
+        await addDoc(answerCollectionRef, {
+            answer: answer,
+            votes: 0,
+            name: "name",
+        })
         console.log(answer);
     }
-
-    let questionID1 = question.questionID;
-    let questionTitle1 = question.questionTitle;
-    let questionText1 = question.questionText;
-    let votes1 = question.votes;
-    let answerCount1 = question.answerCount;
-    let viewCount1 = question.viewCount;
-    let timeAsked1 = question.timeAsked;
-    let firstName1 = question.firstName;
-    let tags = question.tags;
 
     return(
         <main>
             <SingleQuestionPageQuestion
+                questionID = {questionID1}
                 questionTitle = {questionTitle1}
                 questionText = {questionText1}
                 votes = {votes1}

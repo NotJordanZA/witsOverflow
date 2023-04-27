@@ -1,7 +1,7 @@
 //profile page
 import styled from "styled-components";
 import Avatar from "../avatar.svg"
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 //import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState } from "react";
@@ -84,10 +84,8 @@ function Profile(){
         });
         navigate(path);
     }
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const email = user.email;
-    console.log(email);
+    const location = useLocation();
+    const email = location.state;
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);
@@ -114,19 +112,6 @@ function Profile(){
     ];
     return(
         <main>
-            {/* {UserData.map((item) => {
-                return(
-                    <Container>
-                        <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-                        <Name>{item.name}</Name>
-                        {console.log(item.name)}
-                        <Pronouns>{item.pronouns}</Pronouns>
-                        <Qualifications>{item.qualifications}</Qualifications>
-                        <Bio>{item.bio}</Bio>
-                        <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
-                    </Container>
-                )
-            })} */}
             <Container>
             <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
             <Name>{userInfoList.name}</Name>

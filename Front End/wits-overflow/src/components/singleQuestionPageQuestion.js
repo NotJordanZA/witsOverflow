@@ -2,6 +2,9 @@ import styled from "styled-components";
 import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
 import CommentsArea from '../components/commentsArea';
+import { useState } from "react";
+import { db } from '../firebase-config/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const Container = styled.div`
     padding: 25px 150px;
@@ -74,7 +77,56 @@ const VoteNumber = styled.p`
     font-size: 1.1rem;
 `;
 
-function SingleQuestionPageQuestion({questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments}) {
+const CommentsAreaContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+`;
+const Comment = styled.text`
+    border: 0;
+    font-size: 0.85rem;
+    padding: 5px 0 0 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+`;
+const AddComment = styled.input`
+    border: 0;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    //padding: 5px 0 0 0;
+`;
+const StyledForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    width:100%;
+`;
+
+const HiddenButton = styled.button`
+    display: none;
+`;
+
+function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments}) {
+    const commentsComponents = [];
+    for (let i = 0; i < comments.length; i++)
+    {
+        commentsComponents.push(
+            <Comment>{comments[i]}</Comment>
+        );
+    }
+
+    const [comment, setComment] = useState(''); 
+    //const commentCollectionRef = collection(db, path);
+    //event handlers
+    const commentCollectionRef = collection(db, "questions" , questionID, "Comments")
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault();
+        console.log(comment);
+        console.log();
+        await addDoc(commentCollectionRef, {
+            comment: comment,
+            name: "name",
+        })
+        console.log(comment);
+    }
     //just a container that contains all of the question data displayed on the single question page
     return (
         <Container>
@@ -95,7 +147,17 @@ function SingleQuestionPageQuestion({questionTitle, questionText, votes, viewCou
                     <BodyText readOnly>
                         {questionText}
                     </BodyText>
-                    <CommentsArea comments = {comments}/>
+                    <CommentsAreaContainer>
+                    <StyledForm onSubmit={handleCommentSubmit}>
+                        {commentsComponents}
+                        <AddComment
+                        placeholder="Add comment..."
+                        value = {comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        />
+                        <HiddenButton type= "submit"></HiddenButton>
+                    </StyledForm>
+                </CommentsAreaContainer>
                 </QuestionBodyArea>
             </QuestionArea>
         </Container>
