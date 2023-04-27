@@ -5,6 +5,8 @@ import {Answer} from '../components/Answer';
 import {Comment as CommentText} from '../components/Comment';
 import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
+import { getDoc , doc} from "firebase/firestore";
+import { db } from '../firebase-config/firebase';
 
 
 const Title = styled.header`
@@ -28,7 +30,7 @@ const UserAnswerArea = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 10px
+    padding: 25px 150px;
 `;
 const UserAnswerTextArea = styled.textarea`
     display: flex;
@@ -140,7 +142,6 @@ export default function SingleQuestionPage() {
         console.log(answer);
     }
 
-    //question data passed from questionsPage
     let questionID1 = question.questionID;
     let questionTitle1 = question.questionTitle;
     let questionText1 = question.questionText;

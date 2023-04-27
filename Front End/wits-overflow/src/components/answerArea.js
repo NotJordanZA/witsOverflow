@@ -4,6 +4,13 @@ import CommentsArea from '../components/commentsArea';
 import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
 
+const Container = styled.div`
+    padding: 25px 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`;
+
 const AnswerAreaComponent = styled.div`
     display: flex;
     flex-direction: row;
@@ -41,7 +48,7 @@ function AnswerArea({answerText, votes, comments1}) {
     //console.log(answerText);
     //returns a formatted answer to a question
     return (
-        <div>
+        <Container>
             <AnswerAreaComponent>
                 <VotesArea>
                     <a><img style = {{ width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = ""/></a>
@@ -57,7 +64,7 @@ function AnswerArea({answerText, votes, comments1}) {
                     />
                 </AnswerBodyArea>
             </AnswerAreaComponent>
-        </div>
+        </Container>
     )
 }
 

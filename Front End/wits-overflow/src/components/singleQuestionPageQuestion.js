@@ -3,6 +3,13 @@ import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
 import CommentsArea from '../components/commentsArea';
 
+const Container = styled.div`
+    padding: 25px 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`;
+
 const QuestionArea = styled.div`
     display: flex;
     flex-direction: row;
@@ -70,7 +77,7 @@ const VoteNumber = styled.p`
 function SingleQuestionPageQuestion({questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments}) {
     //just a container that contains all of the question data displayed on the single question page
     return (
-        <div>
+        <Container>
             <TitleArea>
                 <Title><b>{questionTitle}</b></Title>
                 <QuestionStatArea>
@@ -91,7 +98,7 @@ function SingleQuestionPageQuestion({questionTitle, questionText, votes, viewCou
                     <CommentsArea comments = {comments}/>
                 </QuestionBodyArea>
             </QuestionArea>
-        </div>
+        </Container>
 
     )
 }
