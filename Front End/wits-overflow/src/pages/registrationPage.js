@@ -191,12 +191,6 @@ const Register = () => {
 
         await setDoc(userDocRef, data);
 
-        {<UserData 
-            userEmail = {user}
-            name = {fullName}
-            pronouns = {pronouns}
-            qualifications = {qualifications}
-            bio = {bio}/>}
         navigate("/questionsPage");
         setSuccess(true);
     }
@@ -400,7 +394,7 @@ const Register = () => {
                     Must match the first password input.
                 </p>
 
-            <StyledButton disabled={!validName || !validPwd || !validMatch || !validFullName || !validPronouns || !validQualifications || !validBio || getAuth().currentUser==null? true : false} type = 'submit'>
+            <StyledButton disabled={!validName || !validPwd || !validMatch || !validFullName || !validPronouns || !validQualifications || !validBio || getAuth().currentUser==null? true : false}>
                 Sign Up
             </StyledButton>
 
