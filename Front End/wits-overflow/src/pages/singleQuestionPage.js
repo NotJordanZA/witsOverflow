@@ -7,7 +7,7 @@ import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
 import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
-import { getDocs, collection, addDoc } from 'firebase/firestore';
+import { doc, getDocs, collection, addDoc, updateDoc} from 'firebase/firestore';
 
 
 const Title = styled.header`
@@ -81,6 +81,7 @@ export default function SingleQuestionPage() {
 
     const [questionCommentList, setQuestionCommentList] = useState([]);
     const questionCommentCollectionRef = collection(db, "questions" , questionID1, "Comments")
+    const questionDocRef = doc(db, "questions", questionID1)
 
     useEffect(() => {
         const getQuestionCommentList = async () => {
@@ -212,6 +213,9 @@ export default function SingleQuestionPage() {
             votes: 0,
             name: "name",
         })
+        await updateDoc(questionDocRef, {
+            answerCount: answerCount1+1
+          });
         console.log(answer);
     }
 
