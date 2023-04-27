@@ -1,17 +1,13 @@
 // QuestionsPage.js
 import styled from 'styled-components'
 import QuestionRow from '../components/QuestionRow';
-// import QuestionRow2 from '../components/QuestionRow2';
-// import QuestionRow3 from '../components/QuestionRow3';
-// import QuestionRow4 from '../components/QuestionRow4';
-// import QuestionRow5 from '../components/QuestionRow5';
 import StyledButton from '../components/styledButton';
 import {Question} from '../components/Question';
-import { db } from '../firebase-config/firebase';
-import { getDocs, collection } from 'firebase/firestore';
 import {Link, useNavigate} from "react-router-dom";
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { db } from '../firebase-config/firebase';
+import { getDocs, collection } from 'firebase/firestore';
 
 const StyledHeader = styled.h1`
     font-size: 1.5rem;
@@ -26,8 +22,8 @@ const HeaderRow = styled.div`
     padding: 10px 20px;
 `;
 
-
 //dummy data to use to populate questions page. Stored as an array to ensure conciseness
+
 // let questionIDs = [0, 1, 2, 3];
 // let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent", "How to solve a homogeneuos linear differential equation"];
 // let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3", "Howdy partner 4"];
@@ -61,7 +57,7 @@ function QuestionsPage(){
         getQuestionList();
     }, []);
 
-
+    //possibly change question row to take a Question object instead of all of the seperate fields
     const questionComponents = [];
     let i = 0;
     {questionList.map((dbQuestion) => (
@@ -80,8 +76,10 @@ function QuestionsPage(){
         )
     ))}
 
-    function routeChangeToAskQuestion() {
-        let path = '/askPage';
+    //in future, we use firebase to populate each of these arrays
+    
+    const routeChangeToAskQuestion = () => {
+        let path= '/askPage';
         navigate(path);
     }
 
