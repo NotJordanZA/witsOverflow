@@ -103,6 +103,10 @@ function Header(){
       </StyledHeader>
     );
   }
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+  //const email = currentUser.email;
+  // navigate = ("/profilePage", {state : email})
   return(
     <StyledHeader>
       <LogoLink href="/questionsPage" className="logo">

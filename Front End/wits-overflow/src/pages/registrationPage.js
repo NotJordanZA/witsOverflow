@@ -191,7 +191,7 @@ const Register = () => {
 
         await setDoc(userDocRef, data);
 
-        navigate("/questionsPage");
+        navigate("/questionsPage", {state : user});
         setSuccess(true);
     }
     

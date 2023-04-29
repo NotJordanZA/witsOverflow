@@ -67,7 +67,7 @@ const UserLink = styled.a`
 
 
 //function QuestionRow({Question : question}){  
-function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags}){  
+function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail}){  
     let navigate = useNavigate();
 
     let questionID1 = questionID;
@@ -79,8 +79,9 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let timeAsked1 = timeAsked;
     let firstName1 = firstName;
     let tags1 = tags;
+    let email = currEmail;
 
-    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1);
+    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email);
     
     //add variable number of tags
     const tagComponents = [];
@@ -108,9 +109,9 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             <QuestionTitleArea>
 
                 <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
-
+                {/* need to add timeAsked */}
                 <WhoAndWhen>
-                    Asked {timeAsked1} by <UserLink> {firstName1} </UserLink>
+                    Asked by <UserLink> {firstName1} </UserLink>
                 </WhoAndWhen>
                 {tagComponents}
             </QuestionTitleArea>

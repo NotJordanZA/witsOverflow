@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import QuestionRow from '../components/QuestionRow';
 import StyledButton from '../components/styledButton';
 import {Question} from '../components/Question';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
@@ -36,6 +36,8 @@ let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m
 
 function QuestionsPage(){
     let navigate = useNavigate();
+    const location = useLocation();
+    const email = location.state;
 
     const [questionList, setQuestionList] = useState([]);
     const questionCollectionRef = collection(db, "questions")
@@ -55,7 +57,8 @@ function QuestionsPage(){
         };
 
         getQuestionList();
-    }, []);
+    });
+    
 
     //possibly change question row to take a Question object instead of all of the seperate fields
     const questionComponents = [];
@@ -72,6 +75,7 @@ function QuestionsPage(){
                 timeAsked = "time"
                 firstName = {dbQuestion.name}
                 tags = {postTags[i]}
+                currEmail= {email}
             />
         )
     ))}
@@ -80,7 +84,7 @@ function QuestionsPage(){
     
     const routeChangeToAskQuestion = () => {
         let path= '/askPage';
-        navigate(path);
+        navigate(path, {state : email});
     }
 
     return (
