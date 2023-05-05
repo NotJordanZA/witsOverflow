@@ -184,7 +184,9 @@ export default function SingleQuestionPage() {
                 answerID={dbAnswer.id}
                 answerText = {dbAnswer.answer}
                 votes = {dbAnswer.votes}
-                currEmail={email}
+                questionEmail = {firstName1}
+                currEmail = {email}
+                answerHelpful = {dbAnswer.helpful}
             />
         )
     ))}
@@ -202,33 +204,55 @@ export default function SingleQuestionPage() {
         console.log(answer);
     }
 
-    return(
-        <Container>
-            <SingleQuestionPageQuestion
-                questionID={questionID1}
-                questionTitle = {questionTitle1}
-                questionText = {questionText1}
-                votes = {votes1}
-                viewCount = {viewCount1}
-                timeAsked = {timeAsked1}
-                firstName = {firstName1}
-                comments = {commentsForQuestion}
-                currEmail= {email}
-                currVoted = {voted}
-                currVote = {vote}
-            />
-            {answerAreaComponents}
-            <UserAnswerArea>
-                    <Title>Your Answer</Title>
-                    <form onSubmit={handleAnswerSubmit}>
-                        <UserAnswerTextArea
-                            value = { answer }
-                            onChange={(e) => setAnswer(e.target.value)}
-                            required
-                        />
-                        <StyledButton type = 'submit'>Post&nbsp;Answer</StyledButton>
-                    </form>
-                </UserAnswerArea>
-        </Container>
-    )
+    if (firstName1 === email){
+        return(
+            <Container>
+                <SingleQuestionPageQuestion
+                    questionID={questionID1}
+                    questionTitle = {questionTitle1}
+                    questionText = {questionText1}
+                    votes = {votes1}
+                    viewCount = {viewCount1}
+                    timeAsked = {timeAsked1}
+                    firstName = {firstName1}
+                    comments = {commentsForQuestion}
+                    currEmail= {email}
+                    currVoted = {voted}
+                    currVote = {vote}
+                />
+                {answerAreaComponents}
+            </Container>
+        )
+    }else{
+        return(
+            <Container>
+                <SingleQuestionPageQuestion
+                    questionID={questionID1}
+                    questionTitle = {questionTitle1}
+                    questionText = {questionText1}
+                    votes = {votes1}
+                    viewCount = {viewCount1}
+                    timeAsked = {timeAsked1}
+                    firstName = {firstName1}
+                    comments = {commentsForQuestion}
+                    currEmail= {email}
+                    currVoted = {voted}
+                    currVote = {vote}
+                />
+                {answerAreaComponents}
+                <UserAnswerArea>
+                        <Title>Your Answer</Title>
+                        <form onSubmit={handleAnswerSubmit}>
+                            <UserAnswerTextArea
+                                value = { answer }
+                                onChange={(e) => setAnswer(e.target.value)}
+                                required
+                            />
+                            <StyledButton type = 'submit'>Post&nbsp;Answer</StyledButton>
+                        </form>
+                    </UserAnswerArea>
+            </Container>
+        )
+    }
+    
 }

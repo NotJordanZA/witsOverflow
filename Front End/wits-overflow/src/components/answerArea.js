@@ -67,7 +67,7 @@ const HiddenButton = styled.button`
     display: none;
 `;
 
-function AnswerArea({questionID, answerID, answerText, votes, currEmail}) {
+function AnswerArea({questionID, answerID, answerText, votes, questionEmail, currEmail, answerHelpful}) {
     const voteDocRef = doc(db, "questions", questionID, "Answers", answerID, "Votes", currEmail);
     //returns a formatted answer to a question
     const commentCollectionRef = collection(db, "questions" , questionID, "Answers", answerID, "Comments");
@@ -75,13 +75,13 @@ function AnswerArea({questionID, answerID, answerText, votes, currEmail}) {
     const [comment, setComment] = useState(''); 
     const comments1 = [];
     const handleCommentSubmit = async (e) => {
+        let tempComment = comment;
+        setComment("");
         e.preventDefault();
         await addDoc(commentCollectionRef, {
-            comment: comment,
+            comment: tempComment,
             name: currEmail,
         })
-        setComment("");
-        console.log(comment);
     }
 
     const votesCollectionRef = collection(db, "questions", questionID, "Answers", answerID, "Votes");
@@ -120,15 +120,24 @@ function AnswerArea({questionID, answerID, answerText, votes, currEmail}) {
         }
     }
 
-    const answerVoteRef = doc(db, "questions", questionID, "Answers", answerID)
-    updateDoc(answerVoteRef, {
+    const answerRef = doc(db, "questions", questionID, "Answers", answerID)
+    updateDoc(answerRef, {
         votes: votes1
       });
+     
+
+    const [helpful, setHelpful] = useState(!answerHelpful);
+    const onHelpfulChange= async (e) => {
+        setHelpful(!helpful);
+        console.log(helpful);
+        updateDoc(answerRef, {
+            helpful: !helpful
+        });
+    }
     
     useEffect(()=> {
         const getCommentList = async () => {
             try {
-                
                 const data = await getDocs(commentCollectionRef);
                 const filteredData = data.docs.map((doc) => ({
                     ...doc.data(),
@@ -222,33 +231,76 @@ function AnswerArea({questionID, answerID, answerText, votes, currEmail}) {
             setUpOpacity(0.4);
         }
     }
-    return (
-        <div>
-            <AnswerAreaComponent>
-                <VotesArea>
-                    <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
-                    <VoteNumber>{votes1}</VoteNumber>
-                    <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                </VotesArea>
-                <AnswerBodyArea>
-                    <BodyText readOnly>
-                        {answerText}
-                    </BodyText>
-                    <CommentsAreaContainer>
-                    <StyledForm onSubmit={handleCommentSubmit}>
-                        {commentsComponents}
-                        <AddComment
-                        placeholder="Add comment..."
-                        value = {comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        />
-                        <HiddenButton type= "submit"></HiddenButton>
-                    </StyledForm>
-                </CommentsAreaContainer>
-                </AnswerBodyArea>
-            </AnswerAreaComponent>
-        </div>
-    )
+    if (currEmail != questionEmail){
+        return (
+            <div>
+                {answerHelpful ? (
+                    <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                ):(<a></a>)}
+                <AnswerAreaComponent>
+                    <VotesArea>
+                        <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                        <VoteNumber>{votes1}</VoteNumber>
+                        <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                    </VotesArea>
+                    <AnswerBodyArea>
+                        <BodyText readOnly>
+                            {answerText}
+                        </BodyText>
+                        <CommentsAreaContainer>
+                        <StyledForm onSubmit={handleCommentSubmit}>
+                            {commentsComponents}
+                            <AddComment
+                            placeholder="Add comment..."
+                            value = {comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            />
+                            <HiddenButton type= "submit"></HiddenButton>
+                        </StyledForm>
+                    </CommentsAreaContainer>
+                    </AnswerBodyArea>
+                </AnswerAreaComponent>
+            </div>
+        )
+    }else{
+        return (
+            <div>
+                <label>
+                    <input
+                        type = "checkbox"
+                        checked = {!helpful}
+                        value = {helpful}
+                        onChange = {onHelpfulChange}
+                        style={{padding: "10px 0 10px 0", marginTop: "5px"}}
+                    />
+                    Helpful?
+                </label>
+                <AnswerAreaComponent>
+                    <VotesArea>
+                        <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                        <VoteNumber>{votes1}</VoteNumber>
+                        <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                    </VotesArea>
+                    <AnswerBodyArea>
+                        <BodyText readOnly>
+                            {answerText}
+                        </BodyText>
+                        <CommentsAreaContainer>
+                        <StyledForm onSubmit={handleCommentSubmit}>
+                            {commentsComponents}
+                            <AddComment
+                            placeholder="Add comment..."
+                            value = {comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            />
+                            <HiddenButton type= "submit"></HiddenButton>
+                        </StyledForm>
+                    </CommentsAreaContainer>
+                    </AnswerBodyArea>
+                </AnswerAreaComponent>
+            </div>
+        )
+    }
 }
 
 export default AnswerArea;

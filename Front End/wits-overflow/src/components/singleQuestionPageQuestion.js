@@ -123,13 +123,13 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
     const commentCollectionRef = collection(db, "questions" , questionID, "Comments")
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-        console.log(comment);
-        console.log();
+        let tempComment = comment;
+        setComment("");
         await addDoc(commentCollectionRef, {
-            comment: comment,
+            comment: tempComment,
             name: currEmail,
         })
-        setComment("");
+        
         console.log(comment);
     }
     const [upOpacity, setUpOpacity] = useState(0.4);
