@@ -93,7 +93,7 @@ export default function SingleQuestionPage() {
         };
         getVotesList();
         
-    });
+    }, []);
 
     for (let i = 0; i < votesList.length; i++){
         if (votesList[i].id === email){
@@ -139,7 +139,7 @@ export default function SingleQuestionPage() {
             }
         };
         getQuestionCommentList();
-    });
+    }, []);
 
     {questionCommentList.map((qComment) => (
         commentsForQuestion.push(qComment.comment)

@@ -105,7 +105,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, cur
             }
         };
         getVotesList();
-    });
+    }, []);
 
     for (let i = 0; i < votesList.length; i++){
         if (votesList[i].id == currEmail){
@@ -131,7 +131,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, cur
         setHelpful(!helpful);
         console.log(helpful);
         updateDoc(answerRef, {
-            helpful: !helpful
+            helpful: helpful
         });
     }
     
@@ -149,7 +149,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, cur
             }
         };
         getCommentList();
-    })
+    }, [])
 
     {commentList.map((aComment) => (
         comments1.push(aComment.comment)
@@ -177,7 +177,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, cur
             }
         };
         checkVoted();
-    });
+    }, []);
     
 
     const OnUpvote = async() => {

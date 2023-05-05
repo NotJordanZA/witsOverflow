@@ -108,7 +108,17 @@ const HiddenButton = styled.button`
 function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments, currEmail, currVoted, currVote}) {
     const voteDocRef = doc(db, "questions", questionID, "Votes", currEmail);
     
-    
+    // let initialOpacityUp = 0.4;
+    // let initialOpacityDown = 0.4;
+    //     console.log(currVote);
+    //     if(currVote=== "up"){
+    //         initialOpacityUp = 1;
+    //         initialOpacityDown = 0.4;
+    //     }else if (currVote === "down"){
+    //         initialOpacityUp = 0.4;
+    //         initialOpacityDown = 1;
+    //     }
+
     const commentsComponents = [];
     for (let i = 0; i < comments.length; i++)
     {
@@ -129,7 +139,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             comment: tempComment,
             name: currEmail,
         })
-        
+        window.location.reload(false);
         console.log(comment);
     }
     const [upOpacity, setUpOpacity] = useState(0.4);
@@ -149,8 +159,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             }
         };
         checkVoted();
-    });
-    
+    }, []);
 
     const OnUpvote = async() => {
         if(upOpacity === 1){
@@ -174,6 +183,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             await setDoc(voteDocRef, data);
             setUpOpacity(1);
         }
+        window.location.reload(false);
     }
 
     const OnDownvote = async() => {
@@ -198,6 +208,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             await setDoc(voteDocRef, data);
             setDownOpacity(1);
         }
+        window.location.reload(false);
     }
 
     //just a container that contains all of the question data displayed on the single question page
