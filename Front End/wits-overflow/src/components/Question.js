@@ -1,6 +1,6 @@
 export class Question {
     //creating this constructor for testing purposes
-    constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags)
+    constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail)
     {
         //console.log("Creating object...");
         this.questionID = questionID;
@@ -14,6 +14,7 @@ export class Question {
         this.tags = tags;
         this.comments = [];
         this.answers = [];
+        this.currEmail = currEmail;
     }
 
     //java-style getters
@@ -60,6 +61,10 @@ export class Question {
     getAnswers()
     {
         return this._answers;
+    }
+    getCurrEmail()
+    {
+        return this._currEmail;
     }
 
     //OTHERS  

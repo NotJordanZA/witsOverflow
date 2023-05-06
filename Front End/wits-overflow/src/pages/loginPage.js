@@ -69,8 +69,8 @@ const LoginPage = () => {
         //add comparison between submitted email and password and stored password;
 
         if(getAuth().currentUser!=null){
-            
-            navigate("/questionsPage");
+            sessionStorage.setItem('userEmail', email);
+            navigate("/questionsPage", {state : email});
         }
         setEmail('');
         setPass('');

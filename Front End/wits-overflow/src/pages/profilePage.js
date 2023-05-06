@@ -70,6 +70,7 @@ const StyledButton = styled.button`
 function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
+    var email = sessionStorage.getItem('userEmail');
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
@@ -84,8 +85,6 @@ function Profile(){
         });
         navigate(path);
     }
-    const location = useLocation();
-    const email = location.state;
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);

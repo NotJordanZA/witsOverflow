@@ -13,7 +13,7 @@ import { getAuth, signOut } from "firebase/auth";
 //container for header elements
 const StyledHeader = styled.header`
   display:grid;
-  grid-template-columns: 30px 200px 1fr 50px 50px 150px;
+  grid-template-columns: 30px 200px 1fr 50px 200px;
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
   `;
 
@@ -76,7 +76,7 @@ const LogoLink = styled.a`
   //styling for the profile photo link
   const ProfileLinkAvi = styled.a`
   display: inline-block;
-  padding: 17px 0px;
+  padding: 17px 5px;
   `;
 
   //styling for the username link
@@ -106,10 +106,7 @@ function Header(){
       </StyledHeader>
     );
   }
-  // const auth = getAuth();
-  // const user = auth.currentUser;
-  // const email = user.email;
-  // navigate = ("/profilePage", {state : email})
+  const email = sessionStorage.getItem('userEmail');
   return(
     <StyledHeader>
       <LogoLink href="/questionsPage" className="logo">
@@ -121,9 +118,9 @@ function Header(){
       <form action="" className="search">
         <SearchInput type="text" placeholder="Search..."/>
       </form>
-      <BellLink href="" className="bell">
+      {/* <BellLink href="" className="bell">
           <img style = {{ width : 25, height: 25 }}src = {bell} alt = "bell" />
-      </BellLink>
+      </BellLink> */}
       <ProfileLinkAvi href="/profilePage" className="profile">
         <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
       </ProfileLinkAvi>
@@ -134,7 +131,7 @@ function Header(){
           </ProfileLinkName> 
         )
       })} */}
-      <ProfileLinkName href="/profilePage" className="profile">Profile Page</ProfileLinkName>
+      <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
   </StyledHeader>
 );
 }

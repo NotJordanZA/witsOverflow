@@ -1,14 +1,20 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SingleQuestionPageQuestion from "../components/singleQuestionPageQuestion";
 import {Answer} from '../components/Answer';
-import {Comment as CommentText} from '../components/Comment';
+import {Comment as CommentText} from '../components/CommentClass';
 import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
-import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
-import { doc, getDocs, collection, addDoc, updateDoc} from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
+import Comment from "../components/Comment";
 
+const Container = styled.div`
+    padding: 25px 150px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+`;
 
 const Title = styled.header`
     font-size: 1.5rem;
@@ -54,75 +60,63 @@ export default function SingleQuestionPage() {
     //receive data from previous page. Stores as a generic object, not as a Question object. Needs to be accessed using <Question>.<property>
     const location = useLocation();
     const question = location.state;
-    console.log(question);
 
     let questionID1 = question.questionID;
     let questionTitle1 = question.questionTitle;
     let questionText1 = question.questionText;
-    let votes1 = question.votes;
+    let votes1 = 0;//question.votes;
     let answerCount1 = question.answerCount;
     let viewCount1 = question.viewCount;
     let timeAsked1 = question.timeAsked;
     let firstName1 = question.firstName;
     let tags = question.tags;
+    let email = sessionStorage.getItem('userEmail');
+    let voted = false;
+    let vote = "";
 
-    //containers to temporarily hold the data
-    const allAnswerComments = [];
-    const allQuestionComments = [];
-    const allAnswers = [];
-    const commentsForQuestion = [];
-
-    //dummy comments data
-    const commentIDs = [0, 1, 2, 3, 4];
-    const commentAnswerIDs = [0, 0, 1, 3, 3];
-    const commentTexts = ["Good question!", "Interesting question!", "WRONG!!!", "Wow what a great answer!", "Correct."];
-    const deletionTracker = [false, false, false, false, false];
-    const commentUserEmails = ["ndivhuwo@wits.ac.za", "jordan@wits.ac.za", "ruben@wits.ac.za", "dumisani@wits.ac.za", "troy@wits.ac.za"];
-
-    const [questionCommentList, setQuestionCommentList] = useState([]);
-    const questionCommentCollectionRef = collection(db, "questions" , questionID1, "Comments")
-    const questionDocRef = doc(db, "questions", questionID1)
+    const votesCollectionRef = collection(db, "questions", questionID1, "Votes");
+    const [votesList, setVotesList] = useState([]);
+    //const [votes, setVotes] = useState();
 
     useEffect(() => {
-        const getQuestionCommentList = async () => {
+        const getVotesList = async () => {
             try {
-                const data = await getDocs(questionCommentCollectionRef);
+                const data = await getDocs(votesCollectionRef);
                 const filteredData = data.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id,
                 }));
-                setQuestionCommentList(filteredData);
+                setVotesList(filteredData);
             } catch (error) {
                 console.error(error)
             }
         };
-        getQuestionCommentList();
+        getVotesList();
+        
     }, []);
 
-    {questionCommentList.map((qComment) => (
-        commentsForQuestion.push(qComment.comment)
-    ))}
-
-    //create comments using hardcoded data
-    for (let i = 0; i < commentIDs.length; i++)
-    {
-        let commentID = commentIDs[i];
-        let commentAnswerID = commentAnswerIDs[i];
-        let commentText = commentTexts[i];
-        let isDeleted = deletionTracker[i];
-        let userEmail = commentUserEmails[i];
-        const comment = new CommentText(commentID, commentAnswerID, commentText, isDeleted, userEmail);
-        if (comment.answerID !== 0) //if the comment is for an answer
-        {
-            allAnswerComments.push(comment);
-        }
-        else
-        {
-            allQuestionComments.push(comment);
-            //commentsForQuestion.push(commentText);
+    for (let i = 0; i < votesList.length; i++){
+        if (votesList[i].id === email){
+            voted = true;
+            vote = votesList[i].voteType;
         }
     }
 
+    for (let i = 0; i < votesList.length; i++){
+        if (votesList[i].voted === true){
+            if(votesList[i].voteType === "up"){
+                votes1 += 1;
+            }else{
+                votes1 -= 1;
+            }
+        }
+    }
+    
+    const questionVoteRef = doc(db, "questions", questionID1)
+    updateDoc(questionVoteRef, {
+        votes: votes1
+      });
+    const questionDocRef = doc(db, "questions", questionID1)
 
     const [answerList, setAnswerList] = useState([]);
     const answerCollectionRef = collection(db, "questions" , questionID1, "Answers")
@@ -144,6 +138,15 @@ export default function SingleQuestionPage() {
         getAnswerList();
     }, []);
 
+    useEffect(() => {
+        const updateView = async() => {
+        await updateDoc(questionDocRef, {
+            views: viewCount1+1
+          });
+     };
+     updateView()
+    }, []);
+
     {answerList.map((dbAnswer) => (
         
         answerAreaComponents.push(
@@ -152,97 +155,74 @@ export default function SingleQuestionPage() {
                 answerID={dbAnswer.id}
                 answerText = {dbAnswer.answer}
                 votes = {dbAnswer.votes}
+                questionEmail = {firstName1}
+                answerEmail = {dbAnswer.name}
+                currEmail = {email}
+                answerHelpful = {dbAnswer.helpful}
             />
         )
     ))}
-
-    //dummy answer data
-    const answerIDs = [1, 2, 3];
-    const userEmails = ["troy@wits.ac.za", "jordan@wits.ac.za", "dumisani@wits.ac.za"];
-    const firstNames = ["Troy", "Jordan", "Dumisani"];
-    const answerTexts = ["x = 1", "pi is irrational", "Easy: x = 3"];
-    const voteCounts = [2, 3, 9];
-    //create questions using hardcoded data
-    for (let i = 0; i < answerIDs.length; i++)
-    {
-        let answerID = answerIDs[i];
-        let userEmail = userEmails[i];
-        let firstName = firstNames[i];
-        let answerText = answerTexts[i];
-        let votes = voteCounts[i];
-        const comments = [];
-        for (let j = 0; j < allAnswerComments.length; j++)
-        {
-            let tempAnswerID = allAnswerComments[j].getAnswerID();
-            if (tempAnswerID === answerID)
-            {
-                const tempComment = allAnswerComments[j];
-                console.log(tempComment);
-                comments.push(tempComment);
-            }
-        }
-        const answer = new Answer(answerID, userEmail, firstName, answerText, votes, comments);
-        allAnswers.push(answer);
-    }
-
-    //create components
-    //const answerAreaComponents = [];
-    // for (let i = 0; i < allAnswers.length; i++)
-    // {
-    //     let answerText1 = allAnswers[i].getAnswerText();
-    //     let votes1 = allAnswers[i].getVotes();
-    //     const commentTexts = [];
-    //     for (let j = 0; j < allAnswers[i].getComments().length; j++)
-    //     {
-    //         let commentText = allAnswers[i].getComment(j).getCommentText();
-    //         commentTexts.push(commentText);
-    //     }
-    //     answerAreaComponents.push(
-    //         <AnswerArea
-    //             answerText = {answerText1}
-    //             votes = {votes1}
-    //             comments1 = {commentTexts}
-    //         />
-    //     );
-    // }
 
     const handleAnswerSubmit = async (e) => {
         e.preventDefault();
         await addDoc(answerCollectionRef, {
             answer: answer,
             votes: 0,
-            name: "name",
+            name: email,
         })
         await updateDoc(questionDocRef, {
             answerCount: answerCount1+1
           });
         console.log(answer);
+        window.location.reload(false);
+        setAnswer("");
     }
-
-    return(
-        <main>
-            <SingleQuestionPageQuestion
-                questionID = {questionID1}
-                questionTitle = {questionTitle1}
-                questionText = {questionText1}
-                votes = {votes1}
-                viewCount = {viewCount1}
-                timeAsked = {timeAsked1}
-                firstName = {firstName1}
-                comments = {commentsForQuestion}
-            />
-            {answerAreaComponents}
-            <UserAnswerArea>
-                    <Title>Your Answer</Title>
-                    <form onSubmit={handleAnswerSubmit}>
-                        <UserAnswerTextArea
-                            value = { answer }
-                            onChange={(e) => setAnswer(e.target.value)}
-                            required
-                        />
-                        <StyledButton type = 'submit'>Post&nbsp;Answer</StyledButton>
-                    </form>
-                </UserAnswerArea>
-        </main>
-    )
+    if (firstName1 === email){
+        return(
+            <Container>
+                <SingleQuestionPageQuestion
+                    questionID={questionID1}
+                    questionTitle = {questionTitle1}
+                    questionText = {questionText1}
+                    votes = {votes1}
+                    viewCount = {viewCount1}
+                    timeAsked = {timeAsked1}
+                    firstName = {firstName1}
+                    currEmail= {email}
+                    currVoted = {voted}
+                    currVote = {vote}
+                />
+                {answerAreaComponents}
+            </Container>
+        )
+    }else{
+        return(
+            <Container>
+                <SingleQuestionPageQuestion
+                    questionID={questionID1}
+                    questionTitle = {questionTitle1}
+                    questionText = {questionText1}
+                    votes = {votes1}
+                    viewCount = {viewCount1}
+                    timeAsked = {timeAsked1}
+                    firstName = {firstName1}
+                    currEmail= {email}
+                    currVoted = {voted}
+                    currVote = {vote}
+                />
+                {answerAreaComponents}
+                <UserAnswerArea>
+                        <Title>Your Answer</Title>
+                        <form onSubmit={handleAnswerSubmit}>
+                            <UserAnswerTextArea
+                                value = { answer }
+                                onChange={(e) => setAnswer(e.target.value)}
+                                required
+                            />
+                            <StyledButton type = 'submit'>Post&nbsp;Answer</StyledButton>
+                        </form>
+                    </UserAnswerArea>
+            </Container>
+        )
+    }
 }
