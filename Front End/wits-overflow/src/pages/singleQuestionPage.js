@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SingleQuestionPageQuestion from "../components/singleQuestionPageQuestion";
 import {Answer} from '../components/Answer';
-import {Comment as CommentText} from '../components/Comment';
+import {Comment as CommentText} from '../components/CommentClass';
 import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
 import { db } from '../firebase-config/firebase';
 import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
+import Comment from "../components/Comment";
 
 const Container = styled.div`
     padding: 25px 150px;
@@ -70,7 +71,7 @@ export default function SingleQuestionPage() {
     let timeAsked1 = question.timeAsked;
     let firstName1 = question.firstName;
     let tags = question.tags;
-    let email = question.currEmail;
+    let email = sessionStorage.getItem('userEmail');
     let voted = false;
     let vote = "";
 
@@ -116,36 +117,7 @@ export default function SingleQuestionPage() {
     updateDoc(questionVoteRef, {
         votes: votes1
       });
-
-    //containers to temporarily hold the data
-    const commentsForQuestion = [];
-
-
-    const [questionCommentList, setQuestionCommentList] = useState([]);
-    const questionCommentCollectionRef = collection(db, "questions" , questionID1, "Comments")
     const questionDocRef = doc(db, "questions", questionID1)
-
-    useEffect(() => {
-        const getQuestionCommentList = async () => {
-            try {
-                const data = await getDocs(questionCommentCollectionRef);
-                const filteredData = data.docs.map((doc) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                }));
-                setQuestionCommentList(filteredData);
-            } catch (error) {
-                console.error(error)
-            }
-        };
-        getQuestionCommentList();
-    }, []);
-
-    {questionCommentList.map((qComment) => (
-        commentsForQuestion.push(qComment.comment)
-    ))}
-
-
 
     const [answerList, setAnswerList] = useState([]);
     const answerCollectionRef = collection(db, "questions" , questionID1, "Answers")
@@ -185,6 +157,7 @@ export default function SingleQuestionPage() {
                 answerText = {dbAnswer.answer}
                 votes = {dbAnswer.votes}
                 questionEmail = {firstName1}
+                answerEmail = {dbAnswer.name}
                 currEmail = {email}
                 answerHelpful = {dbAnswer.helpful}
             />
@@ -202,6 +175,8 @@ export default function SingleQuestionPage() {
             answerCount: answerCount1+1
           });
         console.log(answer);
+        window.location.reload(false);
+        setAnswer("");
     }
 
     if (firstName1 === email){
@@ -215,7 +190,6 @@ export default function SingleQuestionPage() {
                     viewCount = {viewCount1}
                     timeAsked = {timeAsked1}
                     firstName = {firstName1}
-                    comments = {commentsForQuestion}
                     currEmail= {email}
                     currVoted = {voted}
                     currVote = {vote}
@@ -234,7 +208,6 @@ export default function SingleQuestionPage() {
                     viewCount = {viewCount1}
                     timeAsked = {timeAsked1}
                     firstName = {firstName1}
-                    comments = {commentsForQuestion}
                     currEmail= {email}
                     currVoted = {voted}
                     currVote = {vote}

@@ -79,7 +79,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let timeAsked1 = timeAsked;
     let firstName1 = firstName;
     let tags1 = tags;
-    let email = currEmail;
+    let email = sessionStorage.getItem('userEmail');
 
     const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email);
     

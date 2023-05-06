@@ -70,6 +70,7 @@ const StyledButton = styled.button`
 function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
+    var email = sessionStorage.getItem('userEmail');
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
@@ -84,9 +85,6 @@ function Profile(){
         });
         navigate(path);
     }
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const email = user.email;
     console.log(email);
     const userDocRef = doc(db, "users", email);
     // For fetching all user info

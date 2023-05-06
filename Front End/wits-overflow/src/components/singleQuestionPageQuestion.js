@@ -4,21 +4,16 @@ import downArrow from '../arrow-down.png';
 import CommentsArea from '../components/commentsArea';
 import { useState } from "react";
 import { db } from '../firebase-config/firebase';
-import { collection, addDoc, updateDoc, setDoc, doc} from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
 import { useEffect } from "react";
-
-const Container = styled.div`
-    padding: 25px 150px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-`;
+import Comment from "./Comment";
 
 const QuestionArea = styled.div`
     display: flex;
     flex-direction: row;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 `;
+
 const BodyText = styled.textarea`
     display: flex;
     background: #e4e4e4;
@@ -83,7 +78,7 @@ const CommentsAreaContainer = styled.div`
     flex-direction: column;
     padding: 10px;
 `;
-const Comment = styled.text`
+const CommentBody = styled.text`
     border: 0;
     font-size: 0.85rem;
     padding: 5px 0 0 0;
@@ -107,25 +102,67 @@ const HiddenButton = styled.button`
 
 function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments, currEmail, currVoted, currVote}) {
     const voteDocRef = doc(db, "questions", questionID, "Votes", currEmail);
-    
-    // let initialOpacityUp = 0.4;
-    // let initialOpacityDown = 0.4;
-    //     console.log(currVote);
-    //     if(currVote=== "up"){
-    //         initialOpacityUp = 1;
-    //         initialOpacityDown = 0.4;
-    //     }else if (currVote === "down"){
-    //         initialOpacityUp = 0.4;
-    //         initialOpacityDown = 1;
-    //     }
+    let commentDocPath = "questions/" + questionID + "/Comments";
+    const [votes1, setVotes1] = useState(votes);
 
+    const [upOpacity, setUpOpacity] = useState(0.4);
+    const [downOpacity, setDownOpacity] = useState(0.4);
+    const checkVoted = async () => {
+        if(currVoted){
+            if(currVote === "up"){
+                setUpOpacity(1);
+            }else if (currVote ==="down"){
+                setDownOpacity(1);
+            }else{
+                setDownOpacity(0.4);
+                setUpOpacity(0.4);
+            }
+        }
+    };
+
+    const [commentList, setCommentList] = useState([]);
+    useEffect(()=> {
+        const getCommentList = async () => {
+            try {
+                const data = await getDocs(commentCollectionRef);
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setCommentList(filteredData);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+        getCommentList();
+    }, [])
+
+    const [loopCount, setLoopCount] = useState(0);
+    const [loopCount2, setLoopCount2] = useState(0);
     const commentsComponents = [];
-    for (let i = 0; i < comments.length; i++)
-    {
+    const mapComments = commentList.map((aComment) => {
+        let author = false;
+        if (aComment.name === currEmail){
+            author = true;
+        }
         commentsComponents.push(
-            <Comment>{comments[i]}</Comment>
+            <Comment
+            author = {author}
+            deleted = {aComment.deleted}
+            body = {aComment.comment}
+            commentPath = {commentDocPath+"/"+aComment.id}
+            />
         );
-    }
+        if(currVoted && loopCount == 0){
+            checkVoted();
+            setLoopCount(1);
+        }
+        if(loopCount2 == 0){
+            setVotes1(votes);
+            setLoopCount2(1);
+        }
+    })
+    let doThis = mapComments;
 
     const [comment, setComment] = useState(''); 
     //const commentCollectionRef = collection(db, path);
@@ -140,26 +177,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             name: currEmail,
         })
         window.location.reload(false);
-        console.log(comment);
     }
-    const [upOpacity, setUpOpacity] = useState(0.4);
-    const [downOpacity, setDownOpacity] = useState(0.4);
-    
-    useEffect(() => {
-        const checkVoted = async () => {
-            if(currVoted){
-                if(currVote === "up"){
-                    setUpOpacity(1);
-                }else if (currVote ==="down"){
-                    setDownOpacity(1);
-                }else{
-                    setDownOpacity(0.4);
-                    setUpOpacity(0.4);
-                }
-            }
-        };
-        checkVoted();
-    }, []);
 
     const OnUpvote = async() => {
         if(upOpacity === 1){
@@ -168,6 +186,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                 voted: false
               });
             setUpOpacity(0.4);
+            setVotes1(votes1 - 1);
         }else if (downOpacity===1){
             await updateDoc(voteDocRef, {
                 voteType: "up",
@@ -175,6 +194,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
               });
             setUpOpacity(1);
             setDownOpacity(0.4);
+            setVotes1(votes1 + 2);
         }else{
             const data = {
                 voted: true,
@@ -182,8 +202,8 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             };
             await setDoc(voteDocRef, data);
             setUpOpacity(1);
+            setVotes1(votes1 + 1);
         }
-        window.location.reload(false);
     }
 
     const OnDownvote = async() => {
@@ -193,6 +213,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                 voted: false
               });
             setDownOpacity(0.4);
+            setVotes1(votes1 + 1);
         }else if (upOpacity === 1){
             await updateDoc(voteDocRef, {
                 voteType: "down",
@@ -200,6 +221,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
               });
             setDownOpacity(1);
             setUpOpacity(0.4);
+            setVotes1(votes1 - 2);
         }else{
             const data = {
                 voted: true,
@@ -207,8 +229,8 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             };
             await setDoc(voteDocRef, data);
             setDownOpacity(1);
+            setVotes1(votes1 - 1);
         }
-        window.location.reload(false);
     }
 
     //just a container that contains all of the question data displayed on the single question page
@@ -225,7 +247,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             <QuestionArea>
                 <VotesArea>
                     <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
-                    <VoteNumber>{votes}</VoteNumber>
+                    <VoteNumber>{votes1}</VoteNumber>
                     <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
                 </VotesArea>
                 <QuestionBodyArea>

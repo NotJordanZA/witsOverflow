@@ -78,7 +78,7 @@ export default function AskPage() {
     
     const navigate = useNavigate();
     const location = useLocation();
-    const email = location.state;
+    const email = sessionStorage.getItem('userEmail');
 
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');

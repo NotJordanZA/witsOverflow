@@ -37,7 +37,7 @@ let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m
 function QuestionsPage(){
     let navigate = useNavigate();
     const location = useLocation();
-    const email = location.state;
+    const email = sessionStorage.getItem('userEmail');
 
     const [questionList, setQuestionList] = useState([]);
     const questionCollectionRef = collection(db, "questions")
