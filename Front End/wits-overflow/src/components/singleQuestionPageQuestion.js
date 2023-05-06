@@ -79,13 +79,6 @@ const CommentsAreaContainer = styled.div`
     padding: 10px;
 `;
 
-const CommentBody = styled.text`
-    border: 0;
-    font-size: 0.85rem;
-    padding: 5px 0 0 0;
-    box-shadow: 0 1px 2px rgba(0,0,0,.2);
-`;
-
 const AddComment = styled.input`
     border: 0;
     font-size: 0.85rem;
@@ -238,7 +231,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
     
     //just a container that contains all of the question data displayed on the single question page
     return (
-        <Container>
+        <div>
             <TitleArea>
                 <Title><b>{questionTitle}</b></Title>
                 <QuestionStatArea>
@@ -271,8 +264,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                 </CommentsAreaContainer>
                 </QuestionBodyArea>
             </QuestionArea>
-        </Container>
-
+        </div>
     )
 }
 

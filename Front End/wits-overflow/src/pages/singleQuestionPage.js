@@ -37,7 +37,6 @@ const UserAnswerArea = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 25px 150px;
 `;
 const UserAnswerTextArea = styled.textarea`
     display: flex;
