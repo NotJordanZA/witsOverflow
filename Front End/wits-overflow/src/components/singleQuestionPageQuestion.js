@@ -78,18 +78,21 @@ const CommentsAreaContainer = styled.div`
     flex-direction: column;
     padding: 10px;
 `;
+
 const CommentBody = styled.text`
     border: 0;
     font-size: 0.85rem;
     padding: 5px 0 0 0;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 `;
+
 const AddComment = styled.input`
     border: 0;
     font-size: 0.85rem;
     margin-top: 5px;
     //padding: 5px 0 0 0;
 `;
+
 const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
@@ -232,10 +235,10 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             setVotes1(votes1 - 1);
         }
     }
-
+    
     //just a container that contains all of the question data displayed on the single question page
     return (
-        <div>
+        <Container>
             <TitleArea>
                 <Title><b>{questionTitle}</b></Title>
                 <QuestionStatArea>
@@ -268,7 +271,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                 </CommentsAreaContainer>
                 </QuestionBodyArea>
             </QuestionArea>
-        </div>
+        </Container>
 
     )
 }

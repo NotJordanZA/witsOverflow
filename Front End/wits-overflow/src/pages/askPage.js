@@ -96,7 +96,6 @@ export default function AskPage() {
         console.log(title, body);
         navigate("/questionsPage", {state : email});
     }
-
     return (
         <main>
             <Container>

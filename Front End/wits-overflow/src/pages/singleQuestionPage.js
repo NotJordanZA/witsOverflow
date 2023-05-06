@@ -37,7 +37,7 @@ const UserAnswerArea = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 10px
+    padding: 25px 150px;
 `;
 const UserAnswerTextArea = styled.textarea`
     display: flex;
@@ -60,7 +60,6 @@ export default function SingleQuestionPage() {
     //receive data from previous page. Stores as a generic object, not as a Question object. Needs to be accessed using <Question>.<property>
     const location = useLocation();
     const question = location.state;
-    //console.log(question);
 
     let questionID1 = question.questionID;
     let questionTitle1 = question.questionTitle;
@@ -112,7 +111,7 @@ export default function SingleQuestionPage() {
             }
         }
     }
-
+    
     const questionVoteRef = doc(db, "questions", questionID1)
     updateDoc(questionVoteRef, {
         votes: votes1
@@ -178,7 +177,6 @@ export default function SingleQuestionPage() {
         window.location.reload(false);
         setAnswer("");
     }
-
     if (firstName1 === email){
         return(
             <Container>
@@ -227,5 +225,4 @@ export default function SingleQuestionPage() {
             </Container>
         )
     }
-    
 }

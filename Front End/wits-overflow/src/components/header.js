@@ -3,10 +3,11 @@ import styled from "styled-components";
 import logo from '../logo.png';
 import bell from '../bell2.png';
 import avatar from '../avatar.svg';
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { useContext } from "react";
 import {UserContext} from "../context/userContext";
 import UserData from "../context/userData";
+import { getAuth, signOut } from "firebase/auth";
 
 
 //container for header elements
@@ -89,8 +90,10 @@ const LogoLink = styled.a`
 
 //function handling the entire heading area and changing the header based on whether the user is logged
 function Header(){
+  let navigate = useNavigate();
   const currentUser = useContext(UserContext);
   const { pathname } = useLocation();//finds the current path
+
   if (pathname === "/" || pathname === "/registrationPage"){//checks if on the login or registration page
     return(
         <StyledHeader>

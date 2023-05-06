@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { db } from '../firebase-config/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 const CommentsAreaContainer = styled.div`
     display: flex;
@@ -24,19 +26,24 @@ const StyledForm = styled.form`
     width:100%;
 `;
 
-function CommentsArea({comments}) {
+const HiddenButton = styled.button`
+    display: none;
+`;
+
+function CommentsArea({comments, path}) {
 
     const [comment, setComment] = useState(''); 
-    
+    //const commentCollectionRef = collection(db, path);
     //event handlers
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         console.log(comment);
-    }
-    const keyListener=(event)=> {
-        if (event.key === "Enter") {
-            handleCommentSubmit();
-        }
+        console.log(path);
+        // await addDoc(commentCollectionRef, {
+        //     comment: comment,
+        //     name: "name",
+        // })
+        console.log(comment);
     }
 
     //create variable number of comment components using the inputted String[] array of comment texts
@@ -57,8 +64,8 @@ function CommentsArea({comments}) {
                 placeholder="Add comment..."
                 value = {comment}
                 onChange={(e) => setComment(e.target.value)}
-                onKeyDown={(e) => keyListener(e)}
                 />
+                <HiddenButton type= "submit"></HiddenButton>
             </StyledForm>
         </CommentsAreaContainer>
     )
