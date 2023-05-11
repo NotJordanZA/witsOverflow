@@ -1,7 +1,7 @@
 //AskPage.js
 import styled from "styled-components";
 import { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 
@@ -77,6 +77,8 @@ export default function AskPage() {
     const questionCollectionRef = collection(db, "questions")
     
     const navigate = useNavigate();
+    const location = useLocation();
+    const email = sessionStorage.getItem('userEmail');
 
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
@@ -89,12 +91,11 @@ export default function AskPage() {
             votes: 0,
             answerCount: 0,
             views: 0,
-            name: "name",
+            name: email,
         })
         console.log(title, body);
-        navigate("/questionsPage");
+        navigate("/questionsPage", {state : email});
     }
-
     return (
         <main>
             <Container>
