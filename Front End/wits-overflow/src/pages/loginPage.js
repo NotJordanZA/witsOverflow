@@ -70,7 +70,7 @@ const LoginPage = () => {
 
         if(getAuth().currentUser!=null){
             
-            navigate("/questionsPage");
+            navigate("/questionsPage", {state : email});
         }
         setEmail('');
         setPass('');

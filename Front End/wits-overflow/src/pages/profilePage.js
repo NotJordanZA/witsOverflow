@@ -1,8 +1,8 @@
 //profile page
 import styled from "styled-components";
 import Avatar from "../avatar.svg"
-import {useNavigate} from "react-router-dom";
-import UserData from "../context/userData";
+import {useNavigate, useLocation} from "react-router-dom";
+//import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { getDoc , doc} from "firebase/firestore";
@@ -84,20 +84,28 @@ function Profile(){
         });
         navigate(path);
     }
+    const location = useLocation();
+    console.log(location);
+    const email = location.state;
+    console.log(email);
+    const userDocRef = doc(db, "users", email);
+    // For fetching all user info
+    const [userInfoList, setUserInfoList] = useState([]);
+    const getUserInfoList = async () => {
+        try {
+            const data = await getDoc(userDocRef);
+            const filteredData = data.data();
+            setUserInfoList(filteredData);
+            console.log(userInfoList);
+        } catch (error) {
+            console.error(error)
+        }
+    };
+
+    getUserInfoList();
+
     return(
         <main>
-            {/* {UserData.map((item) => {
-                return(
-                    <Container>
-                        <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-                        <Name>{item.name}</Name>
-                        <Pronouns>{item.pronouns}</Pronouns>
-                        <Qualifications>{item.qualifications}</Qualifications>
-                        <Bio>{item.bio}</Bio>
-                        <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
-                    </Container>
-                )
-            })} */}
             <Container>
             <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
             <Name>{userInfoList.name}</Name>
