@@ -88,16 +88,18 @@ function Profile(){
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);
-    const getUserInfoList = async () => {
-        try {
-            const data = await getDoc(userDocRef);
-            const filteredData = data.data();
-            setUserInfoList(filteredData);
-            console.log(userInfoList);
-        } catch (error) {
-            console.error(error)
-        }
-    };
+    useEffect(() => {
+        const getUserInfoList = async () => {
+            try {
+                const data = await getDoc(userDocRef);
+                const filteredData = data.data();
+                setUserInfoList(filteredData);
+                console.log(userInfoList);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+    }, []);
 
     getUserInfoList();
 
