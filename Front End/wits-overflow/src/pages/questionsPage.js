@@ -57,7 +57,7 @@ function QuestionsPage(){
         };
 
         getQuestionList();
-    });
+    }, []);
     
 
     //possibly change question row to take a Question object instead of all of the seperate fields

@@ -58,7 +58,7 @@ function CommunityPage(){
 
         getUserList();
         //console.log(userList);
-    });
+    }, []);
     
 
     // Using map from QuestionRow, altering it to fit the data of the users.
@@ -67,9 +67,9 @@ function CommunityPage(){
     {userList.map((dbUser) => (
         userComponents.push(
             <CommunityRow 
-                commEmail = {dbUser.id}
-                commName = {dbUser.name}
-                commPronouns = {dbUser.pronouns}
+                userEmail = {dbUser.id}
+                userName = {dbUser.name}
+                userPronouns = {dbUser.pronouns}
             />
             
         )

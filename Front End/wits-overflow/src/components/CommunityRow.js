@@ -8,7 +8,7 @@ import { useState, useRef, useEffect } from "react";
 
 
 const NameArea = styled.div`
-    padding: 0 25px;
+    padding: 5px 20px 5px 20px;
 `;
 
 const CommLink = styled.a`
@@ -21,9 +21,12 @@ const CommLink = styled.a`
 
 const StyledCommunityRow = styled.div`
     background-color: rgba(255,255,255,.05);
-    color: #fff;
     padding: 15px 15px 10px;
-    display: grid;
+    display: flex;
+    align-items: flex-start;
+    align-content: space-around;
+    text-align: center;
+    flex-direction: row;
     margin-top: 0;
     margin-left: 0;
     margin-right: 0;
@@ -38,7 +41,7 @@ const UserLink = styled.a`
 
 
 //function QuestionRow({Question : question}){  
-function CommunityRow({userEmail, userName, userPronouns, currEmail}){  
+function CommunityRow({userEmail, userName, userPronouns}){  
     let navigate = useNavigate();
 
     let userEmail1 = userEmail;
@@ -71,8 +74,8 @@ function CommunityRow({userEmail, userName, userPronouns, currEmail}){
             <NameArea>
                 <CommLink onClick={() => routeChangeToSingleQuestion(commuser)}> {userEmail1} </CommLink>
             </NameArea>
-            {userName1}
-            {userPronouns1}
+            <NameArea> {userName1} </NameArea>
+            <NameArea> {userPronouns1} </NameArea>
         </StyledCommunityRow>
         
     )
