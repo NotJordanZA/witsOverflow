@@ -4,7 +4,7 @@ import Avatar from "../avatar.svg"
 import {useNavigate, useLocation} from "react-router-dom";
 //import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getDoc , doc} from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 
@@ -99,9 +99,8 @@ function Profile(){
                 console.error(error)
             }
         };
+        getUserInfoList();
     }, []);
-
-    getUserInfoList();
 
     return(
         <main>

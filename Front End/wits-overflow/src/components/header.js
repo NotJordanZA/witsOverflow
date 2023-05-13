@@ -1,7 +1,7 @@
 //header class thats persistent accross all pages
 import styled from "styled-components";
 import logo from '../logo.png';
-import bell from '../bell2.png';
+import users from '../users.png';
 import avatar from '../avatar.svg';
 import {useLocation, useNavigate} from "react-router-dom";
 import { useContext } from "react";
@@ -13,7 +13,7 @@ import { getAuth, signOut } from "firebase/auth";
 //container for header elements
 const StyledHeader = styled.header`
   display:grid;
-  grid-template-columns: 30px 200px 1fr 50px 200px;
+  grid-template-columns: 30px 200px 1fr 50px 50px 200px;
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
   `;
 
@@ -68,9 +68,10 @@ const LogoLink = styled.a`
   `;
 
   //styling for the bell link
-  const BellLink = styled.a`
+  const UsersLink = styled.a`
   display: inline-block;
-  padding: 22px 15px;
+  padding: 20px 10px 0 10px;
+  opacity: 0.8;
   `;
 
   //styling for the profile photo link
@@ -118,9 +119,9 @@ function Header(){
       <form action="" className="search">
         <SearchInput type="text" placeholder="Search..."/>
       </form>
-      {/* <BellLink href="" className="bell">
-          <img style = {{ width : 25, height: 25 }}src = {bell} alt = "bell" />
-      </BellLink> */}
+      <UsersLink href="/communityPage" className="users">
+          <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
+      </UsersLink>
       <ProfileLinkAvi href="/profilePage" className="profile">
         <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
       </ProfileLinkAvi>
