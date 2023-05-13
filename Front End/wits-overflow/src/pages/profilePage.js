@@ -5,7 +5,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 //import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import { getDoc , doc} from "firebase/firestore";
+import { getDoc , doc, getDocs, collection} from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 import QuestionRow from '../components/QuestionRow';
 
@@ -120,6 +120,9 @@ function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
     var email = sessionStorage.getItem('userEmail');
+    const communityEmail = useLocation().state;
+    window.history.replaceState({}, document.title);
+    console.log(communityEmail);
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
@@ -134,22 +137,32 @@ function Profile(){
         });
         navigate(path);
     }
+
+    let communityUserRef = "";
+
+    if(communityEmail != null){
+        communityUserRef = doc(db, "users", communityEmail);
+    }
+
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);
 
     useEffect(() => {
-        const getUserInfoList = async () => {
+        const getUserInfoList = async (docRef) => {
             try {
-                const data = await getDoc(userDocRef);
+                const data = await getDoc(docRef);
                 const filteredData = data.data();
                 setUserInfoList(filteredData);
-                console.log(userInfoList);
             } catch (error) {
                 console.error(error)
             }
         };
-        getUserInfoList();
+        if(communityEmail != null){
+            getUserInfoList(communityUserRef);
+        }else{
+            getUserInfoList(userDocRef);
+        }
     }, []);
 
     const UserData = [
@@ -162,62 +175,116 @@ function Profile(){
     }
     ];
 
+    const [questionList, setQuestionList] = useState([]);
+    const questionCollectionRef = collection(db, "questions")
 
+    useEffect(() => {
+        const getQuestionList = async () => {
+            try {
+                const data = await getDocs(questionCollectionRef);
+                const filteredData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                setQuestionList(filteredData);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+
+        getQuestionList();
+    }, []);
+
+    let questions = [];
+
+    const mapQuestions = questionList.map((dbQuestion) => {
+        if(communityEmail != null){
+            if(dbQuestion.name === communityEmail){
+                let question = {questionID : dbQuestion.id,
+                    questionTitle : dbQuestion.title,
+                    questionText : dbQuestion.questionBody,
+                    votes : dbQuestion.votes,
+                    answerCount : dbQuestion.answerCount,
+                    viewCount : dbQuestion.views,
+                    timeAsked : "time",
+                    firstName : dbQuestion.name,
+                    tags : ['a', 'b', 'c', 'd'],
+                    currEmail : email};
+                questions.push(question)
+            }
+        }else{
+            if(dbQuestion.name === email){
+                let question = {questionID : dbQuestion.id,
+                    questionTitle : dbQuestion.title,
+                    questionText : dbQuestion.questionBody,
+                    votes : dbQuestion.votes,
+                    answerCount : dbQuestion.answerCount,
+                    viewCount : dbQuestion.views,
+                    timeAsked : "time",
+                    firstName : dbQuestion.name,
+                    tags : ['a', 'b', 'c', 'd'],
+                    currEmail : email};
+                questions.push(question)
+            }
+        }
+    })
+
+    let doThis = mapQuestions;
 
     //DUMMY DATA
-    let userEmail = "2332763@students.wits.ac.za";
-    let userFirstName = "Troy";
-    let question1 = {questionID : "bz9ix0uKMRmfKRtOf65z", 
-                    questionTitle : "How do I calculate the arc-length of a function?",
-                    questionText : "Self-explanatory title",
-                    votes : 4 ,
-                    answerCount : 3,
-                    viewCount : 17,
-                    timeAsked : "time",
-                    firstName : userFirstName,
-                    tags : ['a', 'b', 'c', 'd'],
-                    currEmail : userEmail};
-    let question2 = {questionID : "cz9ix0uKMRmfKRtOf65z", 
-                    questionTitle : "What is the pseudocode for quicksort?",
-                    questionText : "Self-explanatory title",
-                    votes : 3 ,
-                    answerCount : 1,
-                    viewCount : 9,
-                    timeAsked : "time",
-                    firstName : userFirstName,
-                    tags : ['a', 'b', 'c', 'e'],
-                    currEmail : userEmail};  
-    let question3 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-                    questionTitle : "How do I do Gaussian Elimination?",
-                    questionText : "Self-explanatory title",
-                    votes : 19 ,
-                    answerCount : 1,
-                    viewCount : 28,
-                    timeAsked : "time",
-                    firstName : userFirstName,
-                    tags : ['a', 'b', 'd', 'e'],
-                    currEmail : userEmail}; 
-    let question4 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-        questionTitle : "How do I do backpropogation in neural networks?",
-        questionText : "Self-explanatory title",
-        votes : 12 ,
-        answerCount : 4,
-        viewCount : 16,
-        timeAsked : "time",
-        firstName : userFirstName,
-        tags : ['a', 'b', 'd', 'e'],
-        currEmail : userEmail}; 
-    let question5 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-        questionTitle : "What is the meaning of life?",
-        questionText : "Self-explanatory title",
-        votes : 2 ,
-        answerCount : 0,
-        viewCount : 50,
-        timeAsked : "time",
-        firstName : userFirstName,
-        tags : ['a', 'b', 'k', 'e'],
-        currEmail : userEmail}; 
-    const questions = [question1, question2, question3, question4, question5];
+    // let userEmail = "2332763@students.wits.ac.za";
+    // let userFirstName = "Troy";
+    // let question1 = {questionID : "bz9ix0uKMRmfKRtOf65z", 
+    //                 questionTitle : "How do I calculate the arc-length of a function?",
+    //                 questionText : "Self-explanatory title",
+    //                 votes : 4 ,
+    //                 answerCount : 3,
+    //                 viewCount : 17,
+    //                 timeAsked : "time",
+    //                 firstName : userFirstName,
+    //                 tags : ['a', 'b', 'c', 'd'],
+    //                 currEmail : userEmail};
+    // let question2 = {questionID : "cz9ix0uKMRmfKRtOf65z", 
+    //                 questionTitle : "What is the pseudocode for quicksort?",
+    //                 questionText : "Self-explanatory title",
+    //                 votes : 3 ,
+    //                 answerCount : 1,
+    //                 viewCount : 9,
+    //                 timeAsked : "time",
+    //                 firstName : userFirstName,
+    //                 tags : ['a', 'b', 'c', 'e'],
+    //                 currEmail : userEmail};  
+    // let question3 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
+    //                 questionTitle : "How do I do Gaussian Elimination?",
+    //                 questionText : "Self-explanatory title",
+    //                 votes : 19 ,
+    //                 answerCount : 1,
+    //                 viewCount : 28,
+    //                 timeAsked : "time",
+    //                 firstName : userFirstName,
+    //                 tags : ['a', 'b', 'd', 'e'],
+    //                 currEmail : userEmail}; 
+    // let question4 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
+    //     questionTitle : "How do I do backpropogation in neural networks?",
+    //     questionText : "Self-explanatory title",
+    //     votes : 12 ,
+    //     answerCount : 4,
+    //     viewCount : 16,
+    //     timeAsked : "time",
+    //     firstName : userFirstName,
+    //     tags : ['a', 'b', 'd', 'e'],
+    //     currEmail : userEmail}; 
+    // let question5 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
+    //     questionTitle : "What is the meaning of life?",
+    //     questionText : "Self-explanatory title",
+    //     votes : 2 ,
+    //     answerCount : 0,
+    //     viewCount : 50,
+    //     timeAsked : "time",
+    //     firstName : userFirstName,
+    //     tags : ['a', 'b', 'k', 'e'],
+    //     currEmail : userEmail}; 
+    // const questions = [question1, question2, question3, question4, question5];
     const achievements = ["Keyboard Warrior", "Inquisitive Mind", "Sage"];
 
     //STATISTICS TO BE FETCHED FROM DATABASE USING QUERY
@@ -256,7 +323,8 @@ function Profile(){
                 timeAsked = "time"
                 firstName = {userTimeAsked}
                 tags = {userTags}
-                currEmail= {userEmail}
+                currEmail= {email}
+                forProfilePage = {true}
             />
         )
     }
@@ -269,37 +337,101 @@ function Profile(){
         );
     }
     
-    return(
-        <main>
-            <Container>
-            <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-            <Name>{userInfoList.name}</Name>
-            {/*console.log(email,userInfoList.name)*/}
-            <Pronouns>{userInfoList.pronouns}</Pronouns>
-            <Qualifications>{userInfoList.qualifications}</Qualifications>
-            <Bio>{userInfoList.bio}</Bio>
-            <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
-            </Container>
-            <HeaderRow>
-                <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
-            </HeaderRow>
-            <AchievementRow>
-                {achievementsDisplay}
-            </AchievementRow>
-            <HeaderRow>
-                <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
-                <StatsRow>
-                    <ProfileStat>{totalViews} <span>total views</span></ProfileStat>
-                    <ProfileStat>{totalVotes} <span>total votes</span></ProfileStat>
-                    <ProfileStat>{numQuestions} <span>things asked</span></ProfileStat>
-                </StatsRow>
-            </HeaderRow>
-            {questionRows}
-            <PassRow>
-                <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>
-            </PassRow>
-        </main>
-    )
+    if (communityEmail != null){
+        if (communityEmail == email){
+            return(
+                <main>
+                    <Container>
+                    <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
+                    <Name>{userInfoList.name}</Name>
+                    {/*console.log(email,userInfoList.name)*/}
+                    <Pronouns>{userInfoList.pronouns}</Pronouns>
+                    <Qualifications>{userInfoList.qualifications}</Qualifications>
+                    <Bio>{userInfoList.bio}</Bio>
+                    <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
+                    </Container>
+                    <HeaderRow>
+                        <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
+                    </HeaderRow>
+                    <AchievementRow>
+                        {achievementsDisplay}
+                    </AchievementRow>
+                    <HeaderRow>
+                        <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
+                        <StatsRow>
+                            <ProfileStat>{totalViews} <span>total views</span></ProfileStat>
+                            <ProfileStat>{totalVotes} <span>total votes</span></ProfileStat>
+                            <ProfileStat>{numQuestions} <span>things asked</span></ProfileStat>
+                        </StatsRow>
+                    </HeaderRow>
+                    {questionRows}
+                    <PassRow>
+                        <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>
+                    </PassRow>
+                </main>
+            )
+        }else{
+            return(
+                <main>
+                    <Container>
+                    <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
+                    <Name>{userInfoList.name}</Name>
+                    {/*console.log(email,userInfoList.name)*/}
+                    <Pronouns>{userInfoList.pronouns}</Pronouns>
+                    <Qualifications>{userInfoList.qualifications}</Qualifications>
+                    <Bio>{userInfoList.bio}</Bio>
+                    </Container>
+                    <HeaderRow>
+                        <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
+                    </HeaderRow>
+                    <AchievementRow>
+                        {achievementsDisplay}
+                    </AchievementRow>
+                    <HeaderRow>
+                        <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
+                        <StatsRow>
+                            <ProfileStat>{totalViews} <span>total views</span></ProfileStat>
+                            <ProfileStat>{totalVotes} <span>total votes</span></ProfileStat>
+                            <ProfileStat>{numQuestions} <span>things asked</span></ProfileStat>
+                        </StatsRow>
+                    </HeaderRow>
+                    {questionRows}
+                </main>
+            )
+        }
+    }else{
+        return(
+            <main>
+                <Container>
+                <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
+                <Name>{userInfoList.name}</Name>
+                {/*console.log(email,userInfoList.name)*/}
+                <Pronouns>{userInfoList.pronouns}</Pronouns>
+                <Qualifications>{userInfoList.qualifications}</Qualifications>
+                <Bio>{userInfoList.bio}</Bio>
+                <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
+                </Container>
+                <HeaderRow>
+                    <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
+                </HeaderRow>
+                <AchievementRow>
+                    {achievementsDisplay}
+                </AchievementRow>
+                <HeaderRow>
+                    <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
+                    <StatsRow>
+                        <ProfileStat>{totalViews} <span>total views</span></ProfileStat>
+                        <ProfileStat>{totalVotes} <span>total votes</span></ProfileStat>
+                        <ProfileStat>{numQuestions} <span>things asked</span></ProfileStat>
+                    </StatsRow>
+                </HeaderRow>
+                {questionRows}
+                <PassRow>
+                    <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>
+                </PassRow>
+            </main>
+        )
+    }
 }
 
 export default Profile;

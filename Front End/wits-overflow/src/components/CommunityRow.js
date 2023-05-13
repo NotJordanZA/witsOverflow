@@ -62,14 +62,7 @@ function CommunityRow({userEmail, userName, userPronouns}){
     let email = sessionStorage.getItem('userEmail');
 
     const commuser = new commUser(userEmail1, userName1, userPronouns1);
-
-    // function routeChangeToSingleQuestion(commuser) {
-    //     let path = '/profilePage';
-    //     console.log("Clicked user");
-    //     console.log(commuser);
-    //     navigate(path, {state : commuser});
-
-    // }
+    
     const routeChangeToProfile = (email) => {
         let path= '/profilePage';
         navigate(path, {state : email});
@@ -79,7 +72,7 @@ function CommunityRow({userEmail, userName, userPronouns}){
         <StyledCommunityRow>
             <StyledName> {userName1} </StyledName>
             <StyledPronouns> {userPronouns1} </StyledPronouns>
-            <EmailLink onClick={() => routeChangeToProfile(email)}> {userEmail1} </EmailLink>
+            <EmailLink onClick={() => routeChangeToProfile(userEmail1)}> {userEmail1} </EmailLink>
         </StyledCommunityRow>
         
     )

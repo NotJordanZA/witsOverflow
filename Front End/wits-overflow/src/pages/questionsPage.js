@@ -76,6 +76,7 @@ function QuestionsPage(){
                 firstName = {dbQuestion.name}
                 tags = {postTags[i]}
                 currEmail= {email}
+                forProfilePage = {false}
             />
         )
     ))}

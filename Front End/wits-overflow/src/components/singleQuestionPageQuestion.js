@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
-import CommentsArea from '../components/commentsArea';
+import {useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { db } from '../firebase-config/firebase';
 import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
@@ -96,7 +96,12 @@ const HiddenButton = styled.button`
     display: none;
 `;
 
+const UserLink = styled.a`
+    color: #808191;
+`;
+
 function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments, currEmail, currVoted, currVote}) {
+    let navigate = useNavigate();
     const voteDocRef = doc(db, "questions", questionID, "Votes", currEmail);
     let commentDocPath = "questions/" + questionID + "/Comments";
     const [votes1, setVotes1] = useState(votes);
@@ -228,6 +233,11 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             setVotes1(votes1 - 1);
         }
     }
+
+    const routeChangeToProfile = (email) => {
+        let path= '/profilePage';
+        navigate(path, {state : email});
+    }
     
     //just a container that contains all of the question data displayed on the single question page
     return (
@@ -236,7 +246,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                 <Title><b>{questionTitle}</b></Title>
                 <QuestionStatArea>
                     {/* need to add timeAsked */}
-                    <QuestionStat>Asked by {firstName}</QuestionStat>
+                    <QuestionStat>Asked by <UserLink onClick={() => routeChangeToProfile(firstName)}> {firstName} </UserLink></QuestionStat>
                     <QuestionStat>{viewCount} Views</QuestionStat>
                 </QuestionStatArea>
             </TitleArea>

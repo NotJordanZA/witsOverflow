@@ -67,7 +67,7 @@ const UserLink = styled.a`
 
 
 //function QuestionRow({Question : question}){  
-function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail}){  
+function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, forProfilePage}){  
     let navigate = useNavigate();
 
     let questionID1 = questionID;
@@ -101,23 +101,40 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
 
     }
 
-    return (
-        <StyledQuestionRow>
-            <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
-            <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
-            <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
-            <QuestionTitleArea>
+    const routeChangeToProfile = (email) => {
+        let path= '/profilePage';
+        navigate(path, {state : email});
+    }
 
-                <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
-                {/* need to add timeAsked */}
-                <WhoAndWhen>
-                    Asked by <UserLink> {firstName1} </UserLink>
-                </WhoAndWhen>
-                {tagComponents}
-            </QuestionTitleArea>
-        </StyledQuestionRow>
-        
-    )
+    if(forProfilePage){
+        return (
+            <StyledQuestionRow>
+                <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
+                <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
+                <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
+                <QuestionTitleArea>
+                    <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
+                    {tagComponents}
+                </QuestionTitleArea>
+            </StyledQuestionRow>
+        )
+    }else{
+        return (
+            <StyledQuestionRow>
+                <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
+                <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
+                <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
+                <QuestionTitleArea>
+                    <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
+                    {/* need to add timeAsked */}
+                    <WhoAndWhen>
+                        Asked by <UserLink onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
+                    </WhoAndWhen>
+                    {tagComponents}
+                </QuestionTitleArea>
+            </StyledQuestionRow>
+        )
+    }
 }
 
 export default QuestionRow;
