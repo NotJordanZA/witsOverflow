@@ -4,7 +4,7 @@ import Avatar from "../avatar.svg"
 import {useNavigate, useLocation} from "react-router-dom";
 //import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getDoc , doc} from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 import QuestionRow from '../components/QuestionRow';
@@ -137,18 +137,21 @@ function Profile(){
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);
-    const getUserInfoList = async () => {
-        try {
-            const data = await getDoc(userDocRef);
-            const filteredData = data.data();
-            setUserInfoList(filteredData);
-            //console.log(userInfoList);
-        } catch (error) {
-            console.error(error)
-        }
-    };
 
-    getUserInfoList();
+    useEffect(() => {
+        const getUserInfoList = async () => {
+            try {
+                const data = await getDoc(userDocRef);
+                const filteredData = data.data();
+                setUserInfoList(filteredData);
+                console.log(userInfoList);
+            } catch (error) {
+                console.error(error)
+            }
+        };
+        getUserInfoList();
+    }, []);
+
     const UserData = [
     {
         email: email,

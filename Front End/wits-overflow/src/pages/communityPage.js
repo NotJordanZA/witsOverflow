@@ -1,8 +1,8 @@
 // QuestionsPage.js
 import styled from 'styled-components'
-import QuestionRow from '../components/QuestionRow';
+import CommunityRow from '../components/CommunityRow';
 import StyledButton from '../components/styledButton';
-import {Question} from '../components/Question';
+import {commUser} from '../components/commUser';
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -32,70 +32,68 @@ const HeaderRow = styled.div`
 // let viewCounts = [4, 5, 2, 27];
 // let timesAsked = ["3 min ago", "1 hr ago", "17 min ago", "1 day ago"];
 // let firstNames = ["Jordan", "Ndivhuwo", "Troy", "Ruben"];
-let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m", "n", "o", "p", "q"]];
 
-function QuestionsPage(){
+function CommunityPage(){
     let navigate = useNavigate();
     const location = useLocation();
     const email = sessionStorage.getItem('userEmail');
 
-    const [questionList, setQuestionList] = useState([]);
-    const questionCollectionRef = collection(db, "questions")
+    const [userList, setUserList] = useState([]);
+    const userCollectionRef = collection(db, "users")
 
     useEffect(() => {
-        const getQuestionList = async () => {
+        const getUserList = async () => {
             try {
-                const data = await getDocs(questionCollectionRef);
+                const data = await getDocs(userCollectionRef);
                 const filteredData = data.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id,
                 }));
-                setQuestionList(filteredData);
+                setUserList(filteredData);
+                //console.log(data);
             } catch (error) {
                 console.error(error)
             }
         };
 
-        getQuestionList();
+        getUserList();
+        //console.log(userList);
     }, []);
     
 
-    //possibly change question row to take a Question object instead of all of the seperate fields
-    const questionComponents = [];
+    // Using map from QuestionRow, altering it to fit the data of the users.
+    const userComponents = [];
     let i = 0;
-    {questionList.map((dbQuestion) => (
-        questionComponents.push(
-            <QuestionRow 
-                questionID = {dbQuestion.id}
-                questionTitle = {dbQuestion.title}
-                questionText = {dbQuestion.questionBody}
-                votes = {dbQuestion.votes} 
-                answerCount = {dbQuestion.answerCount}
-                viewCount = {dbQuestion.views}
-                timeAsked = "time"
-                firstName = {dbQuestion.name}
-                tags = {postTags[i]}
-                currEmail= {email}
+    {userList.map((dbUser) => (
+        userComponents.push(
+            <CommunityRow 
+                userEmail = {dbUser.id}
+                userName = {dbUser.name}
+                userPronouns = {dbUser.pronouns}
             />
+            
         )
     ))}
+    
 
     //in future, we use firebase to populate each of these arrays
     
-    const routeChangeToAskQuestion = () => {
-        let path= '/askPage';
-        navigate(path, {state : email});
+    const routeChangeToProfile = (clickedEmail) => {
+        let path= '/profilePage';
+        navigate(path, {state : clickedEmail});
     }
 
     return (
         <main>
             <HeaderRow>
-                <StyledHeader> Top Questions </StyledHeader>
-                <StyledButton onClick={routeChangeToAskQuestion}> Ask&nbsp;Question </StyledButton>
+                <StyledHeader> Community </StyledHeader>
+                {
+                    //<StyledButton onClick={routeChangeToAskQuestion}> Ask&nbsp;Question </StyledButton>
+                }
             </HeaderRow>
-            {questionComponents}
+            {userComponents}
         </main>
     );
 }
 
-export default QuestionsPage;
+export default CommunityPage;
