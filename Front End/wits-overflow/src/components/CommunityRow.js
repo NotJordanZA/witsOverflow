@@ -63,19 +63,23 @@ function CommunityRow({userEmail, userName, userPronouns}){
 
     const commuser = new commUser(userEmail1, userName1, userPronouns1);
 
-    function routeChangeToSingleQuestion(commuser) {
-        let path = '/profilePage';
-        console.log("Clicked user");
-        console.log(commuser);
-        navigate(path, {state : commuser});
+    // function routeChangeToSingleQuestion(commuser) {
+    //     let path = '/profilePage';
+    //     console.log("Clicked user");
+    //     console.log(commuser);
+    //     navigate(path, {state : commuser});
 
+    // }
+    const routeChangeToProfile = (email) => {
+        let path= '/profilePage';
+        navigate(path, {state : email});
     }
 
     return (
         <StyledCommunityRow>
             <StyledName> {userName1} </StyledName>
             <StyledPronouns> {userPronouns1} </StyledPronouns>
-            <EmailLink onClick={() => routeChangeToSingleQuestion(commuser)}> {userEmail1} </EmailLink>
+            <EmailLink onClick={() => routeChangeToProfile(email)}> {userEmail1} </EmailLink>
         </StyledCommunityRow>
         
     )
