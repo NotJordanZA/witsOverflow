@@ -321,7 +321,7 @@ function Profile(){
                 answerCount = {userAnswerCount}
                 viewCount = {userViewCount}
                 timeAsked = "time"
-                firstName = {userTimeAsked}
+                firstName = {email}
                 tags = {userTags}
                 currEmail= {email}
                 forProfilePage = {true}
