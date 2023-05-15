@@ -26,11 +26,7 @@ jobs:
       #     command: npm run test
       - checkout
       - codecov/upload:
-          file: /home/circleci/build/coverage/witsOverflow/lcov.info
           token: CODE_COV_ENV
-      - run:
-          name: Build for production
-          command: npm run build
 workflows:
   main-workflow:
     jobs:
