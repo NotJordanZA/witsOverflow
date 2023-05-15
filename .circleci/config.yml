@@ -26,7 +26,7 @@ jobs:
           command: npm run test
       - checkout
       - codecov/upload:
-          token: CODE_COV_ENV
+          token: CODECOV_TOKEN
 workflows:
   main-workflow:
     jobs:
