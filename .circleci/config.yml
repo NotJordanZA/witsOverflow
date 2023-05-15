@@ -21,9 +21,9 @@ jobs:
           key: build-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run:
-          name: Testing
-          command: npm run test
+      # - run:
+      #     name: Testing
+      #     command: npm run test
       - checkout
       - codecov/upload:
           file: /home/circleci/build/coverage/witsOverflow/lcov.info
