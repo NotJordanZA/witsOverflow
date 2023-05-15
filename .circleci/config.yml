@@ -12,6 +12,16 @@ orbs:
 workflows:
   upload-to-codecov:
     jobs:
-      - node/test:
-          post-steps:
-            - codecov/upload
+      please:
+          steps:
+            - run:
+              name: Show current branch
+              command: echo ${CIRCLE_BRANCH}
+            - restore_cache:
+                key: build-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - run:
+                name: Install local dependencies
+                command: npm install
+            - codecov/upload:
+              file: /home/circleci/build/coverage/witsOverflow/lcov.info
+              token: CODE_COV_ENV
