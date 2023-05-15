@@ -26,6 +26,7 @@ jobs:
       #     command: npm run test
       - checkout
       - codecov/upload:
+          files: /home/circleci/build/coverage/quiz-platform/lcov.info
           token: CODE_COV_ENV
 workflows:
   main-workflow:
