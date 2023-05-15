@@ -26,7 +26,6 @@ jobs:
       #     command: npm run test
       - checkout
       - codecov/upload:
-          file: /home/circleci/build/coverage/witsOverflow/lcov.info
           token: CODE_COV_ENV
 workflows:
   main-workflow:
