@@ -3,7 +3,7 @@ import styled from "styled-components";
 import logo from '../logo.png';
 import users from '../users.png';
 import avatar from '../avatar.svg';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, Outlet} from "react-router-dom";
 import { useContext } from "react";
 import {UserContext} from "../context/userContext";
 import UserData from "../context/userData";
@@ -91,12 +91,10 @@ const LogoLink = styled.a`
 
 //function handling the entire heading area and changing the header based on whether the user is logged
 function Header(){
-  let navigate = useNavigate();
-  const currentUser = useContext(UserContext);
-  const { pathname } = useLocation();//finds the current path
 
-  if (pathname === "/" || pathname === "/registrationPage"){//checks if on the login or registration page
+  if (sessionStorage.getItem('userEmail') == null){//checks if on the login or registration page
     return(
+      <main>
         <StyledHeader>
           <LogoLink href="" className="logo">
               <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
@@ -104,36 +102,34 @@ function Header(){
           <LogoLinkTitle href="" className="title">
               <span><b>wits overflow</b></span>
           </LogoLinkTitle>
-      </StyledHeader>
+        </StyledHeader>
+        <Outlet/>
+      </main>
     );
   }
   const email = sessionStorage.getItem('userEmail');
   return(
-    <StyledHeader>
-      <LogoLink href="/questionsPage" className="logo">
-          <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
-      </LogoLink>
-      <LogoLinkTitle href="/questionsPage" className="title">
-          <span><b>wits overflow</b></span>
-      </LogoLinkTitle>
-      <form action="" className="search">
-        <SearchInput type="text" placeholder="Search..."/>
-      </form>
-      <UsersLink href="/communityPage" className="users">
-          <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
-      </UsersLink>
-      <ProfileLinkAvi href="/profilePage" className="profile">
-        <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
-      </ProfileLinkAvi>
-      {/* {UserData.map((item) => {
-        return(
-          <ProfileLinkName href="/profilePage" className="profile">
-            {item.name}
-          </ProfileLinkName> 
-        )
-      })} */}
-      <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
-  </StyledHeader>
+    <main>
+      <StyledHeader>
+        <LogoLink href="/questionsPage" className="logo">
+            <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
+        </LogoLink>
+        <LogoLinkTitle href="/questionsPage" className="title">
+            <span><b>wits overflow</b></span>
+        </LogoLinkTitle>
+        <form action="" className="search">
+          <SearchInput type="text" placeholder="Search..." className="searchBar"/>
+        </form>
+        <UsersLink href="/communityPage" className="users">
+            <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
+        </UsersLink>
+        <ProfileLinkAvi href="/profilePage" className="profile">
+          <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
+        </ProfileLinkAvi>
+        <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
+    </StyledHeader>
+    <Outlet/>
+    </main>
 );
 }
 

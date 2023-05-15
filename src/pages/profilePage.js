@@ -128,7 +128,7 @@ function Profile(){
         navigate(path);
     }
     const routeChangeLogOut = () => {
-        let path= '/';
+        let path= "";
         const auth = getAuth();
         signOut(auth).then(() => {
         // Sign-out successful.
@@ -231,60 +231,6 @@ function Profile(){
 
     let doThis = mapQuestions;
 
-    //DUMMY DATA
-    // let userEmail = "2332763@students.wits.ac.za";
-    // let userFirstName = "Troy";
-    // let question1 = {questionID : "bz9ix0uKMRmfKRtOf65z", 
-    //                 questionTitle : "How do I calculate the arc-length of a function?",
-    //                 questionText : "Self-explanatory title",
-    //                 votes : 4 ,
-    //                 answerCount : 3,
-    //                 viewCount : 17,
-    //                 timeAsked : "time",
-    //                 firstName : userFirstName,
-    //                 tags : ['a', 'b', 'c', 'd'],
-    //                 currEmail : userEmail};
-    // let question2 = {questionID : "cz9ix0uKMRmfKRtOf65z", 
-    //                 questionTitle : "What is the pseudocode for quicksort?",
-    //                 questionText : "Self-explanatory title",
-    //                 votes : 3 ,
-    //                 answerCount : 1,
-    //                 viewCount : 9,
-    //                 timeAsked : "time",
-    //                 firstName : userFirstName,
-    //                 tags : ['a', 'b', 'c', 'e'],
-    //                 currEmail : userEmail};  
-    // let question3 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-    //                 questionTitle : "How do I do Gaussian Elimination?",
-    //                 questionText : "Self-explanatory title",
-    //                 votes : 19 ,
-    //                 answerCount : 1,
-    //                 viewCount : 28,
-    //                 timeAsked : "time",
-    //                 firstName : userFirstName,
-    //                 tags : ['a', 'b', 'd', 'e'],
-    //                 currEmail : userEmail}; 
-    // let question4 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-    //     questionTitle : "How do I do backpropogation in neural networks?",
-    //     questionText : "Self-explanatory title",
-    //     votes : 12 ,
-    //     answerCount : 4,
-    //     viewCount : 16,
-    //     timeAsked : "time",
-    //     firstName : userFirstName,
-    //     tags : ['a', 'b', 'd', 'e'],
-    //     currEmail : userEmail}; 
-    // let question5 = {questionID : "dz9ix0uKMRmfKRtOf65z", 
-    //     questionTitle : "What is the meaning of life?",
-    //     questionText : "Self-explanatory title",
-    //     votes : 2 ,
-    //     answerCount : 0,
-    //     viewCount : 50,
-    //     timeAsked : "time",
-    //     firstName : userFirstName,
-    //     tags : ['a', 'b', 'k', 'e'],
-    //     currEmail : userEmail}; 
-    // const questions = [question1, question2, question3, question4, question5];
     const achievements = ["Keyboard Warrior", "Inquisitive Mind", "Sage"];
 
     //STATISTICS TO BE FETCHED FROM DATABASE USING QUERY

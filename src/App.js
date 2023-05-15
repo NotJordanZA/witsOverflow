@@ -88,18 +88,20 @@ function App() {
         <GlobalStyles/>
         <Router>
           <UserContext.Provider value = {{user}}>
-            <Header/>
             <Routes>
-              <Route path= "/" element= {<LoginPage/>} />
-              <Route path= "/questionsPage" element= {<QuestionsPage/>} />
-              <Route path= "/usersPage" element= {<Users/>} />
-              <Route path= "/rewardsPage" element= {<Rewards/>} />
-              <Route path= "/profilePage" element= {<Profile/>} />
-              <Route path= "/registrationPage" element= {<Register/>} />
-              <Route path= "/askPage" element= {<AskPage/>} />
-              <Route path= "/changePassword" element= {<ChangePassword/>} />
-              <Route path= "/question" element= {<SingleQuestionPage/>} />
-              <Route path= "/communityPage" element= {<CommunityPage/>} />
+              <Route path= "/" element= {<Header/>}>
+                <Route path= ":id" element= {<LoginPage/>} />
+                <Route index element= {<LoginPage/>} />
+                <Route path= "/questionsPage" element= {<QuestionsPage/>} />
+                <Route path= "/usersPage" element= {<Users/>} />
+                <Route path= "/rewardsPage" element= {<Rewards/>} />
+                <Route path= "/profilePage" element= {<Profile/>} />
+                <Route path= "/registrationPage" element= {<Register/>} />
+                <Route path= "/askPage" element= {<AskPage/>} />
+                <Route path= "/changePassword" element= {<ChangePassword/>} />
+                <Route path= "/question" element= {<SingleQuestionPage/>} />
+                <Route path= "/communityPage" element= {<CommunityPage/>} />
+              </Route>
             </Routes>
           </UserContext.Provider>
         </Router>
