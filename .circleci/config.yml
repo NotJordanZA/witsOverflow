@@ -21,12 +21,11 @@ jobs:
           key: build-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      # - run:
-      #     name: Testing
-      #     command: npm run test
+      - run:
+          name: Testing
+          command: npm run test
       - checkout
       - codecov/upload:
-          files: /home/circleci/build/coverage/quiz-platform/lcov.info
           token: CODE_COV_ENV
 workflows:
   main-workflow:
