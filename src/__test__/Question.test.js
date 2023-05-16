@@ -15,7 +15,7 @@ describe('QuestionRow', () => {
   };
   const email = 'john@example.com';
 
-  it.skip('renders question stats and title', () => {
+  it('renders question stats and title', () => {
     render(<QuestionRow {...question} currEmail={email} />);
     expect(screen.getByText(`${question.votes} votes`)).toBeInTheDocument();
     expect(screen.getByText(`${question.answerCount} answers`)).toBeInTheDocument();

@@ -80,8 +80,6 @@ function QuestionsPage(){
             />
         )
     ))}
-
-    //in future, we use firebase to populate each of these arrays
     
     const routeChangeToAskQuestion = () => {
         let path= '/askPage';

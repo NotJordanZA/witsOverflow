@@ -118,7 +118,7 @@ function Header(){
             <span><b>wits overflow</b></span>
         </LogoLinkTitle>
         <form action="" className="search">
-          <SearchInput type="text" placeholder="Search..." className="searchBar"/>
+          <SearchInput type="text" placeholder="Search..." className="searchBar" data-testid = "headerSearch"/>
         </form>
         <UsersLink href="/communityPage" className="users">
             <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
