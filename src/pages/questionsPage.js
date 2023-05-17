@@ -2,8 +2,7 @@
 import styled from 'styled-components'
 import QuestionRow from '../components/QuestionRow';
 import StyledButton from '../components/styledButton';
-import {Question} from '../components/Question';
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
@@ -21,22 +20,15 @@ const HeaderRow = styled.div`
     grid-template-columns: 1fr min-content;
     padding: 10px 20px;
 `;
-
-//dummy data to use to populate questions page. Stored as an array to ensure conciseness
-
-// let questionIDs = [0, 1, 2, 3];
-// let questionTitles = ["Conditional joining of dataframes", "How to find similarity between two vectors?","Spring stub returns incorrect response on GET endp with different number of parameters sent", "How to solve a homogeneuos linear differential equation"];
-// let questionTexts = ["Howdy partner 1", "Howdy partner 2", "Howdy partner 3", "Howdy partner 4"];
-// let voteCounts = [0, 1, 0, 7];
-// let answerCounts = [0, 1, 0, 3];
-// let viewCounts = [4, 5, 2, 27];
-// let timesAsked = ["3 min ago", "1 hr ago", "17 min ago", "1 day ago"];
-// let firstNames = ["Jordan", "Ndivhuwo", "Troy", "Ruben"];
 let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m", "n", "o", "p", "q"]];
 
 function QuestionsPage(){
+    let count = 0;
+    if(count == 0){
+        window.location.reload(false);
+        count++;
+    }
     let navigate = useNavigate();
-    const location = useLocation();
     const email = sessionStorage.getItem('userEmail');
 
     const [questionList, setQuestionList] = useState([]);
@@ -55,7 +47,6 @@ function QuestionsPage(){
                 console.error(error)
             }
         };
-
         getQuestionList();
     }, []);
     

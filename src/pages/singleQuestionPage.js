@@ -1,13 +1,10 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import SingleQuestionPageQuestion from "../components/singleQuestionPageQuestion";
-import {Answer} from '../components/Answer';
-import {Comment as CommentText} from '../components/CommentClass';
 import AnswerArea from '../components/answerArea';
 import {useLocation} from 'react-router-dom';
 import { db } from '../firebase-config/firebase';
-import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
-import Comment from "../components/Comment";
+import { collection, addDoc, updateDoc, doc, getDocs} from 'firebase/firestore';
 
 const Container = styled.div`
     padding: 25px 150px;
@@ -68,7 +65,6 @@ export default function SingleQuestionPage() {
     let viewCount1 = question.viewCount;
     let timeAsked1 = question.timeAsked;
     let firstName1 = question.firstName;
-    let tags = question.tags;
     let email = sessionStorage.getItem('userEmail');
     let voted = false;
     let vote = "";

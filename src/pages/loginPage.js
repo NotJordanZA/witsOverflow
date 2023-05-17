@@ -1,14 +1,10 @@
 //login page
 import { useState, useRef, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
-import ReactDOM from 'react-dom';
 import styled from "styled-components";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
-import AuthContext from "../context/AuthProvider";
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth"
-import { UserData } from "../context/userData";
-import { getDoc } from "firebase/firestore";
+import { getAuth,signInWithEmailAndPassword } from "firebase/auth";
 
 const Container = styled.div`
     padding: 200px 0;

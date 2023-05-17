@@ -48,7 +48,7 @@ const HeaderRow = styled.div`
     padding : 10px 0 5px 0;
 `;
 
-const StyledLabel = styled.label`
+const StyledLabel = styled.a`
     font-size: 1.1rem;
     padding : 10px 0 5px 0;
 `;
@@ -77,7 +77,6 @@ export default function AskPage() {
     const questionCollectionRef = collection(db, "questions")
     
     const navigate = useNavigate();
-    const location = useLocation();
     const email = sessionStorage.getItem('userEmail');
 
     const [title, setTitle] = useState('');
@@ -110,12 +109,14 @@ export default function AskPage() {
                         value = { title }
                         onChange={(e) => setTitle(e.target.value)}
                         required
+                        data-testid= "questionTitleInput"
                     />
                     <StyledLabel>Body</StyledLabel>
                     <QuestionBodyTextArea
                         value = { body }
                         onChange={(e) => setBody(e.target.value)}
                         required
+                        data-testid= "questionBodyInput"
                      />
                     <StyledButton type = 'submit'>
                         Post&nbsp;Question

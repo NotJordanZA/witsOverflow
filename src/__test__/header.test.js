@@ -18,11 +18,11 @@ describe('Header component', () => {
     expect(screen.queryByTestId('headerSearch')).not.toBeInTheDocument();
     expect(screen.queryByAltText('users')).not.toBeInTheDocument();
     expect(screen.queryByAltText('avatar')).not.toBeInTheDocument();
-    expect(screen.queryByText('user-email@example.com')).not.toBeInTheDocument();
+    expect(screen.queryByText('user-email@wits.ac.za')).not.toBeInTheDocument();
   });
 
   test('renders the header with user email', () => {
-    sessionStorage.setItem('userEmail', 'user-email@example.com');
+    sessionStorage.setItem('userEmail', 'user-email@wits.ac.za');
     render(<Header />);
     // Check for logo
     expect(screen.getByAltText('logo')).toBeInTheDocument();
@@ -32,6 +32,6 @@ describe('Header component', () => {
     expect(screen.getByTestId('headerSearch')).toBeInTheDocument();
     expect(screen.getByAltText('users')).toBeInTheDocument();
     expect(screen.getByAltText('avatar')).toBeInTheDocument();
-    expect(screen.getByText('user-email@example.com')).toBeInTheDocument();
+    expect(screen.getByText('user-email@wits.ac.za')).toBeInTheDocument();
   });
 });

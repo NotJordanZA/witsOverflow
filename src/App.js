@@ -1,17 +1,13 @@
 import { Reset } from "styled-reset";
-import { createContext, useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import { ProSidebarProvider } from "react-pro-sidebar";
-import  SidebarLayout  from "./components/sidebarLayout";
-import { BrowserRouter as Router, createBrowserRouter, RouterProvider, Route, Routes, Link, Outlet, useLocation } from "react-router-dom";
-import Home from "./pages/homePage";
+import { useState } from "react";
+import { createGlobalStyle } from "styled-components";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/header";
 import QuestionsPage from "./pages/questionsPage";
 import LoginPage from "./pages/loginPage";
 import Users from "./pages/usersPage";
 import Rewards from "./pages/rewardsPage";
 import Profile from "./pages/profilePage";
-import Navbar from "./components/navbar";
 import Register from "./pages/registrationPage";
 import AskPage from "./pages/askPage";
 import SingleQuestionPage from "./pages/singleQuestionPage";
@@ -19,8 +15,6 @@ import {UserContext} from "./context/userContext";
 import ChangePassword from "./pages/changePasswordPage";
 import CommunityPage from "./pages/communityPage";
 import "./App.css";
-import {firebaseConfig} from "./firebase-config/firebase";
-import {initializeApp} from "firebase/app";
 import {getAnalytics} from "firebase/analytics";
 import { app } from "./firebase-config/firebase";
 
@@ -38,56 +32,12 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-//used for the sidebar, not yet implemented
-const AppLayout = () => (
-  <>
-    <Navbar />
-    <Outlet />
-  </>
-);
-
-//leftover router element from sidebar, still needs to be implemented
-const router = createBrowserRouter([
-  {
-    element: <AppLayout />,
-    children: [
-      {
-        path: "/",
-        element: <LoginPage/>,
-      },
-      {
-        path: "/questionsPage",
-        element: <QuestionsPage/>,
-      },
-      {
-        path: "/usersPage",
-        element: <Users/>,
-      },
-      {
-        path: "/rewardsPage",
-        element: <Rewards/>,
-      },
-      {
-        path: "/profilePage",
-        element: <Profile/>,
-      },
-      {
-        path: "/Register",
-        element: <Register/>,
-      },
-    ]
-  }
-])
-
 function App() {
-  //for getting user state
-  const [user, setUser] = useState('');
   return (
     <div>
         <Reset />
         <GlobalStyles/>
         <Router>
-          <UserContext.Provider value = {{user}}>
             <Routes>
               <Route path= "/" element= {<Header/>}>
                 <Route path= ":id" element= {<LoginPage/>} />
@@ -103,7 +53,6 @@ function App() {
                 <Route path= "/communityPage" element= {<CommunityPage/>} />
               </Route>
             </Routes>
-          </UserContext.Provider>
         </Router>
     </div>
   );
