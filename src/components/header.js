@@ -3,11 +3,7 @@ import styled from "styled-components";
 import logo from '../logo.png';
 import users from '../users.png';
 import avatar from '../avatar.svg';
-import {useLocation, useNavigate, Outlet} from "react-router-dom";
-import { useContext } from "react";
-import {UserContext} from "../context/userContext";
-import UserData from "../context/userData";
-import { getAuth, signOut } from "firebase/auth";
+import { Outlet } from "react-router-dom";
 
 
 //container for header elements
@@ -91,7 +87,7 @@ const LogoLink = styled.a`
 
 //function handling the entire heading area and changing the header based on whether the user is logged
 function Header(){
-
+  const email = sessionStorage.getItem('userEmail');
   if (sessionStorage.getItem('userEmail') == null){//checks if on the login or registration page
     return(
       <main>
@@ -107,7 +103,6 @@ function Header(){
       </main>
     );
   }
-  const email = sessionStorage.getItem('userEmail');
   return(
     <main>
       <StyledHeader>

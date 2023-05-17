@@ -1,8 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import LoginPage from "../pages/loginPage";
+import '@testing-library/jest-dom';
+
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+  useNavigate: jest.fn(),
+}));
+
+jest.mock('firebase/auth', () => ({
+  getAuth: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
+}))
 
 describe('LoginPage', () => {
-  test.skip('renders login form', () => {
+  it('renders login form', () => {
     render(<LoginPage />);
 
     // Check that the email input field is rendered
@@ -17,12 +28,15 @@ describe('LoginPage', () => {
     const loginButton = screen.getByRole('button', { name: /login/i });
     expect(loginButton).toBeInTheDocument();
 
+    //check for precursor to link
+    expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
+
     // Check that the sign up link is rendered
     const signUpLink = screen.getByRole('link', { name: /sign up/i });
     expect(signUpLink).toBeInTheDocument();
   });
 
-  test.skip('submits form data on login button click', () => {
+  it.skip('submits form data on login button click', async () => {
     render(<LoginPage />);
 
     // Fill in the email and password fields
@@ -37,10 +51,16 @@ describe('LoginPage', () => {
     fireEvent.click(loginButton);
 
     // Check that the form was submitted with the correct data
-    expect(console.log).toHaveBeenCalledWith('test@example.com', 'password123');
+    await waitFor(() =>
+      expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+        getAuth(),
+        email,
+        password
+      )
+    );
   });
 
-  test.skip('redirects to questions page on successful login', async () => {
+  test('redirects to questions page on successful login', async () => {
     // Mock the signInWithEmailAndPassword function
     const mockSignInWithEmailAndPassword = jest.fn(() => Promise.resolve());
     jest.mock('firebase/auth', () => ({

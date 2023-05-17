@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import {getAuth,createUserWithEmailAndPassword} from "firebase/auth";
-import {collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 
 // Check for one instance before @; Check for @; Check for "wits.ac.za" or "students.wits.ac.za".
@@ -189,6 +189,7 @@ const Register = () => {
         
         sessionStorage.setItem('userEmail', user);
         navigate("/questionsPage", {state : user});
+        window.location.reload(false);
     }
     
     return (

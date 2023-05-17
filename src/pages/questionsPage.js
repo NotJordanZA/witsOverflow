@@ -21,13 +21,10 @@ const HeaderRow = styled.div`
     padding: 10px 20px;
 `;
 let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m", "n", "o", "p", "q"]];
+let count = 0;
 
 function QuestionsPage(){
-    let count = 0;
-    if(count == 0){
-        window.location.reload(false);
-        count++;
-    }
+    
     let navigate = useNavigate();
     const email = sessionStorage.getItem('userEmail');
 

@@ -67,6 +67,7 @@ const LoginPage = () => {
         if(getAuth().currentUser!=null){
             sessionStorage.setItem('userEmail', email);
             navigate("/questionsPage", {state : email});
+            window.location.reload(false);
         }
         setEmail('');
         setPass('');

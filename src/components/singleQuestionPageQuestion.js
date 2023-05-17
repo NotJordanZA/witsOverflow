@@ -154,12 +154,14 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             commentPath = {commentDocPath+"/"+aComment.id}
             />
         );
-        if(currVoted && loopCount == 0){
+        if(currVoted && loopCount === 0){
             checkVoted();
             setLoopCount(1);
-        }
-        if(loopCount2 == 0){
             setVotes1(votes);
+        }
+        if(loopCount2 === 0){
+            setVotes1(votes);
+            console.log(votes);
             setLoopCount2(1);
         }
     })

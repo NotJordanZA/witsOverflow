@@ -122,13 +122,12 @@ function Profile(){
     var email = sessionStorage.getItem('userEmail');
     const communityEmail = useLocation().state;
     window.history.replaceState({}, document.title);
-    console.log(communityEmail);
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
     }
     const routeChangeLogOut = () => {
-        let path= "";
+        let path= "/loginPage";
         const auth = getAuth();
         signOut(auth).then(() => {
         // Sign-out successful.
@@ -136,6 +135,8 @@ function Profile(){
         // An error happened.
         });
         navigate(path);
+        sessionStorage.clear();
+        window.location.reload(false);
     }
 
     let communityUserRef = "";
@@ -164,16 +165,6 @@ function Profile(){
             getUserInfoList(userDocRef);
         }
     }, []);
-
-    const UserData = [
-    {
-        email: email,
-        name: userInfoList.name,
-        bio: userInfoList.bio,
-        pronouns: userInfoList.pronouns,
-        qualifications: userInfoList.qualifications,
-    }
-    ];
 
     const [questionList, setQuestionList] = useState([]);
     const questionCollectionRef = collection(db, "questions")
@@ -284,7 +275,7 @@ function Profile(){
     }
     
     if (communityEmail != null){
-        if (communityEmail == email){
+        if (communityEmail === email){
             return(
                 <main>
                     <Container>

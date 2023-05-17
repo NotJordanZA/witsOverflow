@@ -1,5 +1,4 @@
 import { Reset } from "styled-reset";
-import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/header";
@@ -11,7 +10,6 @@ import Profile from "./pages/profilePage";
 import Register from "./pages/registrationPage";
 import AskPage from "./pages/askPage";
 import SingleQuestionPage from "./pages/singleQuestionPage";
-import {UserContext} from "./context/userContext";
 import ChangePassword from "./pages/changePasswordPage";
 import CommunityPage from "./pages/communityPage";
 import "./App.css";
@@ -40,7 +38,7 @@ function App() {
         <Router>
             <Routes>
               <Route path= "/" element= {<Header/>}>
-                <Route path= ":id" element= {<LoginPage/>} />
+                <Route path= "/loginPage" element= {<LoginPage/>} />
                 <Route index element= {<LoginPage/>} />
                 <Route path= "/questionsPage" element= {<QuestionsPage/>} />
                 <Route path= "/usersPage" element= {<Users/>} />
@@ -51,6 +49,7 @@ function App() {
                 <Route path= "/changePassword" element= {<ChangePassword/>} />
                 <Route path= "/question" element= {<SingleQuestionPage/>} />
                 <Route path= "/communityPage" element= {<CommunityPage/>} />
+                <Route path= "*" element= {<LoginPage/>} />
               </Route>
             </Routes>
         </Router>
