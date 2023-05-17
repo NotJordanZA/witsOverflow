@@ -9,6 +9,8 @@ jobs:
       - image: cimg/node:16.13.0-browsers
     steps:
       - checkout
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
