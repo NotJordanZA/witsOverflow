@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import CommentsArea from '../components/commentsArea';
 import Comment from "./Comment";
 import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';

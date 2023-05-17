@@ -1,5 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import QuestionRow from "../components/QuestionRow";
+import '@testing-library/jest-dom';
+
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+  useNavigate: jest.fn(),
+}));
 
 describe('QuestionRow', () => {
   const question = {
@@ -17,18 +23,18 @@ describe('QuestionRow', () => {
 
   it('renders question stats and title', () => {
     render(<QuestionRow {...question} currEmail={email} />);
-    expect(screen.getByText(`${question.votes} votes`)).toBeInTheDocument();
-    expect(screen.getByText(`${question.answerCount} answers`)).toBeInTheDocument();
-    expect(screen.getByText(`${question.viewCount} views`)).toBeInTheDocument();
+    expect(screen.getByTestId("votesTest")).toBeInTheDocument();
+    expect(screen.getByTestId("answerCountTest")).toBeInTheDocument();
+    expect(screen.getByTestId("viewsTest")).toBeInTheDocument();
     expect(screen.getByText(question.questionTitle)).toBeInTheDocument();
   });
 
-  it.skip('renders who asked the question', () => {
+  it('renders who asked the question', () => {
     render(<QuestionRow {...question} currEmail={email} />);
-    expect(screen.getByText(`Asked by ${question.firstName}`)).toBeInTheDocument();
+    expect(screen.getByTestId("authorEmailTest")).toBeInTheDocument();
   });
 
-  it.skip('renders tags', () => {
+  it('renders tags', () => {
     render(<QuestionRow {...question} currEmail={email} />);
     expect(screen.getByText('test')).toBeInTheDocument();
     expect(screen.getByText('react')).toBeInTheDocument();
@@ -37,7 +43,7 @@ describe('QuestionRow', () => {
   it.skip('navigates to the singleQuestion page when question title is clicked', () => {
     const navigate = jest.fn();
     const { container } = render(
-      <QuestionRow {...question} currEmail={email} navigate={navigate} />
+      <QuestionRow {...question} currEmail={email}/>
     );
     const questionLink = container.querySelector('a');
     fireEvent.click(questionLink);

@@ -1,7 +1,7 @@
 //AskPage.js
 import styled from "styled-components";
 import { useState } from "react";
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {collection, addDoc } from "firebase/firestore";
 import { db } from '../firebase-config/firebase';
 

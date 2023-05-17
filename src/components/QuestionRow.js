@@ -88,7 +88,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     for (let i = 0; i < tags1.length; i++)
     {
         tagComponents.push(
-            <Tag>{tags1[i]}</Tag>
+            <Tag >{tags1[i]}</Tag>
         );
     }
     
@@ -121,14 +121,14 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     }else{
         return (
             <StyledQuestionRow>
-                <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
-                <QuestionStat> {answerCount1} <span>answers</span> </QuestionStat>
-                <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
+                <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
+                <QuestionStat data-testid = "answerCountTest"> {answerCount1} <span>answers</span> </QuestionStat>
+                <QuestionStat data-testid = "viewsTest"> {viewCount1} <span>views</span> </QuestionStat>
                 <QuestionTitleArea>
                     <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
                     {/* need to add timeAsked */}
                     <WhoAndWhen>
-                        Asked by <UserLink onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
+                        Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
                     </WhoAndWhen>
                     {tagComponents}
                 </QuestionTitleArea>

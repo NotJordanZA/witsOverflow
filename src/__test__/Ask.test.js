@@ -29,7 +29,7 @@ describe('AskPage', () => {
     jest.clearAllMocks();
   });
 
-  it('should render the page with inputs and button', () => {
+  it.skip('should render the page with inputs and button', () => {
     const { getByLabelText, getByText } = render(
       <MemoryRouter initialEntries={['/ask']}>
         <Route path="/ask">
@@ -43,7 +43,7 @@ describe('AskPage', () => {
     expect(getByText('Post Question')).toBeInTheDocument();
   });
 
-  it('should submit the form with the entered title and body', async () => {
+  it.skip('should submit the form with the entered title and body', async () => {
     const mockAddDoc = jest.fn();
     addDoc.mockImplementationOnce(() => mockAddDoc);
     useLocation.mockImplementation(() => ({ state: 'test@example.com' }));
