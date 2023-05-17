@@ -27,8 +27,12 @@ jobs:
           name: Testing
           command: npm run test
       - checkout
-      - name: Upload coverage to codecov
-          uses: codecov/codecov-action@v3
+      - run:
+          name: Upload coverage report
+          command: |
+            curl -s https://codecov.io/bash > codecov.sh
+            chmod +x codecov.sh
+            ./codecov.sh
 workflows:
   main-workflow:
     jobs:
