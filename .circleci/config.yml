@@ -27,8 +27,8 @@ jobs:
           name: Testing
           command: npm run test
       - checkout
-      - codecov/upload:
-          token: CODECOV_TOKEN
+      - name: Upload coverage to codecov
+          uses: codecov/codecov-action@v3
 workflows:
   main-workflow:
     jobs:
