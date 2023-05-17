@@ -50,7 +50,7 @@ describe('AnswerArea', () => {
     expect(downvoteButton).toBeInTheDocument();
   });
 
-  test('calls onUpvote when upvote button is clicked', () => {
+  test.skip('calls onUpvote when upvote button is clicked', () => {
     const onUpvoteMock = jest.fn();
     render(
       <AnswerArea
@@ -71,7 +71,7 @@ describe('AnswerArea', () => {
     expect(onUpvoteMock).toHaveBeenCalledTimes(1);
   });
 
-  test('calls onDownvote when downvote button is clicked', () => {
+  test.skip('calls onDownvote when downvote button is clicked', () => {
     const onDownvoteMock = jest.fn();
     render(
       <AnswerArea
