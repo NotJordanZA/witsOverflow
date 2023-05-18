@@ -15,8 +15,7 @@ jobs:
           command: npm run test
       - codecov/upload
 workflows:
-  version 2.1
-  build-test:
-  jobs:
-    - build
+  main-workflow:
+    jobs:
+      - build
           
