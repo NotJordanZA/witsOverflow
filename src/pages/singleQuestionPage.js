@@ -213,6 +213,7 @@ export default function SingleQuestionPage() {
                                 value = { answer }
                                 onChange={(e) => setAnswer(e.target.value)}
                                 required
+                                data-testid = "answerAreaTest"
                             />
                             <StyledButton type = 'submit'>Post&nbsp;Answer</StyledButton>
                         </form>

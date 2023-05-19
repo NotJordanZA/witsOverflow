@@ -2,7 +2,6 @@
 import styled from "styled-components";
 import Avatar from "../avatar.svg"
 import {useNavigate, useLocation} from "react-router-dom";
-//import UserData from "../context/userData";
 import { getAuth, signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { getDoc , doc, getDocs, collection} from "firebase/firestore";
@@ -116,7 +115,7 @@ const StyledButton = styled.button`
     color: white;
 `;
 
-function Profile(){
+export default function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
     var email = sessionStorage.getItem('userEmail');
@@ -280,12 +279,11 @@ function Profile(){
                 <main>
                     <Container>
                     <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-                    <Name>{userInfoList.name}</Name>
-                    {/*console.log(email,userInfoList.name)*/}
-                    <Pronouns>{userInfoList.pronouns}</Pronouns>
-                    <Qualifications>{userInfoList.qualifications}</Qualifications>
-                    <Bio>{userInfoList.bio}</Bio>
-                    <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
+                    <Name data-testid = "nameTest">{userInfoList.name}</Name>
+                    <Pronouns data-testid = "pronounsTest">{userInfoList.pronouns}</Pronouns>
+                    <Qualifications data-testid = "qualificationsTest">{userInfoList.qualifications}</Qualifications>
+                    <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
+                    <StyledButton onClick={routeChangeLogOut} data-testid = "logOutTest">Log Out</StyledButton>
                     </Container>
                     <HeaderRow>
                         <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
@@ -303,7 +301,7 @@ function Profile(){
                     </HeaderRow>
                     {questionRows}
                     <PassRow>
-                        <StyledButton onClick={routeChangePass}>Change&nbsp;Password</StyledButton>
+                        <StyledButton onClick={routeChangePass} data-testid = "passwordChangeTest">Change&nbsp;Password</StyledButton>
                     </PassRow>
                 </main>
             )
@@ -312,11 +310,10 @@ function Profile(){
                 <main>
                     <Container>
                     <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-                    <Name>{userInfoList.name}</Name>
-                    {/*console.log(email,userInfoList.name)*/}
-                    <Pronouns>{userInfoList.pronouns}</Pronouns>
-                    <Qualifications>{userInfoList.qualifications}</Qualifications>
-                    <Bio>{userInfoList.bio}</Bio>
+                    <Name data-testid = "nameTest">{userInfoList.name}</Name>
+                    <Pronouns data-testid = "pronounsTest">{userInfoList.pronouns}</Pronouns>
+                    <Qualifications data-testid = "qualificationsTest">{userInfoList.qualifications}</Qualifications>
+                    <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
                     </Container>
                     <HeaderRow>
                         <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
@@ -341,11 +338,10 @@ function Profile(){
             <main>
                 <Container>
                 <img style = {{ width : 90, height: 90 }}src = {Avatar} alt = "avatar" />
-                <Name>{userInfoList.name}</Name>
-                {/*console.log(email,userInfoList.name)*/}
-                <Pronouns>{userInfoList.pronouns}</Pronouns>
-                <Qualifications>{userInfoList.qualifications}</Qualifications>
-                <Bio>{userInfoList.bio}</Bio>
+                <Name data-testid = "nameTest">{userInfoList.name}</Name>
+                <Pronouns data-testid = "pronounsTest">{userInfoList.pronouns}</Pronouns>
+                <Qualifications data-testid = "qualificationsTest">{userInfoList.qualifications}</Qualifications>
+                <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
                 <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
                 </Container>
                 <HeaderRow>
@@ -369,6 +365,4 @@ function Profile(){
             </main>
         )
     }
-}
-
-export default Profile;
+};

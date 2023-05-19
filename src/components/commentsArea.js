@@ -1,7 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { db } from '../firebase-config/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 const CommentsAreaContainer = styled.div`
     display: flex;
@@ -33,16 +31,11 @@ const HiddenButton = styled.button`
 function CommentsArea({comments, path}) {
 
     const [comment, setComment] = useState(''); 
-    //const commentCollectionRef = collection(db, path);
     //event handlers
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         console.log(comment);
         console.log(path);
-        // await addDoc(commentCollectionRef, {
-        //     comment: comment,
-        //     name: "name",
-        // })
         console.log(comment);
     }
 
@@ -65,7 +58,7 @@ function CommentsArea({comments, path}) {
                 value = {comment}
                 onChange={(e) => setComment(e.target.value)}
                 />
-                <HiddenButton type= "submit"></HiddenButton>
+                <HiddenButton type= "submit" data-testid = "commentSubmitTest"></HiddenButton>
             </StyledForm>
         </CommentsAreaContainer>
     )

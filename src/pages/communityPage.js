@@ -1,7 +1,6 @@
-// QuestionsPage.js
+// CommunityPage.js
 import styled from 'styled-components'
 import CommunityRow from '../components/CommunityRow';
-import {useNavigate, useLocation} from "react-router-dom";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
@@ -21,8 +20,6 @@ const HeaderRow = styled.div`
 `;
 
 function CommunityPage(){
-    let navigate = useNavigate();
-
     const [userList, setUserList] = useState([]);
     const userCollectionRef = collection(db, "users")
 
@@ -35,14 +32,12 @@ function CommunityPage(){
                     id: doc.id,
                 }));
                 setUserList(filteredData);
-                //console.log(data);
             } catch (error) {
                 console.error(error)
             }
         };
 
         getUserList();
-        //console.log(userList);
     }, []);
     
 

@@ -3,6 +3,13 @@ import { MemoryRouter } from "react-router-dom";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import LoginPage from "../pages/loginPage";
 import '@testing-library/jest-dom';
+import * as router from 'react-router-dom';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn(),
+  useNavigate: jest.fn(),
+}));
 
 jest.mock("firebase/auth", () => {
   return {
@@ -11,7 +18,12 @@ jest.mock("firebase/auth", () => {
   };
 });
 
+const navigate = jest.fn()
+
 describe("LoginPage", () => {
+  beforeEach(() => {
+    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+  })
   beforeEach(() => {
     render(
       <MemoryRouter>
@@ -30,7 +42,7 @@ describe("LoginPage", () => {
     expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
   });
 
-  test.skip("submits login form with valid credentials", async () => {
+  test("submits login form with valid credentials", async () => {
     const emailInput = screen.getByPlaceholderText("email");
     const passwordInput = screen.getByPlaceholderText("password");
     const submitButton = screen.getByRole("button", { name: "Login" });
@@ -43,19 +55,25 @@ describe("LoginPage", () => {
     fireEvent.click(submitButton);
 
     // Mock implementation for getAuth().currentUser
-    getAuth().currentUser = {
-      email: "test@wits.ac.za",
-      // Add other properties as needed
+    const user = {
+      uid: '1',
+      email: email,
     };
+
+    getAuth.mockImplementation(() => ({
+      currentUser: user,
+    }));
 
     await waitFor(() =>
       expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
-        getAuth(),
+        undefined,
         email,
         password
       )
     );
 
-    // Assert the redirection or any other logic you expect to happen after successful login
+    //Redirection after successful login
+    expect(navigate).toHaveBeenCalledWith('/questionsPage', { state: email });
+
   });
 });

@@ -5,11 +5,19 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase-config/firebase';
 import AskPage from '../pages/askPage';
 import '@testing-library/jest-dom';
+import * as router from 'react-router-dom';
+
+const navigate = jest.fn()
 
 jest.mock('react-router-dom', () => ({
-    useLocation: jest.fn(),
-    useNavigate: jest.fn(),
-  }));
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn(),
+  useNavigate: jest.fn(),
+}));
+
+beforeEach(() => {
+  jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+})
 
 jest.mock('../firebase-config/firebase', () => ({
   db: {},
@@ -27,7 +35,10 @@ describe('AskPage', () => {
   });
 
   test('renders AskPage correctly', () => {
-    render(<AskPage />, { wrapper: MemoryRouter });
+    render(
+      <MemoryRouter>
+         <AskPage />
+      </MemoryRouter>);
 
     const titleLabel = screen.getByText('Title');
     const titleInput = screen.getByTestId('questionTitleInput');
@@ -42,8 +53,11 @@ describe('AskPage', () => {
     expect(postButton).toBeInTheDocument();
   });
 
-  test.skip('handles form submission', async () => {
-    render(<AskPage />, { wrapper: MemoryRouter });
+  test('handles form submission', async () => {
+    render(
+    <MemoryRouter>
+       <AskPage />
+    </MemoryRouter>);
 
     const titleInput = screen.getByTestId('questionTitleInput');
     const bodyTextArea = screen.getByTestId('questionBodyInput');

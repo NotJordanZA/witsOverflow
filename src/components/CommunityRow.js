@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import {Question} from './Question';
-import {commUser} from './commUser'
-import {Link, useNavigate} from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 const StyledName = styled.a`
     display: flex;
@@ -45,13 +42,6 @@ const StyledCommunityRow = styled.div`
     border-top: 1px solid #555;
 `;
 
-const UserLink = styled.a`
-    color: #475be8;
-`;
-
-
-
-
 //function QuestionRow({Question : question}){  
 function CommunityRow({userEmail, userName, userPronouns}){  
     let navigate = useNavigate();
@@ -59,9 +49,6 @@ function CommunityRow({userEmail, userName, userPronouns}){
     let userEmail1 = userEmail;
     let userName1 = userName;
     let userPronouns1 = userPronouns;
-    let email = sessionStorage.getItem('userEmail');
-
-    const commuser = new commUser(userEmail1, userName1, userPronouns1);
     
     const routeChangeToProfile = (email) => {
         let path= '/profilePage';
@@ -70,9 +57,9 @@ function CommunityRow({userEmail, userName, userPronouns}){
 
     return (
         <StyledCommunityRow>
-            <StyledName> {userName1} </StyledName>
-            <StyledPronouns> {userPronouns1} </StyledPronouns>
-            <EmailLink onClick={() => routeChangeToProfile(userEmail1)}> {userEmail1} </EmailLink>
+            <StyledName data-testid = "nameTest"> {userName1} </StyledName>
+            <StyledPronouns data-testid = "pronounsTest"> {userPronouns1} </StyledPronouns>
+            <EmailLink onClick={() => routeChangeToProfile(userEmail1)} data-testid = "emailLinkTest"> {userEmail1} </EmailLink>
         </StyledCommunityRow>
         
     )

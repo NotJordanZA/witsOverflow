@@ -91,7 +91,4 @@ describe('AnswerArea', () => {
     fireEvent.click(downvoteButton);
     expect(onDownvoteMock).toHaveBeenCalledTimes(1);
   });
-
-  // Add more tests as needed
-
 });

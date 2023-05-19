@@ -1,13 +1,20 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import Register from "../pages/registrationPage";
 import '@testing-library/jest-dom/extend-expect';
+import * as router from 'react-router-dom';
 
 jest.mock('react-router-dom', () => ({
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
 }));
 
+const navigate = jest.fn();
+
 describe("Registration Screen", () => {
+  beforeEach(() => {
+    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+  })
+
   it("should display the registration form", () => {
     render(<Register />);
     const usernameInput = screen.getByLabelText("Email:");
@@ -49,6 +56,6 @@ describe("Registration Screen", () => {
     fireEvent.change(confirmPasswordInput, {target: {value: "AaAa11!!"}});
     fireEvent.click(submitButton);
 
-    //expect(useNavigate).toHaveBeenCalledWith('/questionsPage', { state: 'johndoe@wits.ac.za' });
+    //expect(navigate).toHaveBeenCalledWith('/questionsPage', { state: 'johndoe@wits.ac.za' });
   });
 });

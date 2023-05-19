@@ -1,11 +1,20 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import QuestionRow from "../components/QuestionRow";
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
+import * as router from 'react-router-dom';
+
+const navigate = jest.fn()
 
 jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
 }));
+
+beforeEach(() => {
+  jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+})
 
 describe('QuestionRow', () => {
   const question = {
@@ -18,8 +27,11 @@ describe('QuestionRow', () => {
     timeAsked: '2022-05-13T08:00:00.000Z',
     firstName: 'John',
     tags: ['test', 'react'],
+    answers: [],
+    comments: [],
+    currEmail: null,
   };
-  const email = 'john@example.com';
+  const email = 'test@wits.ac.za.com';
 
   it('renders question stats and title', () => {
     render(<QuestionRow {...question} currEmail={email} />);
@@ -40,10 +52,11 @@ describe('QuestionRow', () => {
     expect(screen.getByText('react')).toBeInTheDocument();
   });
 
-  it.skip('navigates to the singleQuestion page when question title is clicked', () => {
-    const navigate = jest.fn();
+  it('navigates to the singleQuestion page when question title is clicked', () => {
     const { container } = render(
-      <QuestionRow {...question} currEmail={email}/>
+      <MemoryRouter>
+        <QuestionRow {...question} currEmail={email}/>
+      </MemoryRouter>
     );
     const questionLink = container.querySelector('a');
     fireEvent.click(questionLink);
