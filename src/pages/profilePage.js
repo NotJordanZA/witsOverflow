@@ -257,7 +257,7 @@ export default function Profile(){
                 answerCount = {userAnswerCount}
                 viewCount = {userViewCount}
                 timeAsked = "time"
-                firstName = {email}
+                firstName = {communityEmail}
                 tags = {userTags}
                 currEmail= {email}
                 forProfilePage = {true}
