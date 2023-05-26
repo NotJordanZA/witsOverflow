@@ -142,21 +142,38 @@ export default function SingleQuestionPage() {
      updateView()
     }, []);
 
-    {answerList.map((dbAnswer) => (
-        
-        answerAreaComponents.push(
-            <AnswerArea
-                questionID = {questionID1}
-                answerID={dbAnswer.id}
-                answerText = {dbAnswer.answer}
-                votes = {dbAnswer.votes}
-                questionEmail = {firstName1}
-                answerEmail = {dbAnswer.name}
-                currEmail = {email}
-                answerHelpful = {dbAnswer.helpful}
-            />
-        )
-    ))}
+    const mapAnswers = answerList.map((dbAnswer) => {
+        if(email.indexOf("student") === -1){
+            answerAreaComponents.push(
+                <AnswerArea
+                    questionID = {questionID1}
+                    answerID={dbAnswer.id}
+                    answerText = {dbAnswer.answer}
+                    votes = {dbAnswer.votes}
+                    questionEmail = {firstName1}
+                    answerEmail = {dbAnswer.name}
+                    currEmail = {email}
+                    answerHelpful = {dbAnswer.helpful}
+                    reported = {dbAnswer.reported}
+                />
+            )
+        }else if(dbAnswer.reported != true){
+            answerAreaComponents.push(
+                <AnswerArea
+                    questionID = {questionID1}
+                    answerID={dbAnswer.id}
+                    answerText = {dbAnswer.answer}
+                    votes = {dbAnswer.votes}
+                    questionEmail = {firstName1}
+                    answerEmail = {dbAnswer.name}
+                    currEmail = {email}
+                    answerHelpful = {dbAnswer.helpful}
+                    reported = {dbAnswer.reported}
+                />
+            )
+        }
+    });
+    let doThis = mapAnswers;
 
     const handleAnswerSubmit = async (e) => {
         e.preventDefault();

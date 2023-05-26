@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { db } from '../firebase-config/firebase';
 import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import Comment from "./Comment";
 
 const QuestionArea = styled.div`
@@ -138,8 +138,11 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         getCommentList();
     }, [])
 
-    const [loopCount, setLoopCount] = useState(0);
-    const [loopCount2, setLoopCount2] = useState(0);
+    useEffect(() => {
+        checkVoted();
+        setVotes1(votes);
+      }, [votes]);
+
     const commentsComponents = [];
     const mapComments = commentList.map((aComment) => {
         let author = false;
@@ -154,16 +157,6 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
             commentPath = {commentDocPath+"/"+aComment.id}
             />
         );
-        if(currVoted && loopCount === 0){
-            checkVoted();
-            setLoopCount(1);
-            setVotes1(votes);
-        }
-        if(loopCount2 === 0){
-            setVotes1(votes);
-            console.log(votes);
-            setLoopCount2(1);
-        }
     })
     let doThis = mapComments;
 

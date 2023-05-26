@@ -21,7 +21,6 @@ const HeaderRow = styled.div`
     padding: 10px 20px;
 `;
 let postTags = [["a", "b", "c", "d"], ["e", "f", "g"], ["i", "j", "k", "l"], ["m", "n", "o", "p", "q"]];
-let count = 0;
 
 function QuestionsPage(){
     
@@ -51,23 +50,46 @@ function QuestionsPage(){
     //possibly change question row to take a Question object instead of all of the seperate fields
     const questionComponents = [];
     let i = 0;
-    {questionList.map((dbQuestion) => (
-        questionComponents.push(
-            <QuestionRow 
-                questionID = {dbQuestion.id}
-                questionTitle = {dbQuestion.title}
-                questionText = {dbQuestion.questionBody}
-                votes = {dbQuestion.votes} 
-                answerCount = {dbQuestion.answerCount}
-                viewCount = {dbQuestion.views}
-                timeAsked = "time"
-                firstName = {dbQuestion.name}
-                tags = {postTags[i]}
-                currEmail= {email}
-                forProfilePage = {false}
-            />
-        )
-    ))}
+    const mapQuestions = questionList.map((dbQuestion) => {
+        if(email.indexOf("student") === -1){
+            questionComponents.push(
+                <QuestionRow 
+                    questionID = {dbQuestion.id}
+                    questionTitle = {dbQuestion.title}
+                    questionText = {dbQuestion.questionBody}
+                    votes = {dbQuestion.votes} 
+                    answerCount = {dbQuestion.answerCount}
+                    viewCount = {dbQuestion.views}
+                    timeAsked = "time"
+                    firstName = {dbQuestion.name}
+                    tags = {postTags[i]}
+                    currEmail= {email}
+                    forProfilePage = {false}
+                    reported = {dbQuestion.reported}
+                />
+                )
+        }else if(dbQuestion.reported != true){
+            questionComponents.push(
+                <QuestionRow 
+                    questionID = {dbQuestion.id}
+                    questionTitle = {dbQuestion.title}
+                    questionText = {dbQuestion.questionBody}
+                    votes = {dbQuestion.votes} 
+                    answerCount = {dbQuestion.answerCount}
+                    viewCount = {dbQuestion.views}
+                    timeAsked = "time"
+                    firstName = {dbQuestion.name}
+                    tags = {postTags[i]}
+                    currEmail= {email}
+                    forProfilePage = {false}
+                    reported = {dbQuestion.reported}
+                />
+                )
+        }
+        }
+    )
+
+    let doThis = mapQuestions;
     
     const routeChangeToAskQuestion = () => {
         let path= '/askPage';
