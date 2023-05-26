@@ -159,7 +159,7 @@ const Register = () => {
     }, [user, pwd, matchPwd, fullName, pronouns, qualifications, bio])
 
     const navigate = useNavigate();
-    const handleSubmit = async (e) => {
+    const HandleSubmit = async (e) => {
         e.preventDefault();
         // In case user enables the submit button via JS hack:
         const v1 = USER_REGEX.test(user);
@@ -175,17 +175,30 @@ const Register = () => {
         } // End of precaution.
         console.log(user, pwd, fullName, pronouns, qualifications);
         await createUserWithEmailAndPassword(getAuth(),user,pwd);
-
+        
         const userDocRef = doc(db, "users", user);
-        const data = {
+        if(user.indexOf("student") === -1){
+            const userData = {
             email: user,
             name: fullName,
             pronouns: pronouns,
             qualifications: qualifications,
-            bio: bio
-        };
-
-        await setDoc(userDocRef, data);
+            bio: bio,
+            moderator: true
+            };
+            await setDoc(userDocRef, userData);
+        }else{
+            const userData = {
+            email: user,
+            name: fullName,
+            pronouns: pronouns,
+            qualifications: qualifications,
+            bio: bio,
+            moderator: false
+            };
+            await setDoc(userDocRef, userData);
+        }
+        
         
         sessionStorage.setItem('userEmail', user);
         navigate("/questionsPage", {state : user});
@@ -197,7 +210,7 @@ const Register = () => {
             <p ref={errRef} style={errMsg ? {} : {display: "none"}} aria-live="assertive">{errMsg}</p>
             <img style = {{ width : 90, height: 90 }}src = {logo} alt = "logo" />
             <StyledHeader>Register</StyledHeader>
-            <StyledForm onSubmit={handleSubmit}>
+            <StyledForm onSubmit={HandleSubmit}>
                 <label htmlFor="username">
                     Email: 
                     <span style={validName ? {} : {display: "none"}}>

@@ -95,7 +95,16 @@ const Title = styled.header`
     padding: 10px 0 10px 0;
 `;
 
-function AnswerArea({questionID, answerID, answerText, votes, questionEmail, answerEmail, currEmail, answerHelpful}) {
+const ReportedTag = styled.a`
+    text-decoration: none;
+    color: #C21807;
+    font-weight: bold;
+    font-size: 1.05rem;
+    display: block;
+    margin-bottom: 7px;
+`;
+
+function AnswerArea({questionID, answerID, answerText, votes, questionEmail, answerEmail, currEmail, answerHelpful, reported}) {
     const voteDocRef = doc(db, "questions", questionID, "Answers", answerID, "Votes", currEmail);
     
 
@@ -134,10 +143,14 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
 
     const votesCollectionRef = collection(db, "questions", questionID, "Answers", answerID, "Votes");
     const [votesList, setVotesList] = useState([]);
+    
+
     let voted = false;
     let vote = "";
     let votes1 = 0;
     let currVote ="";
+
+    const [votes2, setVotes2] = useState(votes1);
 
     useEffect(() => {
         const getVotesList = async () => {
@@ -153,22 +166,26 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
             }
         };
         getVotesList();
-    }, []);
+    }, [votes2]);
 
-    for (let i = 0; i < votesList.length; i++){
-        if (votesList[i].id == currEmail){
-            voted = true;
-            currVote = votesList[i].voteType;
+        for (let i = 0; i < votesList.length; i++){
+            if (votesList[i].id == currEmail){
+                voted = true;
+                currVote = votesList[i].voteType;
+            }
+            vote = votesList[i].voteType;
+            if(vote === "up"){
+                votes1 += 1;
+            }else if(vote === "down"){
+                votes1 -= 1;
+            }
         }
-        vote = votesList[i].voteType;
-        if(vote === "up"){
-            votes1 += 1;
-        }else if(vote === "down"){
-            votes1 -= 1;
-        }
-    }
 
-    const [votes2, setVotes2] = useState(votes1);
+    useEffect(() => {
+        checkVoted();
+        setVotes2(votes1);
+        console.log(votes1);
+      }, [votesList,votes1,votes2]);
 
     const answerRef = doc(db, "questions", questionID, "Answers", answerID)
     updateDoc(answerRef, {
@@ -201,9 +218,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
         getCommentList();
     }, [])
 
-    const [loopCount, setLoopCount] = useState(0);
-    const [loopCount2, setLoopCount2] = useState(0);
-
     const commentsComponents = [];
     const mapComments = commentList.map((aComment) => {
         let author = false;
@@ -218,15 +232,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
             commentPath = {commentDocPath+"/"+aComment.id}
             />
         );
-
-        if(currVote && loopCount == 0){
-            checkVoted();
-            setLoopCount(1);
-        }
-        if(loopCount2 == 0){
-            setVotes2(votes1);
-            setLoopCount2(1);
-        }
     })
     let doThis = mapComments;
     
@@ -305,57 +310,26 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
         setEditing(!editing);
     }
 
-    if (currEmail === questionEmail){
-        return (
-            <div>
-                <label>
-                    <input
-                        type = "checkbox"
-                        checked = {!helpful}
-                        value = {helpful}
-                        onChange = {onHelpfulChange}
-                        style={{padding: "10px 0 10px 0", marginTop: "5px"}}
-                    />
-                    Helpful?
-                </label>
-                <AnswerAreaComponent>
-                    <VotesArea>
-                        <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
-                        <VoteNumber>{votes2}</VoteNumber>
-                        <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                    </VotesArea>
-                    <AnswerBodyArea>
-                        <BodyText readOnly>
-                            {answerText}
-                        </BodyText>
-                        <CommentsAreaContainer>
-                        <StyledForm onSubmit={handleCommentSubmit}>
-                            {commentsComponents}
-                            <AddComment
-                            placeholder="Add comment..."
-                            value = {comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            />
-                            <HiddenButton type= "submit"></HiddenButton>
-                        </StyledForm>
-                    </CommentsAreaContainer>
-                    </AnswerBodyArea>
-                </AnswerAreaComponent>
-            </div>
-        )
-    }else if(answerEmail === currEmail){
-        if(editing === false){
+    if(reported){
+        if (currEmail === questionEmail){
             return (
                 <div>
-                    {answerHelpful ? (
-                        <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
-                    ):(<a></a>)}
+                    <label>
+                        <input
+                            type = "checkbox"
+                            checked = {!helpful}
+                            value = {helpful}
+                            onChange = {onHelpfulChange}
+                            style={{padding: "10px 0 10px 0", marginTop: "5px"}}
+                        />
+                        Helpful?
+                    </label>
+                    <ReportedTag>Reported</ReportedTag>
                     <AnswerAreaComponent>
                         <VotesArea>
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                            <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -376,6 +350,222 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </AnswerAreaComponent>
                 </div>
             )
+        }else if(answerEmail === currEmail){
+            if(editing === false){
+                return (
+                    <div>
+                        {answerHelpful ? (
+                            <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                        ):(<a></a>)}
+                        <ReportedTag>Reported</ReportedTag>
+                        <AnswerAreaComponent>
+                            <VotesArea>
+                                <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                                <VoteNumber>{votes2}</VoteNumber>
+                                <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                                <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
+                            </VotesArea>
+                            <AnswerBodyArea>
+                                <BodyText readOnly>
+                                    {answerText}
+                                </BodyText>
+                                <CommentsAreaContainer>
+                                <StyledForm onSubmit={handleCommentSubmit}>
+                                    {commentsComponents}
+                                    <AddComment
+                                    placeholder="Add comment..."
+                                    value = {comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    />
+                                    <HiddenButton type= "submit"></HiddenButton>
+                                </StyledForm>
+                            </CommentsAreaContainer>
+                            </AnswerBodyArea>
+                        </AnswerAreaComponent>
+                    </div>
+                )
+            }else{
+                return (
+                    <div>
+                        {answerHelpful ? (
+                            <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                        ):(<a></a>)}
+                        <ReportedTag>Reported</ReportedTag>
+                        <AnswerAreaComponent>
+                            <VotesArea>
+                                <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                                <VoteNumber>{votes2}</VoteNumber>
+                                <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            </VotesArea>
+                            <AnswerBodyArea>
+                                <BodyText readOnly>
+                                    {answerText}
+                                </BodyText>
+                                
+                                <CommentsAreaContainer>
+                                <StyledForm onSubmit={handleCommentSubmit}>
+                                    {commentsComponents}
+                                    <HiddenButton type= "submit"></HiddenButton>
+                                </StyledForm>
+                                </CommentsAreaContainer>
+                                <Title>Append to your answer:</Title>
+                                    <EditAnswerTextArea
+                                        value = { editedAnswer }
+                                        onChange={(e) => setEditedAnswer(e.target.value)}
+                                        required
+                                    />
+                                <EditButtonsArea>
+                                    <StyledButton style = {{ padding: "15px 45px"}} onClick = {OnEditComplete}>Edit</StyledButton>
+                                    <StyledButton style = {{ padding: "15px 38px"}} onClick = {OnEditCancel}>Cancel</StyledButton>
+                                </EditButtonsArea>
+                            </AnswerBodyArea>
+                        </AnswerAreaComponent>
+                    </div>
+                )
+            }
+        }else{
+            return (
+                <div>
+                    {answerHelpful ? (
+                        <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                    ):(<a></a>)}
+                    <ReportedTag>Reported</ReportedTag>
+                    <AnswerAreaComponent>
+                        <VotesArea>
+                            <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                            <VoteNumber>{votes2}</VoteNumber>
+                            <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                        </VotesArea>
+                        <AnswerBodyArea>
+                            <BodyText readOnly>
+                                {answerText}
+                            </BodyText>
+                            <CommentsAreaContainer>
+                            <StyledForm onSubmit={handleCommentSubmit}>
+                                {commentsComponents}
+                                <AddComment
+                                placeholder="Add comment..."
+                                value = {comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                />
+                                <HiddenButton type= "submit"></HiddenButton>
+                            </StyledForm>
+                        </CommentsAreaContainer>
+                        </AnswerBodyArea>
+                    </AnswerAreaComponent>
+                </div>
+            )
+        }
+    }else{
+        if (currEmail === questionEmail){
+            return (
+                <div>
+                    <label>
+                        <input
+                            type = "checkbox"
+                            checked = {!helpful}
+                            value = {helpful}
+                            onChange = {onHelpfulChange}
+                            style={{padding: "10px 0 10px 0", marginTop: "5px"}}
+                        />
+                        Helpful?
+                    </label>
+                    <AnswerAreaComponent>
+                        <VotesArea>
+                            <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                            <VoteNumber>{votes2}</VoteNumber>
+                            <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                        </VotesArea>
+                        <AnswerBodyArea>
+                            <BodyText readOnly>
+                                {answerText}
+                            </BodyText>
+                            <CommentsAreaContainer>
+                            <StyledForm onSubmit={handleCommentSubmit}>
+                                {commentsComponents}
+                                <AddComment
+                                placeholder="Add comment..."
+                                value = {comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                />
+                                <HiddenButton type= "submit"></HiddenButton>
+                            </StyledForm>
+                        </CommentsAreaContainer>
+                        </AnswerBodyArea>
+                    </AnswerAreaComponent>
+                </div>
+            )
+        }else if(answerEmail === currEmail){
+            if(editing === false){
+                return (
+                    <div>
+                        {answerHelpful ? (
+                            <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                        ):(<a></a>)}
+                        <AnswerAreaComponent>
+                            <VotesArea>
+                                <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                                <VoteNumber>{votes2}</VoteNumber>
+                                <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                                <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
+                            </VotesArea>
+                            <AnswerBodyArea>
+                                <BodyText readOnly>
+                                    {answerText}
+                                </BodyText>
+                                <CommentsAreaContainer>
+                                <StyledForm onSubmit={handleCommentSubmit}>
+                                    {commentsComponents}
+                                    <AddComment
+                                    placeholder="Add comment..."
+                                    value = {comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    />
+                                    <HiddenButton type= "submit"></HiddenButton>
+                                </StyledForm>
+                            </CommentsAreaContainer>
+                            </AnswerBodyArea>
+                        </AnswerAreaComponent>
+                    </div>
+                )
+            }else{
+                return (
+                    <div>
+                        {answerHelpful ? (
+                            <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                        ):(<a></a>)}
+                        <AnswerAreaComponent>
+                            <VotesArea>
+                                <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                                <VoteNumber>{votes2}</VoteNumber>
+                                <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            </VotesArea>
+                            <AnswerBodyArea>
+                                <BodyText readOnly>
+                                    {answerText}
+                                </BodyText>
+                                
+                                <CommentsAreaContainer>
+                                <StyledForm onSubmit={handleCommentSubmit}>
+                                    {commentsComponents}
+                                    <HiddenButton type= "submit"></HiddenButton>
+                                </StyledForm>
+                                </CommentsAreaContainer>
+                                <Title>Append to your answer:</Title>
+                                    <EditAnswerTextArea
+                                        value = { editedAnswer }
+                                        onChange={(e) => setEditedAnswer(e.target.value)}
+                                        required
+                                    />
+                                <EditButtonsArea>
+                                    <StyledButton style = {{ padding: "15px 45px"}} onClick = {OnEditComplete}>Edit</StyledButton>
+                                    <StyledButton style = {{ padding: "15px 38px"}} onClick = {OnEditCancel}>Cancel</StyledButton>
+                                </EditButtonsArea>
+                            </AnswerBodyArea>
+                        </AnswerAreaComponent>
+                    </div>
+                )
+            }
         }else{
             return (
                 <div>
@@ -392,59 +582,22 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <BodyText readOnly>
                                 {answerText}
                             </BodyText>
-                            
                             <CommentsAreaContainer>
                             <StyledForm onSubmit={handleCommentSubmit}>
                                 {commentsComponents}
+                                <AddComment
+                                placeholder="Add comment..."
+                                value = {comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                />
                                 <HiddenButton type= "submit"></HiddenButton>
                             </StyledForm>
-                            </CommentsAreaContainer>
-                            <Title>Append to your answer:</Title>
-                                <EditAnswerTextArea
-                                    value = { editedAnswer }
-                                    onChange={(e) => setEditedAnswer(e.target.value)}
-                                    required
-                                />
-                            <EditButtonsArea>
-                                <StyledButton style = {{ padding: "15px 45px"}} onClick = {OnEditComplete}>Edit</StyledButton>
-                                <StyledButton style = {{ padding: "15px 38px"}} onClick = {OnEditCancel}>Cancel</StyledButton>
-                            </EditButtonsArea>
+                        </CommentsAreaContainer>
                         </AnswerBodyArea>
                     </AnswerAreaComponent>
                 </div>
             )
         }
-    }else{
-        return (
-            <div>
-                {answerHelpful ? (
-                    <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
-                ):(<a></a>)}
-                <AnswerAreaComponent>
-                    <VotesArea>
-                        <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
-                        <VoteNumber>{votes2}</VoteNumber>
-                        <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                    </VotesArea>
-                    <AnswerBodyArea>
-                        <BodyText readOnly>
-                            {answerText}
-                        </BodyText>
-                        <CommentsAreaContainer>
-                        <StyledForm onSubmit={handleCommentSubmit}>
-                            {commentsComponents}
-                            <AddComment
-                            placeholder="Add comment..."
-                            value = {comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            />
-                            <HiddenButton type= "submit"></HiddenButton>
-                        </StyledForm>
-                    </CommentsAreaContainer>
-                    </AnswerBodyArea>
-                </AnswerAreaComponent>
-            </div>
-        )
     }
 }
 
