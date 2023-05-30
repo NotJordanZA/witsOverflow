@@ -389,7 +389,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                                 <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                                 <VoteNumber>{votes2}</VoteNumber>
                                 <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                                <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
                             </VotesArea>
                             <AnswerBodyArea>
                                 <BodyText readOnly>
@@ -567,7 +566,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                                 <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                                 <VoteNumber>{votes2}</VoteNumber>
                                 <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                                <StyledReportButton>Report</StyledReportButton>
                             </VotesArea>
                             <AnswerBodyArea>
                                 <BodyText readOnly>
