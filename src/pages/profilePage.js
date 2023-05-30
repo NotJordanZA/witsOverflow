@@ -138,10 +138,6 @@ export default function Profile(){
         sessionStorage.clear();
         window.location.reload(false);
     }
-    const routeChangeResetPassword = () => {
-        let path = "/resetPasswordPage";
-        navigate(path);
-    }
 
     let communityUserRef = "";
 
