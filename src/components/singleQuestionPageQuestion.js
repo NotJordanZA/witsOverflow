@@ -38,6 +38,16 @@ const VotesArea = styled.div`
     flex-direction: column;
     padding: 0 10px;
 `;
+const StyledReportButton = styled.button`
+    display: inline-block;
+    border: 0px solid #fff;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background: #475be8;
+    color: white;
+`;
 const Title = styled.header`
     font-size: 1.5rem;
     color: #000;
@@ -233,6 +243,21 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         let path= '/profilePage';
         navigate(path, {state : email});
     }
+
+    const reportsCollectionRef = collection(db, "reports");
+    const questionsCollectionRef = collection(db, "questions");
+    const reportQuestion = async() => {
+        let reportedQuestionID = questionID;
+        let reportedAnswerID = "";
+        await addDoc(reportsCollectionRef, {
+            answerID: reportedAnswerID,
+            questionID: reportedQuestionID
+        });
+        await updateDoc(questionsCollectionRef, {
+            reported: true
+        });
+        window.location.reload(false);
+    }
     
     //just a container that contains all of the question data displayed on the single question page
     return (
@@ -250,22 +275,23 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                     <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                     <VoteNumber>{votes1}</VoteNumber>
                     <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                    <StyledReportButton onClick = {reportQuestion}>Report</StyledReportButton>
                 </VotesArea>
                 <QuestionBodyArea>
                     <BodyText readOnly>
                         {questionText}
                     </BodyText>
                     <CommentsAreaContainer>
-                    <StyledForm onSubmit={handleCommentSubmit}>
-                        {commentsComponents}
-                        <AddComment
-                        id = "commentInput"
-                        placeholder="Add comment..."
-                        value = {comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        />
-                        <HiddenButton type= "submit"></HiddenButton>
-                    </StyledForm>
+                        <StyledForm onSubmit={handleCommentSubmit}>
+                            {commentsComponents}
+                            <AddComment
+                            id = "commentInput"
+                            placeholder="Add comment..."
+                            value = {comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            />
+                            <HiddenButton type= "submit"></HiddenButton>
+                        </StyledForm>
                 </CommentsAreaContainer>
                 </QuestionBodyArea>
             </QuestionArea>

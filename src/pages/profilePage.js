@@ -121,6 +121,7 @@ export default function Profile(){
     var email = sessionStorage.getItem('userEmail');
     const communityEmail = useLocation().state;
     window.history.replaceState({}, document.title);
+    
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
@@ -136,6 +137,10 @@ export default function Profile(){
         navigate(path);
         sessionStorage.clear();
         window.location.reload(false);
+    }
+    const routeChangeResetPassword = () => {
+        let path = "/resetPasswordPage";
+        navigate(path);
     }
 
     let communityUserRef = "";

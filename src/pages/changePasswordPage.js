@@ -5,7 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
-import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential} from "firebase/auth";
+import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { firebaseConfig } from "../firebase-config/firebase";
 import { useNavigate} from "react-router-dom";
 import ReactDOM from 'react-dom';
@@ -142,20 +142,23 @@ const ChangePassword = () => {
         } // End of precaution.
         
         const changePassword = async (oldPassword, newPassword) => {
-            const user = auth().currentUser
+            const auth = getAuth();
+            const user = auth.currentUser;
             try {
                 // Calling the reauthenticate function, parsing in the oldPwd field (to check if the user authentication is valid).
                 // ERROR IS HERE. "THIS" IS UNDEFINED. NEED TO CHANGE REAUTHENTICATE FUNCTION.
                 await reauthenticate(oldPassword); 
                 // Updating the password to be the pwd field, changing it on Firebase.
-                await user.updatePassword(newPassword);
-                console.log('Sucess')
+                updatePassword(user, pwd);
+                console.log('Success')
                 navigate("/profilePage");
-            } catch(err){
+            } 
+            catch(err) {
                 console.log(err);
                 setErrMsg("Invalid Entry");
-             }
+            }
         }
+        changePassword(oldPwd, pwd);
         setSuccess(true);
     }
 

@@ -115,7 +115,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     }
 
     if(reported){
-        if(forProfilePage){
+        if(forProfilePage){ //question displayed on a profile page that has been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
@@ -127,7 +127,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else{ //question displayed on home page that has been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
@@ -145,7 +145,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             )
         }
     }else{
-        if(forProfilePage){
+        if(forProfilePage){ //question displayed on a profile page that has not been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
@@ -157,7 +157,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else{ //question displayed on home page that has not been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
