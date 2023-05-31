@@ -12,6 +12,7 @@ const AnswerAreaComponent = styled.div`
     display: flex;
     flex-direction: row;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    margin: 10px;
 `;
 const AnswerBodyArea = styled.div`
     display: flex;
@@ -24,6 +25,16 @@ const VotesArea = styled.div`
     justify-content: top;
     flex-direction: column;
     padding: 0 10px;
+`;
+const StyledReportButton = styled.button`
+    display: inline-block;
+    border: 0px solid #fff;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background: #475be8;
+    color: white;
 `;
 const VoteNumber = styled.p`
     font-size: 1.1rem;
@@ -311,6 +322,20 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
         setEditing(!editing);
     }
 
+    const reportsCollectionRef = collection(db, "reports");
+    const reportAnswer = async() => {
+        let reportedQuestionID = questionID;
+        let reportedAnswerID = answerID;
+        await addDoc(reportsCollectionRef, {
+            answerID: reportedAnswerID,
+            questionID: reportedQuestionID
+        });
+        await updateDoc(answerRef, {
+            reported: true
+        });
+        window.location.reload(false);
+    }
+    
     const OnDeleteButtonClick = async() => {
         await deleteDoc(doc(db, "questions", questionID));
         navigate("/reportsPage");
@@ -376,6 +401,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -396,7 +422,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </AnswerAreaComponent>
                 </div>
             )
-        }else if(answerEmail === currEmail){
+        }else if(answerEmail === currEmail){ //is user that gave the answer - can't report
             if(editing === false){
                 return (
                     <div>
@@ -409,7 +435,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                                 <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                                 <VoteNumber>{votes2}</VoteNumber>
                                 <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                                <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
                             </VotesArea>
                             <AnswerBodyArea>
                                 <BodyText readOnly>
@@ -469,7 +494,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </div>
                 )
             }
-        }else{
+        }else{ //is user that neither asked question nor gave answer - can report
             return (
                 <div>
                     {answerHelpful ? (
@@ -481,6 +506,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -502,8 +528,8 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                 </div>
             )
         }
-    }else{
-        if (currEmail === questionEmail){
+    }else{ //answer has not been reported
+        if (currEmail === questionEmail){ //is user that asked the question this answer is for - can report
             return (
                 <div>
                     <label>
@@ -521,6 +547,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -541,7 +568,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </AnswerAreaComponent>
                 </div>
             )
-        }else if(answerEmail === currEmail){
+        }else if(answerEmail === currEmail){ //is user that gave the answer - can't report
             if(editing === false){
                 return (
                     <div>
@@ -612,7 +639,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </div>
                 )
             }
-        }else{
+        }else{ //is user that neither asked question nor gave answer - can report
             return (
                 <div>
                     {answerHelpful ? (
@@ -623,6 +650,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>

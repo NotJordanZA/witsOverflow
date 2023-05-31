@@ -118,6 +118,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
         navigate(path, {state : email});
     }
 
+
     if(reported){//checks if the question has been reported and renders accordingly
         if(forProfilePage){//checks if the question is for the profile page and renders accordingly
             return (
@@ -130,7 +131,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else{ //question displayed on home page that has been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
@@ -147,7 +148,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
             )
         }
     }else{
-        if(forProfilePage){//checks if the question is for the profile page and renders accordingly
+        if(forProfilePage){ //question displayed on a profile page that has not been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
@@ -172,7 +173,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else{ //question displayed on home page that has not been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
