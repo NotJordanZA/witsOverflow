@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { db } from '../firebase-config/firebase';
 import { collection, addDoc, updateDoc, setDoc, doc, getDocs, deleteDoc} from 'firebase/firestore';
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import Comment from "./Comment";
 
 //css for the container for the question
@@ -282,6 +282,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
     
     const OnDeleteButtonClick = async() => {
         await deleteDoc(doc(db, "questions", questionID));
+        await deleteDoc(doc(db, "reports", questionID));
         navigate("/reportsPage");
     }
 
@@ -289,8 +290,8 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         await updateDoc(doc(db, "questions", questionID), {
             reported: false
           });
-          navigate("/reportsPage");
-          window.location.reload(false);
+        navigate("/reportsPage");
+        window.location.reload(false);
     }
     
     //renders the component

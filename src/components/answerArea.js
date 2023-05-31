@@ -5,7 +5,7 @@ import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
 import {useNavigate} from "react-router-dom";
 import { db } from '../firebase-config/firebase';
-import { collection, addDoc, updateDoc, setDoc, doc, getDocs, deleteDoc} from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc, doc, getDocs, deleteDoc, arrayUnion, arrayRemove, getDoc} from 'firebase/firestore';
 import { useEffect } from "react";
 
 const AnswerAreaComponent = styled.div`
@@ -325,9 +325,16 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
     const reportsDocRef = doc(db, "reports", questionID);
     const reportAnswer = async() => {
         const data = {
-            answerID: answerID
+            answerID: [answerID]
         };
-        await setDoc(reportsDocRef, data);
+        const docSnap = await getDoc(reportsDocRef);
+        if(docSnap.exists()){
+            await updateDoc(reportsDocRef,{
+                answerID: arrayUnion(answerID)
+            });
+        }else{
+            setDoc(reportsDocRef, data)
+        }
         await updateDoc(answerRef, {
             reported: true
         });
@@ -335,14 +342,20 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
     }
     
     const OnDeleteButtonClick = async() => {
-        await deleteDoc(doc(db, "questions", questionID));
+        await deleteDoc(doc(db, "questions", questionID, "Answers", answerID));
+        await updateDoc(reportsDocRef,{
+            answerID: arrayRemove(answerID)
+        });
         navigate("/reportsPage");
     }
 
     const OnResolveButtonClick = async() => {
         await updateDoc(doc(db, "questions", questionID, "Answers", answerID), {
             reported: false
-          });
+        });
+        await updateDoc(reportsDocRef,{
+            answerID: arrayRemove(answerID)
+        });
           navigate("/reportsPage");
           window.location.reload(false);
     }

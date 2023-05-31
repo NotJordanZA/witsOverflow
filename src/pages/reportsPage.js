@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
-import { getDoc, getDocs, collection, doc } from 'firebase/firestore';
+import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore';
 import QuestionRow from '../components/QuestionRow';
 import { useNavigate } from "react-router-dom";
 
@@ -58,9 +58,17 @@ function ReportsPage(){
         const questionData = await getDoc(questionCollectionRef);
         const qData = questionData.data();
         qData.id = questions.id;
+        console.log(qData.id);
         // console.log(qData);
         // console.log("qData logged");
-        arr.push(qData);
+        if(qData !== undefined){
+            if(qData.reported === false && questions.answerID[0] === undefined){
+                await deleteDoc(doc(db, "reports", qData.id));
+            }else{
+                arr.push(qData);
+            }
+        }
+        
         setQuestionsList(arr);
     })}, [reportsList])
 
