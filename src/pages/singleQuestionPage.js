@@ -68,6 +68,7 @@ export default function SingleQuestionPage() {
     let email = sessionStorage.getItem('userEmail');
     let voted = false;
     let vote = "";
+    let reported = question.reported;
 
     const votesCollectionRef = collection(db, "questions", questionID1, "Votes");
     const [votesList, setVotesList] = useState([]);
@@ -203,6 +204,7 @@ export default function SingleQuestionPage() {
                     currEmail= {email}
                     currVoted = {voted}
                     currVote = {vote}
+                    reported= {reported}
                 />
                 {answerAreaComponents}
             </Container>
@@ -221,6 +223,7 @@ export default function SingleQuestionPage() {
                     currEmail= {email}
                     currVoted = {voted}
                     currVote = {vote}
+                    reported= {reported}
                 />
                 {answerAreaComponents}
                 <UserAnswerArea>

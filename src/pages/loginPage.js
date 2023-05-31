@@ -70,7 +70,6 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-       // if(email.includes('.wits'))
         console.log(email, pass);
         try {
             await signInWithEmailAndPassword(getAuth(),email,pass);

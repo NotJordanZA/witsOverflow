@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {Question} from '../components/Question';
 import {Link, useNavigate} from "react-router-dom";
 
+//css for question statistics
 const QuestionStat = styled.div`
     text-align: center;
     display: inline-block;
@@ -15,11 +16,11 @@ const QuestionStat = styled.div`
         margin-top: 4px;
     }
 `;
-
+//css for question title
 const QuestionTitleArea = styled.div`
     padding: 0 25px;
 `;
-
+//css for question tags
 const Tag = styled.span`
     display: inline-block;
     margin-right: 5px;
@@ -29,7 +30,7 @@ const Tag = styled.span`
     border-radius: 5px;
     font-size: .9rem;
 `;
-
+//css for the link to the question
 const QuestionLink = styled.a`
     text-decoration: none;
     color: #475be8;
@@ -37,7 +38,7 @@ const QuestionLink = styled.a`
     display: block;
     margin-bottom: 7px;
 `;
-
+//css for question container
 const StyledQuestionRow = styled.div`
     background-color: rgba(255,255,255,.05);
     color: #fff;
@@ -50,7 +51,7 @@ const StyledQuestionRow = styled.div`
     grid-column-gap: 5px;
     border-top: 1px solid #555;
 `;
-
+//css for the container that has who asked
 const WhoAndWhen = styled.div`
     display: inline-block;
     color: #aaa;
@@ -58,11 +59,11 @@ const WhoAndWhen = styled.div`
     float: right;
     padding: 10px 0;
 `;
-
+//css for the container that has who asked the question
 const UserLink = styled.a`
     color: #475be8;
 `;
-
+//css for the tag that displays if reported
 const ReportedTag = styled.a`
     text-decoration: none;
     color: #C21807;
@@ -74,9 +75,10 @@ const ReportedTag = styled.a`
 
 
 //function QuestionRow({Question : question}){  
-function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, forProfilePage, reported}){  
+function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, forProfilePage, reported, forReportsPage}){  
     let navigate = useNavigate();
 
+    //asign class variables
     let questionID1 = questionID;
     let questionTitle1 = questionTitle;
     let questionText1 = questionText;
@@ -89,7 +91,8 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let email = sessionStorage.getItem('userEmail');
     let reported1 = reported;
 
-    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email);
+    //create question object
+    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email, reported);
     
     //add variable number of tags
     const tagComponents = [];
@@ -109,13 +112,15 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
 
     }
 
+    //takes the user to the profile of the email they clicked on
     const routeChangeToProfile = (email) => {
         let path= '/profilePage';
         navigate(path, {state : email});
     }
 
-    if(reported){
-        if(forProfilePage){ //question displayed on a profile page that has been reported
+
+    if(reported){//checks if the question has been reported and renders accordingly
+        if(forProfilePage){//checks if the question is for the profile page and renders accordingly
             return (
                 <StyledQuestionRow>
                     <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
@@ -123,7 +128,6 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
                         <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1}  <ReportedTag>Reported</ReportedTag></QuestionLink>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
@@ -139,7 +143,6 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                         <WhoAndWhen>
                             Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
                         </WhoAndWhen>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
@@ -153,7 +156,20 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
                         <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
-                        {tagComponents}
+                    </QuestionTitleArea>
+                </StyledQuestionRow>
+            )
+        }else if (forReportsPage){
+            return (
+                <StyledQuestionRow>
+                    <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
+                    <QuestionStat data-testid = "answerCountTest"> {answerCount1} <span>answers</span> </QuestionStat>
+                    <QuestionStat data-testid = "viewsTest"> {viewCount1} <span>views</span> </QuestionStat>
+                    <QuestionTitleArea>
+                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} <ReportedTag>Report Active</ReportedTag></QuestionLink>
+                        <WhoAndWhen>
+                            Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
+                        </WhoAndWhen>
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
@@ -164,12 +180,10 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     <QuestionStat data-testid = "answerCountTest"> {answerCount1} <span>answers</span> </QuestionStat>
                     <QuestionStat data-testid = "viewsTest"> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
-                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
-                        {/* need to add timeAsked */}
+                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1}</QuestionLink>
                         <WhoAndWhen>
                             Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
                         </WhoAndWhen>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )

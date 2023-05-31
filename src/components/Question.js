@@ -1,8 +1,7 @@
 export class Question {
-    //creating this constructor for testing purposes
-    constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail)
+    //creating the constructor for the question object
+    constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, reported)
     {
-        //console.log("Creating object...");
         this.questionID = questionID;
         this.questionTitle = questionTitle;
         this.questionText = questionText;
@@ -15,6 +14,7 @@ export class Question {
         this.comments = [];
         this.answers = [];
         this.currEmail = currEmail;
+        this.reported = reported;
     }
 
     //java-style getters
@@ -66,9 +66,12 @@ export class Question {
     {
         return this._currEmail;
     }
+    getReported()
+    {
+        return this._reported;
+    }
 
     //OTHERS  
-
     addComment(comment)
     {
         this.comments.push(comment);

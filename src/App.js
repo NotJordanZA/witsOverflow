@@ -11,6 +11,7 @@ import AskPage from "./pages/askPage";
 import SingleQuestionPage from "./pages/singleQuestionPage";
 import ChangePassword from "./pages/changePasswordPage";
 import CommunityPage from "./pages/communityPage";
+import ReportsPage from "./pages/reportsPage";
 import "./App.css";
 import {getAnalytics} from "firebase/analytics";
 import { app } from "./firebase-config/firebase";
@@ -47,6 +48,7 @@ function App() {
                 <Route path= "/changePassword" element= {<ChangePassword/>} />
                 <Route path= "/question" element= {<SingleQuestionPage/>} />
                 <Route path= "/communityPage" element= {<CommunityPage/>} />
+                <Route path= "/reportsPage" element= {<ReportsPage/>} />
                 <Route path= "*" element= {<LoginPage/>} />
               </Route>
             </Routes>

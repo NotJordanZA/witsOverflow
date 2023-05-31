@@ -3,13 +3,14 @@ import styled from "styled-components";
 import logo from '../logo.png';
 import users from '../users.png';
 import avatar from '../avatar.svg';
+import reports from '../reports.png';
 import { Outlet } from "react-router-dom";
 
 
 //container for header elements
 const StyledHeader = styled.header`
   display:grid;
-  grid-template-columns: 30px 200px 1fr 50px 50px 200px;
+  grid-template-columns: 30px 200px 1fr 50px 50px 50px min-content;
   box-shadow: 0 2px 2px rgba(0,0,0,.1);
   `;
 
@@ -51,24 +52,23 @@ const LogoLink = styled.a`
   }
   `;
 
-  //styling for the search bar
-  const SearchInput = styled.input`
+  const EmptyPadding = styled.a`
   display: inline-block;
-  box-sizing: border-box;
-  width: 100%;
-  border: 0px solid #fff;
-  border-radius: 100px;
-  background: #e4e4e4;
-  padding: 9px 15px;
-  margin-top: 17px;
   `;
 
-  //styling for the bell link
+  //styling for the community link
   const UsersLink = styled.a`
   display: inline-block;
   padding: 20px 10px 0 10px;
   opacity: 0.8;
   `;
+
+   //styling for the reports link
+   const ReportsLink = styled.a`
+   display: inline-block;
+   padding: 10px 10px 0 10px;
+   opacity: 0.9;
+   `;
 
   //styling for the profile photo link
   const ProfileLinkAvi = styled.a`
@@ -81,7 +81,7 @@ const LogoLink = styled.a`
   text-decoration: none;
   display: inline-block;
   line-height: 15px;
-  padding: 27px 0px;
+  padding: 27px 10px 0px 0px;
   color:#000000;
   `;
 
@@ -89,6 +89,7 @@ const LogoLink = styled.a`
 function Header(){
   const email = sessionStorage.getItem('userEmail');
   if (sessionStorage.getItem('userEmail') == null){//checks if on the login or registration page
+    //renders the header with only the logo and website name
     return(
       <main>
         <StyledHeader>
@@ -102,30 +103,56 @@ function Header(){
         <Outlet/>
       </main>
     );
+  }else if(email.indexOf("student") === -1){
+    return(
+      <main>
+        <StyledHeader>
+          <LogoLink href="/questionsPage" className="logo">
+              <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
+          </LogoLink>
+          <LogoLinkTitle href="/questionsPage" className="title">
+              <span><b>wits overflow</b></span>
+          </LogoLinkTitle>
+          <EmptyPadding> </EmptyPadding>
+          <ReportsLink href="/reportsPage">
+            <img style = {{ width : 50, height: 50 }}src = {reports} alt = "reports" />
+          </ReportsLink>
+          <UsersLink href="/communityPage" className="users">
+              <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
+          </UsersLink>
+          <ProfileLinkAvi href="/profilePage" className="profile">
+            <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
+          </ProfileLinkAvi>
+          <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
+      </StyledHeader>
+      <Outlet/>
+      </main>
+    );
+  }else{
+    //renders the header with the logo, name, community page icon, profile icon, and user email
+    return(
+      <main>
+        <StyledHeader>
+          <LogoLink href="/questionsPage" className="logo">
+              <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
+          </LogoLink>
+          <LogoLinkTitle href="/questionsPage" className="title">
+              <span><b>wits overflow</b></span>
+          </LogoLinkTitle>
+          <EmptyPadding> </EmptyPadding>
+          <EmptyPadding> </EmptyPadding>
+          <UsersLink href="/communityPage" className="users">
+              <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
+          </UsersLink>
+          <ProfileLinkAvi href="/profilePage" className="profile">
+            <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
+          </ProfileLinkAvi>
+          <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
+      </StyledHeader>
+      <Outlet/>
+      </main>
+    );
   }
-  return(
-    <main>
-      <StyledHeader>
-        <LogoLink href="/questionsPage" className="logo">
-            <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
-        </LogoLink>
-        <LogoLinkTitle href="/questionsPage" className="title">
-            <span><b>wits overflow</b></span>
-        </LogoLinkTitle>
-        <form action="" className="search">
-          <SearchInput type="text" placeholder="Search..." className="searchBar" data-testid = "headerSearch"/>
-        </form>
-        <UsersLink href="/communityPage" className="users">
-            <img style = {{ width : 35, height: 28 }}src = {users} alt = "users" />
-        </UsersLink>
-        <ProfileLinkAvi href="/profilePage" className="profile">
-          <img style = {{ width : 35, height: 35 }} src = {avatar} alt = "avatar"/>
-        </ProfileLinkAvi>
-        <ProfileLinkName href="/profilePage" className="profile">{email}</ProfileLinkName>
-    </StyledHeader>
-    <Outlet/>
-    </main>
-);
 }
 
 export default Header;
