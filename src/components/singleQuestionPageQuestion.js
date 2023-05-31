@@ -267,19 +267,17 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         navigate(path, {state : email});
     }
 
-    const reportsCollectionRef = collection(db, "reports");
-    const questionsCollectionRef = collection(db, "questions");
+    const reportsDocRef = doc(db, "reports", questionID);
+    const questionsCollectionRef = doc(db, "questions", questionID);
     const reportQuestion = async() => {
-        let reportedQuestionID = questionID;
-        let reportedAnswerID = "";
-        await addDoc(reportsCollectionRef, {
-            answerID: reportedAnswerID,
-            questionID: reportedQuestionID
-        });
+        const data = {
+            answerID: ""
+        };
+        await setDoc(reportsDocRef, data);
         await updateDoc(questionsCollectionRef, {
             reported: true
         });
-        window.location.reload(false);
+        navigate("/questionsPage");
     }
     
     const OnDeleteButtonClick = async() => {
@@ -353,7 +351,6 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes1}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                            <StyledReportButton onClick = {reportQuestion}>Report</StyledReportButton>
                         </VotesArea>
                         <QuestionBodyArea>
                             <BodyText readOnly>
@@ -391,6 +388,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
                         <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                         <VoteNumber>{votes1}</VoteNumber>
                         <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                        <StyledReportButton onClick = {reportQuestion}>Report</StyledReportButton>
                     </VotesArea>
                     <QuestionBodyArea>
                         <BodyText readOnly>

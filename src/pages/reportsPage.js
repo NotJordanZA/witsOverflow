@@ -54,10 +54,10 @@ function ReportsPage(){
     let arr = []
     useEffect(()=>{
         reportsList.map( async (questions) => {
-        const questionCollectionRef = doc(db, "questions", questions.questionID);
+        const questionCollectionRef = doc(db, "questions", questions.id);
         const questionData = await getDoc(questionCollectionRef);
         const qData = questionData.data();
-        qData.id = questions.questionID;
+        qData.id = questions.id;
         // console.log(qData);
         // console.log("qData logged");
         arr.push(qData);

@@ -322,14 +322,12 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
         setEditing(!editing);
     }
 
-    const reportsCollectionRef = collection(db, "reports");
+    const reportsDocRef = doc(db, "reports", questionID);
     const reportAnswer = async() => {
-        let reportedQuestionID = questionID;
-        let reportedAnswerID = answerID;
-        await addDoc(reportsCollectionRef, {
-            answerID: reportedAnswerID,
-            questionID: reportedQuestionID
-        });
+        const data = {
+            answerID: answerID
+        };
+        await setDoc(reportsDocRef, data);
         await updateDoc(answerRef, {
             reported: true
         });
