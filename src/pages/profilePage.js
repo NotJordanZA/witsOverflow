@@ -43,19 +43,6 @@ const HeaderRow = styled.div`
   align-items: center;
   `;
 
-const AchievementRow = styled.div`
-    display: grid;
-    grid-gap: 5px;
-    padding-left: 22px;
-    box-shadow: 0 2px 2px rgba(0,0,0,.1);
-    padding-bottom: 20px;
-`;
-
-const AchievementBody = styled.text`
-    font-size = 1rem;
-    column-row: 1;
-`;
-
 
 const Container = styled.div`
     padding: 50px 0;
@@ -118,14 +105,18 @@ const StyledButton = styled.button`
 export default function Profile(){
     //used for allowing a button to change the path
     let navigate = useNavigate();
+    //get user's email from session storage information
     var email = sessionStorage.getItem('userEmail');
+    //prop passed from navigation from community page. Is null if not navigating from community page
     const communityEmail = useLocation().state;
     window.history.replaceState({}, document.title);
     
+    //method to go to change password page
     const routeChangePass = () => {
         let path= '/changePassword';
         navigate(path);
     }
+    //method to log a user out and return them to the login page
     const routeChangeLogOut = () => {
         let path= "/loginPage";
         const auth = getAuth();
@@ -139,16 +130,18 @@ export default function Profile(){
         window.location.reload(false);
     }
 
+    //get a reference to the document in the users collection containing info about the profile page owner's user (if it is not the current user)
     let communityUserRef = "";
-
     if(communityEmail != null){
         communityUserRef = doc(db, "users", communityEmail);
     }
 
+    //fetch the document from the users collection about the current user
     const userDocRef = doc(db, "users", email);
     // For fetching all user info
     const [userInfoList, setUserInfoList] = useState([]);
 
+    //get information about the user whose profile page it is
     useEffect(() => {
         const getUserInfoList = async (docRef) => {
             try {
@@ -159,16 +152,18 @@ export default function Profile(){
                 console.error(error)
             }
         };
-        if(communityEmail != null){
+        if(communityEmail != null){ //get info for profile page's user if it is not the current user's profile page
             getUserInfoList(communityUserRef);
-        }else{
+        }else{ //get the current user's info for their profile page
             getUserInfoList(userDocRef);
         }
     }, []);
 
+    //store all the questions asked by the profile page's user
     const [questionList, setQuestionList] = useState([]);
+    //get a reference to the questions collection
     const questionCollectionRef = collection(db, "questions")
-
+    //get the profile page's user's questions that they have asked
     useEffect(() => {
         const getQuestionList = async () => {
             try {
@@ -182,14 +177,13 @@ export default function Profile(){
                 console.error(error)
             }
         };
-
         getQuestionList();
     }, []);
 
+    //map the question data from the database into an array that stores the questions in a usable format
     let questions = [];
-
     const mapQuestions = questionList.map((dbQuestion) => {
-        if(communityEmail != null){
+        if(communityEmail != null){ //if the profile page's user is not necessarily the current user
             if(dbQuestion.name === communityEmail){
                 let question = {questionID : dbQuestion.id,
                     questionTitle : dbQuestion.title,
@@ -203,7 +197,7 @@ export default function Profile(){
                     currEmail : email};
                 questions.push(question)
             }
-        }else{
+        }else{ //if the profile page's user is the current user
             if(dbQuestion.name === email){
                 let question = {questionID : dbQuestion.id,
                     questionTitle : dbQuestion.title,
@@ -220,10 +214,6 @@ export default function Profile(){
         }
     })
 
-    let doThis = mapQuestions;
-
-    const achievements = ["Keyboard Warrior", "Inquisitive Mind", "Sage"];
-
     //STATISTICS TO BE FETCHED FROM DATABASE USING QUERY
     let totalVotes = 0;
     let totalViews = 0;
@@ -235,9 +225,7 @@ export default function Profile(){
     }
 
 
-
-    //WHERE ACTUAL WORK IS DONE
-    //add question rows
+    //add question rows using information stored in the question[] array
     const questionRows = [];
     for (let q = 0; q < questions.length; q++)
     {
@@ -265,17 +253,10 @@ export default function Profile(){
             />
         )
     }
-    //add achievement rows
-    const achievementsDisplay = [];
-    for (let a = 0; a < achievements.length; a++)
-    {
-        achievementsDisplay.push(
-            <AchievementBody>{achievements[a]}</AchievementBody>
-        );
-    }
     
-    if (communityEmail != null){
-        if (communityEmail === email){
+    //render the components to the page based on various conditions
+    if (communityEmail != null){ //if the profile page's user is not necessarily the current user
+        if (communityEmail === email){ //if the profile page's user is the current user
             return(
                 <main>
                     <Container>
@@ -286,12 +267,6 @@ export default function Profile(){
                     <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
                     <StyledButton onClick={routeChangeLogOut} data-testid = "logOutTest">Log Out</StyledButton>
                     </Container>
-                    <HeaderRow>
-                        <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
-                    </HeaderRow>
-                    <AchievementRow>
-                        {achievementsDisplay}
-                    </AchievementRow>
                     <HeaderRow>
                         <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
                         <StatsRow>
@@ -306,7 +281,7 @@ export default function Profile(){
                     </PassRow>
                 </main>
             )
-        }else{
+        }else{ //if the profile page's user is not the current user
             return(
                 <main>
                     <Container>
@@ -316,12 +291,6 @@ export default function Profile(){
                     <Qualifications data-testid = "qualificationsTest">{userInfoList.qualifications}</Qualifications>
                     <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
                     </Container>
-                    <HeaderRow>
-                        <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
-                    </HeaderRow>
-                    <AchievementRow>
-                        {achievementsDisplay}
-                    </AchievementRow>
                     <HeaderRow>
                         <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
                         <StatsRow>
@@ -334,7 +303,7 @@ export default function Profile(){
                 </main>
             )
         }
-    }else{
+    }else{ //if the profile page's user is the current user
         return(
             <main>
                 <Container>
@@ -345,12 +314,6 @@ export default function Profile(){
                 <Bio data-testid = "bioTest">{userInfoList.bio}</Bio>
                 <StyledButton onClick={routeChangeLogOut}>Log Out</StyledButton>
                 </Container>
-                <HeaderRow>
-                    <StyledHeader>Achievements&nbsp;of&nbsp;User</StyledHeader>
-                </HeaderRow>
-                <AchievementRow>
-                    {achievementsDisplay}
-                </AchievementRow>
                 <HeaderRow>
                     <StyledHeader>Questions&nbsp;from&nbsp;User</StyledHeader>
                     <StatsRow>
