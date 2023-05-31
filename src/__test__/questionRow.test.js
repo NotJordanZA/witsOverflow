@@ -46,12 +46,6 @@ describe('QuestionRow', () => {
     expect(screen.getByTestId("authorEmailTest")).toBeInTheDocument();
   });
 
-  it('renders tags', () => {
-    render(<QuestionRow {...question} currEmail={email} />);
-    expect(screen.getByText('test')).toBeInTheDocument();
-    expect(screen.getByText('react')).toBeInTheDocument();
-  });
-
   it('navigates to the singleQuestion page when question title is clicked', () => {
     const { container } = render(
       <MemoryRouter>

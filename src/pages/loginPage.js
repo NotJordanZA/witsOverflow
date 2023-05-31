@@ -39,6 +39,15 @@ const StyledLink = styled.a`
     color: #475be8;
 `;
 
+const StyledErrorMessage = styled.a`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 7px;
+    color: #FF3333;
+`;
+
 const StyledForm = styled.form`
     padding: 10px;
     display: flex;
@@ -53,19 +62,26 @@ const LoginPage = () => {
     
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [errMsg, setErrMsg] = useState('');           
+    const [errMsg, setErrMsg] = useState(''); 
+    
+    const [isIncorrectDetails, setIsIncorrectDetails] = useState(false);
 
     //writes submitted email and password to console, redirects to questions page on successful login
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-       // if(email.includes('.wits'))
         console.log(email, pass);
-        await signInWithEmailAndPassword(getAuth(),email,pass);
+        try {
+            await signInWithEmailAndPassword(getAuth(),email,pass);
+        } catch(err) {
+            //alert("ERROR: Incorrect Password Enterred!");
+            setIsIncorrectDetails(true);
+        }
         //add comparison between submitted email and password and stored password;
 
         if(getAuth().currentUser!=null){
             sessionStorage.setItem('userEmail', email);
+            setIsIncorrectDetails(false);
             navigate("/questionsPage", {state : email});
             window.location.reload(false);
         }
@@ -103,6 +119,9 @@ const LoginPage = () => {
                     required
                     />
                 <StyledButton type = 'submit'>Login</StyledButton>
+                {isIncorrectDetails &&
+                    <StyledErrorMessage>Incorrect email or password enterred!</StyledErrorMessage>
+                }
             </StyledForm>
             <p>Don't have an account?<br/>
                 <span className="line">

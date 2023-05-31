@@ -75,7 +75,7 @@ const ReportedTag = styled.a`
 
 
 //function QuestionRow({Question : question}){  
-function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, forProfilePage, reported}){  
+function QuestionRow({questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, forProfilePage, reported, forReportsPage}){  
     let navigate = useNavigate();
 
     //asign class variables
@@ -92,8 +92,7 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
     let reported1 = reported;
 
     //create question object
-    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email);
-    
+    const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email, reported);
     //add variable number of tags
     const tagComponents = [];
     for (let i = 0; i < tags1.length; i++)
@@ -127,11 +126,10 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
                         <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1}  <ReportedTag>Reported</ReportedTag></QuestionLink>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else{ //question displayed on home page that has been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
@@ -143,13 +141,12 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                         <WhoAndWhen>
                             Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
                         </WhoAndWhen>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
         }
     }else{
-        if(forProfilePage){//checks if the question is for the profile page and renders accordingly
+        if(forProfilePage){ //question displayed on a profile page that has not been reported
             return (
                 <StyledQuestionRow>
                     <QuestionStat> {votes1} <span>votes</span> </QuestionStat>
@@ -157,22 +154,34 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
                     <QuestionStat> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
                         <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
-                        {tagComponents}
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )
-        }else{
+        }else if (forReportsPage){
             return (
                 <StyledQuestionRow>
                     <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
                     <QuestionStat data-testid = "answerCountTest"> {answerCount1} <span>answers</span> </QuestionStat>
                     <QuestionStat data-testid = "viewsTest"> {viewCount1} <span>views</span> </QuestionStat>
                     <QuestionTitleArea>
-                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} </QuestionLink>
+                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1} <ReportedTag>Report Active</ReportedTag></QuestionLink>
                         <WhoAndWhen>
                             Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
                         </WhoAndWhen>
-                        {tagComponents}
+                    </QuestionTitleArea>
+                </StyledQuestionRow>
+            )
+        }else{ //question displayed on home page that has not been reported
+            return (
+                <StyledQuestionRow>
+                    <QuestionStat data-testid = "votesTest"> {votes1} <span>votes</span> </QuestionStat>
+                    <QuestionStat data-testid = "answerCountTest"> {answerCount1} <span>answers</span> </QuestionStat>
+                    <QuestionStat data-testid = "viewsTest"> {viewCount1} <span>views</span> </QuestionStat>
+                    <QuestionTitleArea>
+                        <QuestionLink onClick={() => routeChangeToSingleQuestion(question)}> {questionTitle1}</QuestionLink>
+                        <WhoAndWhen>
+                            Asked by <UserLink data-testid = "authorEmailTest" onClick={() => routeChangeToProfile(firstName1)}> {firstName1} </UserLink>
+                        </WhoAndWhen>
                     </QuestionTitleArea>
                 </StyledQuestionRow>
             )

@@ -55,7 +55,7 @@ function QuestionsPage(){
         //Call the method defined above
         getQuestionList();
     }, []);
-    
+    console.log("questionList", questionList);
 
     //Declare array of QuestionRow Components
     const questionComponents = [];

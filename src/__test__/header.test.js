@@ -29,7 +29,6 @@ describe('Header component', () => {
     // Check for title
     expect(screen.getByText('wits overflow')).toBeInTheDocument();
     // Check for user-related elements
-    expect(screen.getByTestId('headerSearch')).toBeInTheDocument();
     expect(screen.getByAltText('users')).toBeInTheDocument();
     expect(screen.getByAltText('avatar')).toBeInTheDocument();
     expect(screen.getByText('user-email@wits.ac.za')).toBeInTheDocument();

@@ -42,33 +42,30 @@ function ReportsPage(){
                     id: doc.id,
                 }));
                 setReportsList(filteredData);
-                //console.log(reportsList);
-                let arr = [];
-                //Map the questions with active reports to an array, arr.
-                const mapQuestions = reportsList.map( async (questions) => {
-                    const questionCollectionRef = doc(db, "questions", questions.questionID);
-                    const questionData = await getDoc(questionCollectionRef);
-                    const qData = questionData.data();
-                    qData.id = questions.questionID;
-                    // console.log(qData);
-                    // console.log("qData logged");
-                    arr.push(qData);
-                })
-                setQuestionsList(arr);
-                console.log(questionsList);
-                console.log("qList logged.");
-                let doThis = mapQuestions;
+                console.log(reportsList);
+                console.log("reportslist logged")
             } catch (error) {
                 console.error(error)
             }
         };
         getReportsList();
     }, []);
+    let arr = []
+    useEffect(()=>{
+        reportsList.map( async (questions) => {
+        const questionCollectionRef = doc(db, "questions", questions.id);
+        const questionData = await getDoc(questionCollectionRef);
+        const qData = questionData.data();
+        qData.id = questions.id;
+        // console.log(qData);
+        // console.log("qData logged");
+        arr.push(qData);
+        setQuestionsList(arr);
+    })}, [reportsList])
 
     const questionComponents = [];
     // Map the questions with active reports to the QuestionRow component.
-    const mapReports = questionsList.map((dbQuestion) => {
-            //console.log(dbQuestion);
+    {questionsList.map((dbQuestion) => (
             questionComponents.push(
                 <QuestionRow 
                     questionID = {dbQuestion.id}
@@ -83,13 +80,10 @@ function ReportsPage(){
                     currEmail= {email}
                     forProfilePage = {false}
                     reported = {dbQuestion.reported}
+                    forReportsPage = {true}
                 />
-                )
-        }
-    )
-    
-    let doThis = mapReports;
-
+            )
+    ))}
     return (
         <main>
             {/* Create a Header for the page */}

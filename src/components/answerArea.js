@@ -3,8 +3,9 @@ import { useState } from "react";
 import Comment from "./Comment";
 import upArrow from '../arrow-up.png';
 import downArrow from '../arrow-down.png';
+import {useNavigate} from "react-router-dom";
 import { db } from '../firebase-config/firebase';
-import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc, doc, getDocs, deleteDoc} from 'firebase/firestore';
 import { useEffect } from "react";
 
 //CSS Component: Area for Entire Answer Containing All Elements
@@ -12,6 +13,7 @@ const AnswerAreaComponent = styled.div`
     display: flex;
     flex-direction: row;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    margin: 10px;
 `;
 //CSS Component: Area for Body of Answer and Comments
 const AnswerBodyArea = styled.div`
@@ -28,6 +30,16 @@ const VotesArea = styled.div`
     padding: 0 10px;
 `;
 //CSS Component: Number of Votes
+const StyledReportButton = styled.button`
+    display: inline-block;
+    border: 0px solid #fff;
+    border-radius: 10px;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background: #475be8;
+    color: white;
+`;
 const VoteNumber = styled.p`
     font-size: 1.1rem;
 `;
@@ -112,9 +124,11 @@ const ReportedTag = styled.a`
 `;
 
 function AnswerArea({questionID, answerID, answerText, votes, questionEmail, answerEmail, currEmail, answerHelpful, reported}) {
+    let navigate = useNavigate();
+  
     //Const for Reference to Answers in Database
     const voteDocRef = doc(db, "questions", questionID, "Answers", answerID, "Votes", currEmail);
-    
+
     //useState for Opacity of Votes
     const [upOpacity, setUpOpacity] = useState(0.4);
     const [downOpacity, setDownOpacity] = useState(0.4);
@@ -351,9 +365,65 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
         setEditing(!editing);
     }
 
-    if(reported){ //If Post is Reported
-        if (currEmail === questionEmail){
-            //Render One Way if Question is User's
+    const reportsDocRef = doc(db, "reports", questionID);
+    const reportAnswer = async() => {
+        const data = {
+            answerID: answerID
+        };
+        await setDoc(reportsDocRef, data);
+        await updateDoc(answerRef, {
+            reported: true
+        });
+        window.location.reload(false);
+    }
+    
+    const OnDeleteButtonClick = async() => {
+        await deleteDoc(doc(db, "questions", questionID));
+        navigate("/reportsPage");
+    }
+
+    const OnResolveButtonClick = async() => {
+        await updateDoc(doc(db, "questions", questionID, "Answers", answerID), {
+            reported: false
+          });
+          navigate("/reportsPage");
+          window.location.reload(false);
+    }
+
+    if(reported){//If Post is Reported
+        if(currEmail.indexOf("student") === -1){//Render One Way if Question is User's
+            return (
+                <div>
+                    {answerHelpful ? (
+                        <a style={{padding: "10px 0 10px 0", marginTop: "5px", color: "#475be8"}}>Marked helpful by author</a>
+                    ):(<a></a>)}
+                    <ReportedTag>Reported</ReportedTag>
+                    <AnswerAreaComponent>
+                        <VotesArea>
+                            <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                            <VoteNumber>{votes2}</VoteNumber>
+                            <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledButton style = {{padding: "8px 14px"}} onClick={OnDeleteButtonClick}>Delete</StyledButton>
+                            <a style = {{padding: "1px"}}> </a>
+                            <StyledButton style = {{padding: "8px 10px"}} onClick={OnResolveButtonClick}>Resolve</StyledButton>
+                        </VotesArea>
+                        <AnswerBodyArea>
+                            <BodyText readOnly>
+                                {answerText}
+                            </BodyText>
+                            
+                            <CommentsAreaContainer>
+                            <StyledForm onSubmit={handleCommentSubmit}>
+                                {commentsComponents}
+                                <HiddenButton type= "submit"></HiddenButton>
+                            </StyledForm>
+                            </CommentsAreaContainer>
+                        </AnswerBodyArea>
+                    </AnswerAreaComponent>
+                </div>
+            )
+        }
+        else if (currEmail === questionEmail){
             return (
                 <div>
                     <label>
@@ -373,6 +443,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -394,7 +465,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                 </div>
             )
         }else if(answerEmail === currEmail){ //Render One Way if Answer is User's
-            if(editing === false){ //If Not Editing
+            if(editing === false){//If Not Editing
                 return (
                     <div>
                         {answerHelpful ? (
@@ -407,7 +478,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                                 <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                                 <VoteNumber>{votes2}</VoteNumber>
                                 <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                                <StyledButton style = {{padding: "15px 10px"}} onClick={OnEditButtonClick}>Edit</StyledButton>
                             </VotesArea>
                             <AnswerBodyArea>
                                 <BodyText readOnly>
@@ -468,7 +538,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                     </div>
                 )
             }
-        }else{ //If Answer/Question is Not User's
+        }else{ //is user that neither asked question nor gave answer - can report
             return (
                 <div>
                     {answerHelpful ? (
@@ -481,6 +551,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -502,7 +573,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                 </div>
             )
         }
-    }else{ //If Post Not Reported
+    }else{ //answer has not been reported
         if (currEmail === questionEmail){ //If Question Asked By User
             return (
                 <div>
@@ -522,6 +593,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>
@@ -543,7 +615,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                 </div>
             )
         }else if(answerEmail === currEmail){ //If Answer is Current User's
-            if(editing === false){ //If Not Editing
+            if(editing === false){//If Not Editing
                 return (
                     <div>
                         {answerHelpful ? (
@@ -627,6 +699,7 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
                             <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
                             <VoteNumber>{votes2}</VoteNumber>
                             <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledReportButton onClick={reportAnswer}>Report</StyledReportButton>
                         </VotesArea>
                         <AnswerBodyArea>
                             <BodyText readOnly>

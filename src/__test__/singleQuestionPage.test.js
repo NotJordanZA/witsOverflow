@@ -55,7 +55,7 @@ describe('SingleQuestionPage', () => {
 
     // Assert that the answer area is rendered
     expect(screen.getByText('Your Answer')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByText('Post Answer')).toBeInTheDocument();
   });
 
   it('submits an answer', async () => {
@@ -81,7 +81,7 @@ describe('SingleQuestionPage', () => {
     fireEvent.change(answerTextarea, { target: { value: 'Test answer' } });
 
     // Submit the answer
-    const postAnswerButton = screen.getByRole('button');
+    const postAnswerButton = screen.getByText('Post Answer');
     fireEvent.click(postAnswerButton);
 
     // Assert that the answer is added
