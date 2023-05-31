@@ -4,7 +4,7 @@ import downArrow from '../arrow-down.png';
 import {useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { db } from '../firebase-config/firebase';
-import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc, doc, getDocs, deleteDoc} from 'firebase/firestore';
 import { useEffect, useLayoutEffect } from "react";
 import Comment from "./Comment";
 
@@ -115,6 +115,14 @@ const ReportedTag = styled.a`
     font-size: 1.05rem;
     display: block;
     margin-bottom: 7px;
+`;
+const StyledButton = styled.button`
+    display: flex !important; 
+    justify-content: left !important;
+    border: 0px solid #fff;
+    border-radius: 10px;
+    background: #475be8;
+    color: white;
 `;
 //main function of the component
 function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments, currEmail, currVoted, currVote, reported}) {
@@ -248,45 +256,100 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         let path= '/profilePage';
         navigate(path, {state : email});
     }
+
+    const OnDeleteButtonClick = async() => {
+        await deleteDoc(doc(db, "questions", questionID));
+        navigate("/reportsPage");
+    }
+
+    const OnResolveButtonClick = async() => {
+        await updateDoc(doc(db, "questions", questionID), {
+            reported: false
+          });
+          navigate("/reportsPage");
+          window.location.reload(false);
+    }
     
     //renders the component
     if(reported){
-        return (
-            <div>
-                <TitleArea>
-                    <Title><b>{questionTitle}</b></Title>
-                    <ReportedTag>Reported</ReportedTag>
-                    <QuestionStatArea>
-                        <QuestionStat>Asked by <UserLink onClick={() => routeChangeToProfile(firstName)}> {firstName} </UserLink></QuestionStat>
-                        <QuestionStat>{viewCount} Views</QuestionStat>
-                    </QuestionStatArea>
-                </TitleArea>
-                <QuestionArea>
-                    <VotesArea>
-                        <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
-                        <VoteNumber>{votes1}</VoteNumber>
-                        <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
-                    </VotesArea>
-                    <QuestionBodyArea>
-                        <BodyText readOnly>
-                            {questionText}
-                        </BodyText>
-                        <CommentsAreaContainer>
-                        <StyledForm onSubmit={handleCommentSubmit}>
-                            {commentsComponents}
-                            <AddComment
-                            id = "commentInput"
-                            placeholder="Add comment..."
-                            value = {comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            />
-                            <HiddenButton type= "submit"></HiddenButton>
-                        </StyledForm>
-                    </CommentsAreaContainer>
-                    </QuestionBodyArea>
-                </QuestionArea>
-            </div>
-        )
+        if(currEmail.indexOf("student") === -1){
+            return (
+                <div>
+                    <TitleArea>
+                        <Title><b>{questionTitle}</b></Title>
+                        <ReportedTag>Reported</ReportedTag>
+                        <QuestionStatArea>
+                            <QuestionStat>Asked by <UserLink onClick={() => routeChangeToProfile(firstName)}> {firstName} </UserLink></QuestionStat>
+                            <QuestionStat>{viewCount} Views</QuestionStat>
+                        </QuestionStatArea>
+                    </TitleArea>
+                    <QuestionArea>
+                        <VotesArea>
+                            <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                            <VoteNumber>{votes1}</VoteNumber>
+                            <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                            <StyledButton style = {{padding: "8px 14px"}} onClick={OnDeleteButtonClick}>Delete</StyledButton>
+                            <a style = {{padding: "1px"}}> </a>
+                            <StyledButton style = {{padding: "8px 10px"}} onClick={OnResolveButtonClick}>Resolve</StyledButton>
+                        </VotesArea>
+                        <QuestionBodyArea>
+                            <BodyText readOnly>
+                                {questionText}
+                            </BodyText>
+                            <CommentsAreaContainer>
+                            <StyledForm onSubmit={handleCommentSubmit}>
+                                {commentsComponents}
+                                <AddComment
+                                id = "commentInput"
+                                placeholder="Add comment..."
+                                value = {comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                />
+                                <HiddenButton type= "submit"></HiddenButton>
+                            </StyledForm>
+                        </CommentsAreaContainer>
+                        </QuestionBodyArea>
+                    </QuestionArea>
+                </div>
+            )
+        }else{
+            return (
+                <div>
+                    <TitleArea>
+                        <Title><b>{questionTitle}</b></Title>
+                        <ReportedTag>Reported</ReportedTag>
+                        <QuestionStatArea>
+                            <QuestionStat>Asked by <UserLink onClick={() => routeChangeToProfile(firstName)}> {firstName} </UserLink></QuestionStat>
+                            <QuestionStat>{viewCount} Views</QuestionStat>
+                        </QuestionStatArea>
+                    </TitleArea>
+                    <QuestionArea>
+                        <VotesArea>
+                            <a><img style = {{opacity: upOpacity, width : 50, height: 50 }}src = {upArrow} alt = "upArrow" onClick = {OnUpvote}/></a>
+                            <VoteNumber>{votes1}</VoteNumber>
+                            <a><img style = {{opacity: downOpacity, width : 50, height: 50 }}src = {downArrow} alt = "downArrow" onClick = {OnDownvote}/></a>
+                        </VotesArea>
+                        <QuestionBodyArea>
+                            <BodyText readOnly>
+                                {questionText}
+                            </BodyText>
+                            <CommentsAreaContainer>
+                            <StyledForm onSubmit={handleCommentSubmit}>
+                                {commentsComponents}
+                                <AddComment
+                                id = "commentInput"
+                                placeholder="Add comment..."
+                                value = {comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                />
+                                <HiddenButton type= "submit"></HiddenButton>
+                            </StyledForm>
+                        </CommentsAreaContainer>
+                        </QuestionBodyArea>
+                    </QuestionArea>
+                </div>
+            )
+        }
     }else{
         return (
             <div>

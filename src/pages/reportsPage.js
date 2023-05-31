@@ -81,6 +81,7 @@ function ReportsPage(){
                     currEmail= {email}
                     forProfilePage = {false}
                     reported = {dbQuestion.reported}
+                    forReportsPage = {true}
                 />
             )
     ))}
