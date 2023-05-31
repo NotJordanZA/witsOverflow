@@ -50,7 +50,6 @@ function ReportsPage(){
         };
         getReportsList();
     }, []);
-
     let arr = []
     useEffect(()=>{
         reportsList.map( async (questions) => {
@@ -85,7 +84,6 @@ function ReportsPage(){
                 />
             )
     ))}
-    
     return (
         <main>
             {/* Create a Header for the page */}

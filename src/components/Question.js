@@ -1,5 +1,6 @@
 export class Question {
     //creating the constructor for the question object
+
     constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail, reported)
     {
         this.questionID = questionID;
