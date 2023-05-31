@@ -5,6 +5,8 @@ import styled from "styled-components";
 import StyledButton from "../components/styledButton";
 import logo from '../logo.png';
 import { getAuth,signInWithEmailAndPassword } from "firebase/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
     padding: 200px 0;
@@ -118,10 +120,16 @@ const LoginPage = () => {
                     onChange={(e) => setPass(e.target.value)}
                     required
                     />
+                <StyledErrorMessage id="uidnote" style={isIncorrectDetails ? {} : {display: "none"}}>
+                    <FontAwesomeIcon icon={faInfoCircle} />
+                    Incorrect email or password. <br />
+                    Please enter your correct credentials.
+                </StyledErrorMessage>
                 <StyledButton type = 'submit'>Login</StyledButton>
-                {isIncorrectDetails &&
+                {/* {isIncorrectDetails &&
                     <StyledErrorMessage>Incorrect email or password enterred!</StyledErrorMessage>
-                }
+                } */}
+                
             </StyledForm>
             <p>Don't have an account?<br/>
                 <span className="line">
