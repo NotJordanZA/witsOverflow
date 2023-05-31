@@ -59,7 +59,6 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-       // if(email.includes('.wits'))
         console.log(email, pass);
         await signInWithEmailAndPassword(getAuth(),email,pass);
         //add comparison between submitted email and password and stored password;

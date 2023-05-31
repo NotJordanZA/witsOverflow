@@ -45,7 +45,7 @@ function QuestionsPage(){
         };
         getQuestionList();
     }, []);
-    
+    console.log("questionList", questionList);
 
     //possibly change question row to take a Question object instead of all of the seperate fields
     const questionComponents = [];

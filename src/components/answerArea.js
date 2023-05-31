@@ -184,7 +184,6 @@ function AnswerArea({questionID, answerID, answerText, votes, questionEmail, ans
     useEffect(() => {
         checkVoted();
         setVotes2(votes1);
-        console.log(votes1);
       }, [votesList,votes1,votes2]);
 
     const answerRef = doc(db, "questions", questionID, "Answers", answerID)
