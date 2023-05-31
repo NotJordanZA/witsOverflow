@@ -1,6 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import AnswerArea from "../components/answerArea";
 import '@testing-library/jest-dom/extend-expect';
+import * as router from 'react-router-dom';
+
+const navigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn(),
+  useNavigate: jest.fn(),
+}));
+
+beforeEach(() => {
+  jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
+})
 
 describe('AnswerArea', () => {
   const questionID = 'question123';
@@ -11,6 +24,7 @@ describe('AnswerArea', () => {
   const answerEmail = 'answer@example.com';
   const currEmail = 'user@example.com';
   const answerHelpful = true;
+  const reported = false;
 
   test('renders answer text', () => {
     render(
@@ -23,6 +37,7 @@ describe('AnswerArea', () => {
         answerEmail={answerEmail}
         currEmail={currEmail}
         answerHelpful={answerHelpful}
+        reported={reported}
       />
     );
 
@@ -41,6 +56,7 @@ describe('AnswerArea', () => {
         answerEmail={answerEmail}
         currEmail={currEmail}
         answerHelpful={answerHelpful}
+        reported={reported}
       />
     );
 
