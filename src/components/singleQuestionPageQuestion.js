@@ -41,6 +41,7 @@ const VotesArea = styled.div`
     flex-direction: column;
     padding: 0 10px;
 `;
+//css for the report button
 const StyledReportButton = styled.button`
     display: inline-block;
     border: 0px solid #fff;

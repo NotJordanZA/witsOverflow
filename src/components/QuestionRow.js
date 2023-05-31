@@ -93,7 +93,6 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
 
     //create question object
     const question = new Question(questionID1, questionTitle1, questionText1, votes1, answerCount1, viewCount1, timeAsked1, firstName1, tags1, email, reported);
-    
     //add variable number of tags
     const tagComponents = [];
     for (let i = 0; i < tags1.length; i++)
@@ -117,7 +116,6 @@ function QuestionRow({questionID, questionTitle, questionText, votes, answerCoun
         let path= '/profilePage';
         navigate(path, {state : email});
     }
-
 
     if(reported){//checks if the question has been reported and renders accordingly
         if(forProfilePage){//checks if the question is for the profile page and renders accordingly
