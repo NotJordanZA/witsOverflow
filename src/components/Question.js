@@ -1,5 +1,5 @@
 export class Question {
-    //creating this constructor for testing purposes
+    //creating the constructor for the question object
     constructor(questionID, questionTitle, questionText, votes, answerCount, viewCount, timeAsked, firstName, tags, currEmail)
     {
         //console.log("Creating object...");

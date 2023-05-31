@@ -89,6 +89,7 @@ const LogoLink = styled.a`
 function Header(){
   const email = sessionStorage.getItem('userEmail');
   if (sessionStorage.getItem('userEmail') == null){//checks if on the login or registration page
+    //renders the header with only the logo and website name
     return(
       <main>
         <StyledHeader>
@@ -103,6 +104,7 @@ function Header(){
       </main>
     );
   }
+  //renders the header with the logo, name, community page icon, profile icon, and user email
   return(
     <main>
       <StyledHeader>

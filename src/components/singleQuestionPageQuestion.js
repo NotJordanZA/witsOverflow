@@ -8,12 +8,13 @@ import { collection, addDoc, updateDoc, setDoc, doc, getDocs} from 'firebase/fir
 import { useEffect, useLayoutEffect } from "react";
 import Comment from "./Comment";
 
+//css for the container for the question
 const QuestionArea = styled.div`
     display: flex;
     flex-direction: row;
     box-shadow: 0 1px 2px rgba(0,0,0,.2);
 `;
-
+//css for the text area for the question body
 const BodyText = styled.textarea`
     display: flex;
     background: #e4e4e4;
@@ -26,11 +27,13 @@ const BodyText = styled.textarea`
     min-height: 200px;
     min-width: 100%;
 `;
+//css for the container for the body of the question
 const QuestionBodyArea = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
 `;
+//css for the container for the voting elements
 const VotesArea = styled.div`
     display: flex;
     align-items: center;
@@ -38,6 +41,7 @@ const VotesArea = styled.div`
     flex-direction: column;
     padding: 0 10px;
 `;
+//css for the title of the question
 const Title = styled.header`
     font-size: 1.5rem;
     color: #000;
@@ -46,11 +50,13 @@ const Title = styled.header`
     }
     padding: 0 0 0 0;
 `;
+//css for the area for the question title
 const TitleArea = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 0 10px 0;
 `;
+//css for the statistics of the question
 const QuestionStat = styled.div`
    // text-align: center;
     display: inline-block;
@@ -65,50 +71,52 @@ const QuestionStat = styled.div`
         margin-top: 4px;
     }
 `;
+//css for the area for the question stats
 const QuestionStatArea = styled.div`
     display: flex;
     flex-direction: row;
 `;
+//css for the number of votes
 const VoteNumber = styled.p`
     font-size: 1.1rem;
 `;
-
+//css for the container for the comments
 const CommentsAreaContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
 `;
-
+//css for the new comment input
 const AddComment = styled.input`
     border: 0;
     font-size: 0.85rem;
     margin-top: 5px;
     //padding: 5px 0 0 0;
 `;
-
+//css for form for submitting comments
 const StyledForm = styled.form`
     display: flex;
     flex-direction: column;
     width:100%;
 `;
-
+//css for the hidden button used for comment submission purposes
 const HiddenButton = styled.button`
     display: none;
 `;
-
+//css for the link to the user who authored the question
 const UserLink = styled.a`
     color: #808191;
 `;
-
+//main function of the component
 function SingleQuestionPageQuestion({questionID, questionTitle, questionText, votes, viewCount, timeAsked, firstName, comments, currEmail, currVoted, currVote}) {
     let navigate = useNavigate();
-    const voteDocRef = doc(db, "questions", questionID, "Votes", currEmail);
-    let commentDocPath = "questions/" + questionID + "/Comments";
-    const [votes1, setVotes1] = useState(votes);
+    const voteDocRef = doc(db, "questions", questionID, "Votes", currEmail);//reference for the vote collection
+    let commentDocPath = "questions/" + questionID + "/Comments";//path to the comments of the question, for firebase
+    const [votes1, setVotes1] = useState(votes);//stores the votes and allows you to set the votes
 
-    const [upOpacity, setUpOpacity] = useState(0.4);
-    const [downOpacity, setDownOpacity] = useState(0.4);
-    const checkVoted = async () => {
+    const [upOpacity, setUpOpacity] = useState(0.4);//stores the opacity of the upvote button
+    const [downOpacity, setDownOpacity] = useState(0.4);//stores the opacity of the downvote button
+    const checkVoted = async () => {//a function which checks if the current user has voted
         if(currVoted){
             if(currVote === "up"){
                 setUpOpacity(1);
@@ -121,8 +129,8 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         }
     };
 
-    const [commentList, setCommentList] = useState([]);
-    useEffect(()=> {
+    const [commentList, setCommentList] = useState([]);//stores the comments as fetched from the database
+    useEffect(()=> {//fetches the comments
         const getCommentList = async () => {
             try {
                 const data = await getDocs(commentCollectionRef);
@@ -138,13 +146,13 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         getCommentList();
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {//runs everytime the vote count changes to check if the current user has voted and to make sure the vote count is current
         checkVoted();
         setVotes1(votes);
       }, [votes]);
 
     const commentsComponents = [];
-    const mapComments = commentList.map((aComment) => {
+    const mapComments = commentList.map((aComment) => {//makes an array of comments
         let author = false;
         if (aComment.name === currEmail){
             author = true;
@@ -160,11 +168,9 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
     })
     let doThis = mapComments;
 
-    const [comment, setComment] = useState(''); 
-    //const commentCollectionRef = collection(db, path);
-    //event handlers
-    const commentCollectionRef = collection(db, "questions" , questionID, "Comments")
-    const handleCommentSubmit = async (e) => {
+    const [comment, setComment] = useState('');//for a potential new comment
+    const commentCollectionRef = collection(db, "questions" , questionID, "Comments")//reference for adding a new comment
+    const handleCommentSubmit = async (e) => {//runs when a comment is submitted and updates the database
         e.preventDefault();
         let tempComment = comment;
         setComment("");
@@ -175,7 +181,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         window.location.reload(false);
     }
 
-    const OnUpvote = async() => {
+    const OnUpvote = async() => {//handles updating the database and the components when the upvote button is clicked
         if(upOpacity === 1){
             await updateDoc(voteDocRef, {
                 voteType: "",
@@ -202,7 +208,7 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         }
     }
 
-    const OnDownvote = async() => {
+    const OnDownvote = async() => {//handles updating the database and the components when the downvote button is clicked
         if(downOpacity === 1){
             await updateDoc(voteDocRef, {
                 voteType: "",
@@ -229,18 +235,17 @@ function SingleQuestionPageQuestion({questionID, questionTitle, questionText, vo
         }
     }
 
-    const routeChangeToProfile = (email) => {
+    const routeChangeToProfile = (email) => {//routes the user to the profile page of the email cliecked
         let path= '/profilePage';
         navigate(path, {state : email});
     }
     
-    //just a container that contains all of the question data displayed on the single question page
+    //renders the component
     return (
         <div>
             <TitleArea>
                 <Title><b>{questionTitle}</b></Title>
                 <QuestionStatArea>
-                    {/* need to add timeAsked */}
                     <QuestionStat>Asked by <UserLink onClick={() => routeChangeToProfile(firstName)}> {firstName} </UserLink></QuestionStat>
                     <QuestionStat>{viewCount} Views</QuestionStat>
                 </QuestionStatArea>
