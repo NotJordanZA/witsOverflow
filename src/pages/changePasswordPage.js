@@ -120,8 +120,6 @@ const ChangePassword = () => {
 
     // useEffect Hook: Validate password against booleanOld. Checks every time 'oldPwd' changes.
     useEffect(() => {
-        //let result = booleanOld(oldPwd);
-        //console.log(result);
         const result = PWD_REGEX.test(oldPwd);
         console.log(result);
         console.log(oldPwd);
@@ -252,7 +250,7 @@ const ChangePassword = () => {
                     Must match the first password input.
                 </p>
 
-            <StyledButton disabled={!validOldPwd || !validPwd || !validMatch ? true : false}>
+            <StyledButton disabled={!validOldPwd || !validPwd || !validMatch ? true : false} test>
                 Change Password
             </StyledButton>
             </StyledForm>

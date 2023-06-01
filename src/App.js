@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/header";
 import QuestionsPage from "./pages/questionsPage";
 import LoginPage from "./pages/loginPage";
-import Rewards from "./pages/rewardsPage";
 import Profile from "./pages/profilePage";
 import Register from "./pages/registrationPage";
 import AskPage from "./pages/askPage";
@@ -41,7 +40,6 @@ function App() {
                 <Route path= "/loginPage" element= {<LoginPage/>} />
                 <Route index element= {<LoginPage/>} />
                 <Route path= "/questionsPage" element= {<QuestionsPage/>} />
-                <Route path= "/rewardsPage" element= {<Rewards/>} />
                 <Route path= "/profilePage" element= {<Profile/>} />
                 <Route path= "/registrationPage" element= {<Register/>} />
                 <Route path= "/askPage" element= {<AskPage/>} />

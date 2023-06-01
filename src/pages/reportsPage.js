@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 import { db } from '../firebase-config/firebase';
 import { getDoc, getDocs, collection, doc, deleteDoc } from 'firebase/firestore';
 import QuestionRow from '../components/QuestionRow';
-import { useNavigate } from "react-router-dom";
-
 //CSS Component: Header
 const StyledHeader = styled.h1`
     font-size: 1.5rem;
@@ -22,8 +20,6 @@ const HeaderRow = styled.div`
 `;
 
 function ReportsPage(){
-
-    let navigate = useNavigate();
     const email = sessionStorage.getItem('userEmail');
 
     //Declare consts for the reportList and questionsList arrays.

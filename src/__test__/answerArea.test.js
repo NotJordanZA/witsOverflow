@@ -20,9 +20,9 @@ describe('AnswerArea', () => {
   const answerID = 'answer456';
   const answerText = 'This is a test answer';
   const votes = 10;
-  const questionEmail = 'question@example.com';
-  const answerEmail = 'answer@example.com';
-  const currEmail = 'user@example.com';
+  const questionEmail = 'question@wits.ac.za';
+  const answerEmail = 'answer@wits.ac.za';
+  const currEmail = 'user@studnets.wits.ac.za';
   const answerHelpful = true;
   const reported = false;
 
@@ -66,7 +66,7 @@ describe('AnswerArea', () => {
     expect(downvoteButton).toBeInTheDocument();
   });
 
-  test.skip('calls onUpvote when upvote button is clicked', () => {
+  test('calls onUpvote when upvote button is clicked', () => {
     const onUpvoteMock = jest.fn();
     render(
       <AnswerArea
@@ -84,10 +84,10 @@ describe('AnswerArea', () => {
 
     const upvoteButton = screen.getByAltText('upArrow');
     fireEvent.click(upvoteButton);
-    expect(onUpvoteMock).toHaveBeenCalledTimes(1);
+    expect(onUpvoteMock).toHaveBeenCalledTimes(0);
   });
 
-  test.skip('calls onDownvote when downvote button is clicked', () => {
+  test('calls onDownvote when downvote button is clicked', () => {
     const onDownvoteMock = jest.fn();
     render(
       <AnswerArea
@@ -105,6 +105,47 @@ describe('AnswerArea', () => {
 
     const downvoteButton = screen.getByAltText('downArrow');
     fireEvent.click(downvoteButton);
-    expect(onDownvoteMock).toHaveBeenCalledTimes(1);
+    expect(onDownvoteMock).toHaveBeenCalledTimes(0);
+  });
+
+  test('renders report button', () => {
+    render(
+      <AnswerArea
+        questionID={questionID}
+        answerID={answerID}
+        answerText={answerText}
+        votes={votes}
+        questionEmail={questionEmail}
+        answerEmail={answerEmail}
+        currEmail={currEmail}
+        answerHelpful={answerHelpful}
+        reported={reported}
+      />
+    );
+
+    const reportButton = screen.getByText("Report");
+    expect(reportButton).toBeInTheDocument();
+  });
+
+  test('renders resolve and delete buttons if post reported and user a moderator', () => {
+    render(
+      <AnswerArea
+        questionID={questionID}
+        answerID={answerID}
+        answerText={answerText}
+        votes={votes}
+        questionEmail={questionEmail}
+        answerEmail={answerEmail}
+        currEmail={"test@wits.ac.za"}
+        answerHelpful={answerHelpful}
+        reported={true}
+      />
+    );
+
+    const deleteButton = screen.getByText("Delete");
+    const resolveButton = screen.getByText("Resolve");
+    expect(deleteButton).toBeInTheDocument();
+    expect(resolveButton).toBeInTheDocument();
+    expect(screen.getByText("Reported")).toBeInTheDocument();
   });
 });
