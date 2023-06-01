@@ -11,7 +11,7 @@ jest.mock('react-router-dom', () => ({
   useLocation: jest.fn(),
   useNavigate: jest.fn(),
 }));
-
+//mock of each test
 beforeEach(() => {
   jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
 })
