@@ -97,7 +97,7 @@ function Header(){
               <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
           </LogoLink>
           <LogoLinkTitle href="" className="title">
-              <span><b>wits overflow</b></span>
+              <span><b>wits&nbsp;overflow</b></span>
           </LogoLinkTitle>
         </StyledHeader>
         <Outlet/>
@@ -111,7 +111,7 @@ function Header(){
               <img style = {{ width : 50, height: 50 }}src = {logo} alt = "logo" />
           </LogoLink>
           <LogoLinkTitle href="/questionsPage" className="title">
-              <span><b>wits overflow</b></span>
+              <span><b>wits&nbsp;overflow</b></span>
           </LogoLinkTitle>
           <EmptyPadding> </EmptyPadding>
           <ReportsLink href="/reportsPage">
