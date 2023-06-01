@@ -75,13 +75,14 @@ const LoginPage = () => {
         console.log(email, pass);
         try {
             await signInWithEmailAndPassword(getAuth(),email,pass);
+            setIsIncorrectDetails(false);
         } catch(err) {
             //alert("ERROR: Incorrect Password Enterred!");
             setIsIncorrectDetails(true);
         }
         //add comparison between submitted email and password and stored password;
 
-        if(getAuth().currentUser!=null){
+        if(getAuth().currentUser!=null && !isIncorrectDetails){
             sessionStorage.setItem('userEmail', email);
             setIsIncorrectDetails(false);
             navigate("/questionsPage", {state : email});
