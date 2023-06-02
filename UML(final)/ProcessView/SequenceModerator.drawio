@@ -1,0 +1,102 @@
+<mxfile host="app.diagrams.net" modified="2023-06-02T05:51:28.922Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="gyGvMUHPXTRQcZGg1jck" version="21.3.7" type="device">
+  <diagram name="Page-1" id="dZsvMND2f6AZHbWiUySn">
+    <mxGraphModel dx="880" dy="452" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="2" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-1" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;LoginPage&lt;/font&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="90" y="140" width="100" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-2" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="NcBwkrkgyh_1SBuuohwR-1">
+          <mxGeometry x="40" y="70" width="10" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-3" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Browse URL&lt;/font&gt;" style="html=1;verticalAlign=bottom;startArrow=oval;endArrow=block;startSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="NcBwkrkgyh_1SBuuohwR-1" target="NcBwkrkgyh_1SBuuohwR-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-50" y="70" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-4" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;RegistrationPage&lt;/font&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="270" y="140" width="130" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-5" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="NcBwkrkgyh_1SBuuohwR-4">
+          <mxGeometry x="60" y="70" width="10" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-6" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="219" as="sourcePoint" />
+            <mxPoint x="330" y="219" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-7" value="Click the Sign in Button" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="160" y="190" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-8" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;QuestionsPage&lt;/font&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="470" y="140" width="120" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-9" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="NcBwkrkgyh_1SBuuohwR-8">
+          <mxGeometry x="55" y="90" width="10" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-10" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0.45;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="NcBwkrkgyh_1SBuuohwR-5" target="NcBwkrkgyh_1SBuuohwR-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="239" as="sourcePoint" />
+            <mxPoint x="520" y="239" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-11" value="Registration complete after clicking Sign up button" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="190" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-12" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ReportsPage&lt;/font&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="670" y="140" width="100" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-14" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="NcBwkrkgyh_1SBuuohwR-12">
+          <mxGeometry x="45" y="100" width="10" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-13" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;ProfilePage&lt;/font&gt;" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="1">
+          <mxGeometry x="880" y="140" width="100" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-17" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="NcBwkrkgyh_1SBuuohwR-13">
+          <mxGeometry x="45" y="110" width="10" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="249" as="sourcePoint" />
+            <mxPoint x="710" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-16" value="Access Reports Page" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="560" y="220" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-22" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Process: New web application moderator registers an account, resolves a reported answer and then upvotes previously asked question on the questionsPage.&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="40" width="510" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-23" value="" style="endArrow=classic;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;entryX=0.54;entryY=0.714;entryDx=0;entryDy=0;entryPerimeter=0;endFill=1;endSize=3;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="926" y="347" as="sourcePoint" />
+            <mxPoint x="140" y="347" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-24" value="Upvote Complete, Logout button used to return to Login Page and Log the moderator out of the app" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="691" y="360" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-25" value="" style="endArrow=classic;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;endFill=1;endSize=2;" edge="1" parent="1" target="NcBwkrkgyh_1SBuuohwR-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="710" y="260" as="sourcePoint" />
+            <mxPoint x="550" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-26" value="Return to QuestionsPage to select a question tab to upvote an answer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="550" y="270" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-27" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0.778;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="NcBwkrkgyh_1SBuuohwR-8" target="NcBwkrkgyh_1SBuuohwR-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="263" as="sourcePoint" />
+            <mxPoint x="920" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NcBwkrkgyh_1SBuuohwR-28" value="Access Profile Page for the logout button" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="740" y="290" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
